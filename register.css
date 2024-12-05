@@ -20,7 +20,7 @@ top-wrapper{
 }
 
 form{
-    width: 450px;
+    width: 500px;
     height: 600px;
     border-radius:60px;
     box-shadow:0 10px 15px #b2b2b2;
@@ -28,21 +28,42 @@ form{
 
 .input-box{
     text-align: center;
+    
+}
+
+.input-box2{
+    display: flex;
+    
 }
 
 input{
     height: 55px;
-    width: 330px;
+    width: 370px;
     font-size: 20px;
-    margin-bottom: 60px;
+    margin-top: 70px;
     border:none;
     box-shadow:0 5px 10px #b2b2b2;
-
-}
-
-.text{
     outline-color: rgb(0, 126, 210);
 }
+
+.text2{
+    width: 165px;
+    font-size: 20px;
+    margin-left: 65px;
+}
+
+.text3{
+    width: 165px;
+    font-size: 20px;
+    margin-left: 35px;
+}
+
+form>p{
+    margin-left: 70px;
+    color: #b2b2b2;
+
+}
+
 
 ::placeholder{
     color: #b2b2b2;
@@ -63,7 +84,7 @@ a:visited {
     display: block;
     width: 100px;
     font-size: 22px;
-    margin: 0 295px;
+    margin: 40px 340px;
     background-color: rgb(0, 126, 210);
     color: white;
     border-radius:5px;
