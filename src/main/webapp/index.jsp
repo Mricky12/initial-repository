@@ -8,7 +8,7 @@
 </head>
 <body>
     <div>
-        <p>現在の時刻は</p>
+        <p>現在の時刻ははは</p>
         <p><%= new java.util.Date() %></p>
         <p>です。</p>
     </div>
