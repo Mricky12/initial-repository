@@ -10,8 +10,7 @@
 
     <!-- <link rel="stylesheet" href="./reset.css"> -->
     <link rel="stylesheet" href="./css/register.css">
-    <script src="./js/validation.js" defer></script>
-
+	<script src="./js/validation.js" defer></script>
 </head>
 
 <body>
@@ -29,14 +28,17 @@
         <div class="body-wrapper">
             <div class="user-box">
                 <form class="reset-form" method="post" action="">
+                    
                     <div class="input-box">
-                        <p class="check-comment">続行するには、<br>本人確認を行ってください。</p>                   
-                        <input type="text" class="text" name="user_name" id="user_name" placeholder="ユーザー名">
-                        <p class="error-message" id="nameError"></p>
-                        <input type="email" class="text" name="user_email" id="user_email" placeholder="メールアドレス">
-                    	<p class="error-message" id="emailError"></p>
+                        <input type="text" lass="text" name="user_password" id="user_password" placeholder="パスワード">
+                        <input type="text" class="text" name="confirm_password" id="confirm_password" placeholder="パスワード確認">
                     </div>
-                    <button type="button" class="button" value="" onclick="handleValidation()">次へ</button>
+                    <p class="error-message" id="passwordError"></p>
+            
+                    <p class="pw-comment">半角英字、数字を組み合わせて8文字以上で<br>
+                        入力してください。</p>
+
+                    <input type="submit" class="button" value="次へ" onclick="">
                 </form>
             </div>
 
