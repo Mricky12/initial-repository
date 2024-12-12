@@ -22,21 +22,22 @@
         <div class="body-wrapper">
             <!-- ユーザーログイン -->
             <div class="user-box">
-                <form method="post" action="userLogin">
+                <form method="post" action="/java_task/top">
                     <p>ユ ー ザ ー<br>ロ グ イ ン</p>
                     <div class="input-box">
                         <input type="email" class="text" name="email" placeholder="メールアドレス" required><br>
                         <input type="password" class="text" name="password" placeholder="パスワード" required><br>
                     </div>
-                    <a href="register.jsp">ユーザー登録はこちら</a><br>
+                    <a href="/java_task/register">ユーザー登録はこちら</a><br>
                     <a href="identitycheck.jsp">パスワードをお忘れの方</a><br>
-                    <input type="submit" class="button" value="次へ">
+                    <button type="submit" class="button" value="">次へ</button>
+                    <input type="hidden" name="action" value="user" >
                 </form>
             </div>
 
             <!-- 管理者ログイン -->
             <div class="admin-box">
-                <form method="post" action="adminLogin" id="adminLoginForm">
+                <form method="post" action="/java_task/top" id="adminLoginForm">
                     <p>管 理 者<br>ロ グ イ ン</p>
                     <div class="input-box">
                         <input type="email" class="text" name="email" placeholder="メールアドレス" required><br>
@@ -44,7 +45,8 @@
                     </div>
                     <a href="adminregister.jsp" onclick="return validateAdmin()">ユーザー登録はこちら</a><br>
                     <a href="adminidentitycheck.jsp" onclick="return validateAdmin()">パスワードをお忘れの方</a><br>
-                    <input type="button" class="button" value="次へ" onclick="validateAdminLogin()">
+                    <button type="submit" class="button" value="" onclick="validateAdminLogin()">次へ</button>
+                    <input type="hidden" name="action" value="admin" >
                 </form>
             </div>
         </div>
