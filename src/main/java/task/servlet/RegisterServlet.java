@@ -16,22 +16,20 @@ import task.dto.UsersDTO;
 /**
  * Servlet implementation class RegisterServlet
  */
-@WebServlet(name ="register" ,urlPatterns = "/register")
+@WebServlet(name ="register",urlPatterns = "/register")
 public class RegisterServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+    
+    public RegisterServlet() {
+        super();
+    }
     @Override
-    
-    
-    
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//レスポンス（画面に表示する内容）のデータ形式を設定。
 		//text/html: HTML形式で返すことを示す。
 		response.setContentType("text/html; charset=UTF-8");
-//		String action = request.getParameter("action");
-//
-//        if (action == null || action.isEmpty()) {
-//            // デフォルトの処理 (URL直接アクセス時)
-//            response.getWriter().println("ログインページへようこそ！");
-            request.getRequestDispatcher("/register").forward(request, response);
+
+            request.getRequestDispatcher("register.jsp").forward(request, response);
            
 		
 		
@@ -55,15 +53,15 @@ public class RegisterServlet extends HttpServlet {
             user.setPassword(userPassword);
 
             if (userDAO.insertUser(user, connection)) {
-                response.sendRedirect("/top");
+                response.sendRedirect("top");
             } else {
                 request.setAttribute("error", "登録に失敗しました。");
-                request.getRequestDispatcher("/register").forward(request, response);
+                request.getRequestDispatcher("register.jsp").forward(request, response);
             }
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("error", "システムエラーが発生しました。");
-            request.getRequestDispatcher("/register").forward(request, response);
+            request.getRequestDispatcher("register.jsp").forward(request, response);
         }
     }
 }

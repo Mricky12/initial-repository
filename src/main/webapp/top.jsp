@@ -22,13 +22,13 @@
         <div class="body-wrapper">
             <!-- ユーザーログイン -->
             <div class="user-box">
-                <form method="post" action="/java_task/top">
+                <form method="post" action="top">
                     <p>ユ ー ザ ー<br>ロ グ イ ン</p>
                     <div class="input-box">
                         <input type="email" class="text" name="email" placeholder="メールアドレス" required><br>
                         <input type="password" class="text" name="password" placeholder="パスワード" required><br>
                     </div>
-                    <a href="/java_task/register">ユーザー登録はこちら</a><br>
+                    <a href="register">ユーザー登録はこちら</a><br>
                     <a href="identitycheck.jsp">パスワードをお忘れの方</a><br>
                     <button type="submit" class="button" value="">次へ</button>
                     <input type="hidden" name="action" value="user" >
@@ -43,7 +43,7 @@
                         <input type="email" class="text" name="email" placeholder="メールアドレス" required><br>
                         <input type="password" class="text" name="password" placeholder="パスワード" required><br>
                     </div>
-                    <a href="adminregister.jsp" onclick="return validateAdmin()">ユーザー登録はこちら</a><br>
+                    <a href="admin-register" onclick="return validateAdmin()">管理者登録はこちら</a><br>
                     <a href="adminidentitycheck.jsp" onclick="return validateAdmin()">パスワードをお忘れの方</a><br>
                     <button type="submit" class="button" value="" onclick="validateAdminLogin()">次へ</button>
                     <input type="hidden" name="action" value="admin" >
