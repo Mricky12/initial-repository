@@ -45,6 +45,21 @@ public class UsersDAO {
         }
     }
 
+    // ユーザーを名前とメールアドレスで検索（認証用）
+    public boolean authenticateUser(String name, String email, Connection connection) throws SQLException {
+        String query = "SELECT COUNT(*) FROM users WHERE user_name = ? AND user_email = ? AND user_deleted_at IS NULL";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, name);
+            stmt.setString(2, email);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0; // ユーザーが存在する場合trueを返す
+                }
+            }
+        }
+        return false;
+    }
+
     // パスワードを更新（再設定）
     public boolean updatePassword(String email, String newPassword, Connection connection) throws SQLException {
         String query = "UPDATE users SET user_password = ? WHERE user_email = ? AND user_deleted_at IS NULL";

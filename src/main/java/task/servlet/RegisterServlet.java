@@ -29,7 +29,7 @@ public class RegisterServlet extends HttpServlet {
 		//text/html: HTML形式で返すことを示す。
 		response.setContentType("text/html; charset=UTF-8");
 
-            request.getRequestDispatcher("register.jsp").forward(request, response);
+        request.getRequestDispatcher("register.jsp").forward(request, response);
            
 		
 		

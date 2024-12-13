@@ -29,7 +29,7 @@
                         <input type="password" class="text" name="password" placeholder="パスワード" required><br>
                     </div>
                     <a href="register">ユーザー登録はこちら</a><br>
-                    <a href="identitycheck.jsp">パスワードをお忘れの方</a><br>
+                    <a href="identitycheck">パスワードをお忘れの方</a><br>
                     <button type="submit" class="button" value="">次へ</button>
                     <input type="hidden" name="action" value="user" >
                 </form>
@@ -45,7 +45,7 @@
                     </div>
                     <a href="admin-register" onclick="return validateAdmin()">管理者登録はこちら</a><br>
                     <a href="adminidentitycheck.jsp" onclick="return validateAdmin()">パスワードをお忘れの方</a><br>
-                    <button type="submit" class="button" value="" onclick="validateAdminLogin()">次へ</button>
+                    <button type="submit" class="button" value="" onclick="return validateAdmin()">次へ</button>
                     <input type="hidden" name="action" value="admin" >
                 </form>
             </div>

@@ -26,6 +26,22 @@ function handleValidation() {
     }
 }
 
+function identitycheckValidation() {
+    // エラーメッセージをリセット
+    clearErrors();
+
+    // 各項目のバリデーション
+    let isError = false;
+    if (!validateName()) isError = true;
+    if (!validateEmail()) isError = true;
+
+    // エラーがない場合、送信
+    if (!isError) {
+        document.getElementById("resetForm").submit();
+    }
+}
+
+
 function clearErrors() {
     document.querySelectorAll(".error-message").forEach((el) => (el.textContent = ""));
 }

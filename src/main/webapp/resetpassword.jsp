@@ -8,7 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>タスク管理システム</title>
 
-    <!-- <link rel="stylesheet" href="./reset.css"> -->
     <link rel="stylesheet" href="./css/register.css">
 	<script src="./js/validation.js" defer></script>
 </head>
@@ -27,10 +26,10 @@
         </header>
         <div class="body-wrapper">
             <div class="user-box">
-                <form class="reset-form" method="post" action="">
+                <form class="reset-form" id="registerForm" method="post" action="">
                     
                     <div class="input-box">
-                        <input type="text" lass="text" name="user_password" id="user_password" placeholder="パスワード">
+                        <input type="text" class="text" name="user_password" id="user_password" placeholder="パスワード">
                         <input type="text" class="text" name="confirm_password" id="confirm_password" placeholder="パスワード確認">
                     </div>
                     <p class="error-message" id="passwordError"></p>
@@ -38,7 +37,7 @@
                     <p class="pw-comment">半角英字、数字を組み合わせて8文字以上で<br>
                         入力してください。</p>
 
-                    <input type="submit" class="button" value="次へ" onclick="">
+                    <button type="button" class="button" value="" onclick="validatePassword()">次へ</button>
                 </form>
             </div>
 
