@@ -1,198 +1,184 @@
 @charset "UTF-8";
 
+/* ヘッダーまたメニューバーの共通要素 */
 /* 基本スタイル */
 body {
-	margin: 0;
-	font-family: Arial, sans-serif;
-	/* 基本フォントサイズ */
-	font-size: 16px;
-	/* X軸のスクロールを無効化 */
-	overflow-x: hidden;
-	/* Y軸のスクロールは有効 */
-	overflow-y: auto;
-}
-
-p {
-	color: #222;
-}
+    margin: 0;
+    font-family: Arial, sans-serif;
+    font-size: 16px; /* 基本フォントサイズ ＠*/
+    overflow-x: hidden; /* X軸のスクロールを無効化 */
+    overflow-y: auto;   /* Y軸のスクロールは有効 */
+  }
 
 /* ボディの中全体 */
 .main-wrapper {
-	width: 100%;
-}
+    width: 100%;
+}  
 
 /* ヘッダー部分 */
 .main-header {
-	width: 100%;
-	height: 80px;
-	position: fixed;
-	top: 0px;
-	/* 子要素を横並び */
-	display: flex;
-	/*親要素に対して垂直方向に中央揃え*/
-	align-items: center;
-	/* 子要素を等間隔にする */
-	justify-content: space-between;
-	/* 下に影を追加 */
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-	background: #fff;
+    width: 100%;
+    height: 80px;
+    position: fixed;
+    z-index: 1000; /* 他の要素より前面に表示 ＠*/
+    font-size: 1rem; /* ヘッダーの基本フォントサイズ ＠*/
+    background-color: #fff;
+    top: 0px;
+    display: flex;/* 子要素を横並び */
+    align-items: center; /*親要素に対して垂直方向に中央揃え*/
+    justify-content: space-between;/* 子要素を等間隔にする */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 下に影を追加 */
 }
+
+
+
 
 /* ハンバーガーアイコン(ヘッダー)*/
 .logo {
-	/* 余白調整 */
-	margin: 0 20px;
+  /* 余白調整 */
+    margin: 0 20px;
 }
 
-/* ハンバーガーメニューアイコンのスタイル */
-.hamburger {
-	cursor: pointer;
-	width: 30px;
-	height: 20px;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-}
 
-.hamburger span {
-	display: block;
-	height: 3px;
-	width: 100%;
-	background-color: #333;
-	border-radius: 2px;
-	transition: all 0.3s;
-}
-
-/* ハンバーガーアイコンのアクティブ状態 */
-.hamburger.active span:nth-child(1) {
-	transform: rotate(45deg) translate(6px, 6px);
-}
-
-.hamburger.active span:nth-child(2) {
-	opacity: 0;
-}
-
-.hamburger.active span:nth-child(3) {
-	transform: rotate(-45deg) translate(6px, -6px);
-}
-
-.header-title {
-	font-size: 20px;
-	text-align-last: center;
-}
-
+  
 /* 初期状態: メニューを非表示 */
 .menu {
-	display: none;
-	/* 要素を完全に非表示 */
-	position: absolute;
-	/* 親に基づいて配置 */
-	top: 20%;
-	left: 1%;
-	width: 100%;
-	padding: 10px 0;
-	list-style: none;
-	/* デフォルトのリストマーカーを無効化 */
-}
-
-/* メニューアイテムのスタイル */
+    display: none; /* 要素を完全に非表示 */
+    position: absolute; /* 親に基づいて配置 */
+    top: 20%;
+    left: 1%;
+    width: 100%;
+    padding: 10px 0;
+    list-style: none; /* デフォルトのリストマーカーを無効化 */
+  }
+  
+  /* メニューアイテムのスタイル */
 .menu li {
-	/* 上下に余白 */
-	padding: 5px 0;
+    /* 上下に余白 */
+    padding: 5px 0;
+  }
+  
+  /* メニューのリンクの設定 */
+  .menu li a {
+    color: #333; /* 紫にならないように色設定 */
+    text-decoration: none; /* 下線を消す */
+    /* font-size: 16px; */
+    /* font-weight: bold; */
+    display: block;
+    width: 220px;
+    padding: 10px;
+  }
+
+  .menu .bullet {
+    font-weight: bold; /* 太字 */
+    margin-right: 5px; /* テキストとの間隔 */
+    font-size: 20px; /* サイズを少し大きくする */
 }
 
-/* メニューのリンクの設定 */
-.menu li a {
-	color: #333;
-	/* 紫にならないように色設定 */
-	text-decoration: none;
-	/* 下線を消す */
-	font-size: 16px;
-	/* font-weight: bold; */
-	display: block;
-	width: 220px;
-	padding: 10px;
-}
-
-.menu .bullet {
-	font-weight: bold;
-	/* 太字 */
-	margin-right: 5px;
-	/* テキストとの間隔 */
-	font-size: 20px;
-	/* サイズを少し大きくする */
-}
-
-/* マウスが乗ったときのホバー状態 */
+  /* マウスが乗ったときのホバー状態 */
 .menu a:hover {
-	background-color: #e0e0e0;
-	/* グレーの背景 */
-	border-radius: 40px;
-	/* 角をさらに丸める */
-	margin-left: 10px;
-	font-size: 18px;
-}
+    background-color: #e0e0e0; /* グレーの背景 */
+    border-radius: 40px; /* 角をさらに丸める */
+    margin-left: 10px;
+    font-size: 18px;
+  }
+  
+  /* クリックした後のフォーカス状態 */
+  .menu a:focus {
+    background-color: #FEEFC3; /* 黄色の背景 */
+    border-radius: 40px; /* 角をさらに丸める */
+    outline: none; /* デフォルトのフォーカス枠を削除 */
+    margin-left: 10px;
+    font-size: 18px;
+    
+  }
 
-/* クリックした後のフォーカス状態 */
-.menu a:focus {
-	background-color: #FEEFC3;
-	/* 黄色の背景 */
-	border-radius: 40px;
-	/* 角をさらに丸める */
-	outline: none;
-	/* デフォルトのフォーカス枠を削除 */
-	margin-left: 10px;
-	font-size: 18px;
-}
-
-/* メニュー表示状態 */
+  /* メニュー表示状態 */
 .menu.active {
-	display: block;
-}
+    display: block;
+  }
+  
+  /* ハンバーガーメニューアイコンのスタイル */
+  .hamburger {
+    cursor: pointer;
+    width: 30px;
+    height: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .hamburger span {
+    display: block;
+    height: 3px;
+    width: 100%;
+    background-color: #333;
+    border-radius: 2px;
+    transition: all 0.3s;
+  }
+  
+  /* ハンバーガーアイコンのアクティブ状態 */
+  .hamburger.active span:nth-child(1) {
+    transform: rotate(45deg) translate(6px, 6px);
+  }
+  
+  .hamburger.active span:nth-child(2) {
+    opacity: 0;
+  }
+  
+  .hamburger.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(6px, -6px);
+  }
+  
+.header-title{
+    font-size: 20px;
+    text-align-last: center ;
+}  
 
 /* 検索ボックス */
 .search-form-4 {
-	display: flex;
-	align-items: center;
-	overflow: hidden;
-	/* border: 1px solid #777777; */
-	background-color: #f2f2f2;
-	border-radius: 3px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;/*超過部分を「非表示」*/
+    /* border: 1px solid #777777; */
+    background-color: #f2f2f2;
+    border-radius: 3px;
 }
 
+/* 検索ボックス */
 .search-form-4 input {
-	width: 500px;
-	height: 45px;
-	padding: 5px 15px 5px 0;
-	border: none;
-	box-sizing: border-box;
-	font-size: 1em;
-	outline: none;
-	background-color: #f2f2f2;
+    width: 500px;
+    height: 45px;
+    padding: 5px 15px 5px 0;
+    border: none;
+    box-sizing: border-box;
+    font-size: 1em;
+    outline: none;
+    background-color: #f2f2f2;
 }
 
 .search-form-4 input::placeholder {
-	color: #777777;
+    color: #777777;
 }
 
 /* 検索アイコン */
 .search-form-4 button {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 45px;
-	height: 45px;
-	border: none;
-	background-color: transparent;
-	cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 45px;
+    height: 45px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
 }
 
 .search-form-4 button::before {
-	width: 24px;
-	height: 24px;
-	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M18.031 16.6168L22.3137 20.8995L20.8995 22.3137L16.6168 18.031C15.0769 19.263 13.124 20 11 20C6.032 20 2 15.968 2 11C2 6.032 6.032 2 11 2C15.968 2 20 6.032 20 11C20 13.124 19.263 15.0769 18.031 16.6168ZM16.0247 15.8748C17.2475 14.6146 18 12.8956 18 11C18 7.1325 14.8675 4 11 4C7.1325 4 4 7.1325 4 11C4 14.8675 7.1325 18 11 18C12.8956 18 14.6146 17.2475 15.8748 16.0247L16.0247 15.8748Z' fill='%23777777'%3E%3C/path%3E%3C/svg%3E");
-	background-repeat: no-repeat;
-	content: '';
+    width: 24px;
+    height: 24px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M18.031 16.6168L22.3137 20.8995L20.8995 22.3137L16.6168 18.031C15.0769 19.263 13.124 20 11 20C6.032 20 2 15.968 2 11C2 6.032 6.032 2 11 2C15.968 2 20 6.032 20 11C20 13.124 19.263 15.0769 18.031 16.6168ZM16.0247 15.8748C17.2475 14.6146 18 12.8956 18 11C18 7.1325 14.8675 4 11 4C7.1325 4 4 7.1325 4 11C4 14.8675 7.1325 18 11 18C12.8956 18 14.6146 17.2475 15.8748 16.0247L16.0247 15.8748Z' fill='%23777777'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    content: '';
 }
 
 /* アイコン部分 */
@@ -228,19 +214,10 @@ p {
 
 /* メイン部分 */
 .container {
-	display: flex;
-	/* 子要素を横並びに */
-	gap: 230px;
-	/* 子要素間の間隔 */
-	margin-top: 80px;
-	/* ヘッダーの高さに合わせて余白を追加 */
-	width: 100%;
-	/* 親要素の幅を最大に使う */
-}
-
-.sidebar {
-	flex: 0 0 250px;
-	/* 固定幅を設定  */
+  display: flex; /* 子要素を横並びに */
+  gap: 20px; /* 子要素間の間隔 */
+  margin-top: 80px; /* ヘッダーの高さに合わせて余白を追加 */
+  width: 100%; /* 親要素の幅を最大に使う */
 }
 
 /* セレクトボックスコンテナ全体 */
@@ -267,13 +244,37 @@ p {
 	appearance: none;
 }
 
+
+/* セレクトボックスコンテナ全体 */
+.select-container {
+	width: 100%;
+	margin: 15px 0;
+	display: flex;
+	background: #f2f2f2;
+	border-radius: 5px;
+}
+
+/* セレクトボックスのカスタム */
+.custom-select {
+	width: 100%;
+	padding: 8px 12px;
+	background: #f2f2f2;
+	color: #222;
+	border: none;
+	border-radius: 5px;
+	outline: none;
+	cursor: pointer;
+	box-sizing: border-box;
+	/* ブラウザ標準のスタイルを無効化 */
+	appearance: none;
+}
+
+
 /* 選択肢のカスタム */
 .custom-select option {
 	background: #fff;
 	color: #222;
 }
-
-
 
 
 /* レスポンシブスタイル */

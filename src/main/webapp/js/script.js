@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', function() {
 	// ハンバーガーメニューとメニューの要素を取得
 	const hamburger = document.getElementById('hamburger');
@@ -31,6 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // ログアウト時の動作
 document.getElementById("logout-link").addEventListener("click", function(event) {
+
 	// デフォルトのリンク動作をキャンセル
 	event.preventDefault();
 
