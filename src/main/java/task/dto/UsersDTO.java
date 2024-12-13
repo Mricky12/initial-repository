@@ -1,15 +1,17 @@
 package task.dto;
 
+import java.time.LocalDateTime;
+
 public class UsersDTO {
     private int id; // ユーザーID
     private String name; // ユーザー名
     private String email; // メールアドレス
     private String password; // パスワード
-    private String deletedAt; // ソフトデリート用
+    private LocalDateTime deletedAt; // ソフトデリート用
 
     public UsersDTO() {}
 
-    public UsersDTO(int id, String name, String email, String password, String deletedAt) {
+    public UsersDTO(int id, String name, String email, String password, LocalDateTime deletedAt) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -50,11 +52,11 @@ public class UsersDTO {
         this.password = password;
     }
 
-    public String getDeletedAt() {
+    public LocalDateTime getDeletedAt() {
         return deletedAt;
     }
 
-    public void setDeletedAt(String deletedAt) {
+    public void setDeletedAt(LocalDateTime deletedAt) {
         this.deletedAt = deletedAt;
     }
 }

@@ -38,7 +38,7 @@ public class LoginServlet extends HttpServlet {
 //        if (action == null || action.isEmpty()) {
 //            // デフォルトの処理 (URL直接アクセス時)
 //            response.getWriter().println("ログインページへようこそ！");
-            request.getRequestDispatcher("/top.jsp").forward(request, response);
+            request.getRequestDispatcher("top.jsp").forward(request, response);
            
 		
 		

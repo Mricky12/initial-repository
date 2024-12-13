@@ -24,7 +24,9 @@ public class UsersDAO {
                         rs.getString("user_name"),
                         rs.getString("user_email"),
                         rs.getString("user_password"),
-                        rs.getString("user_deleted_at")
+                        rs.getTimestamp("user_deleted_at") != null 
+                            ? rs.getTimestamp("user_deleted_at").toLocalDateTime()
+                            : null
                     );
                 }
             }
@@ -43,17 +45,28 @@ public class UsersDAO {
         }
     }
 
-    // メールアドレスが登録済みかチェック
-    public boolean isEmailRegistered(String email, Connection connection) throws SQLException {
-        String query = "SELECT COUNT(*) FROM users WHERE user_email = ? AND user_deleted_at IS NULL";
+    // ユーザーを名前とメールアドレスで検索（認証用）
+    public boolean authenticateUser(String name, String email, Connection connection) throws SQLException {
+        String query = "SELECT COUNT(*) FROM users WHERE user_name = ? AND user_email = ? AND user_deleted_at IS NULL";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, email);
+            stmt.setString(1, name);
+            stmt.setString(2, email);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getInt(1) > 0;
+                    return rs.getInt(1) > 0; // ユーザーが存在する場合trueを返す
                 }
             }
         }
         return false;
+    }
+
+    // パスワードを更新（再設定）
+    public boolean updatePassword(String email, String newPassword, Connection connection) throws SQLException {
+        String query = "UPDATE users SET user_password = ? WHERE user_email = ? AND user_deleted_at IS NULL";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, newPassword);
+            stmt.setString(2, email);
+            return stmt.executeUpdate() > 0;
+        }
     }
 }

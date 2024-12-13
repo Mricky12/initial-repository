@@ -9,6 +9,7 @@
   flex-direction: column; /* 子要素を縦並びに */
 }
 
+
 .container2 {
   display: flex; /* 子要素をフレックスボックスで配置 */
   justify-content: center; /* 水平方向に中央寄せ */

@@ -1,0 +1,256 @@
+@charset "UTF-8";
+
+/* main */
+.task-container {
+	padding: 20px auto;
+	box-sizing: border-box;
+}
+
+
+/* セレクトボックスコンテナ全体 */
+.select-container {
+	width: 100%;
+	margin: 15px 0;
+	display: flex;
+	background: #f2f2f2;
+	border-radius: 5px;
+}
+
+/* セレクトボックスのカスタム */
+.custom-select {
+	width: 100%;
+	padding: 8px 12px;
+	background: #f2f2f2;
+	color: #222;
+	border: none;
+	border-radius: 5px;
+	outline: none;
+	cursor: pointer;
+	box-sizing: border-box;
+	/* ブラウザ標準のスタイルを無効化 */
+	appearance: none;
+}
+
+/* 選択肢のカスタム */
+.custom-select option {
+	background: #fff;
+	color: #222;
+}
+
+
+
+/* タスク追加フォーム */
+.task-form {
+	width: 550px;
+	max-width: 90%;
+	padding: 20px;
+	background-color: #fff;
+	border: #ccc;
+	border-radius: 10px;
+	box-shadow: 1px 1px 4px 0px rgb(0, 0, 0, 0.25);
+	/* 縦方向中央揃えに並べる */
+	flex-direction: column;
+	align-items: center;
+	/* スムーズな表示/非表示アニメーション */
+	transition: all 0.3s ease;
+	/* 内容がはみ出ないようにする */
+	overflow: hidden;
+	cursor: pointer;
+}
+
+/* タスクフォーム-閉じた状態 */
+.task-form.collapsed {
+	/* タスク記入欄が見える高さ */
+	height: 50px;
+	padding: 0 15px;
+	cursor: pointer;
+}
+
+/* 折り畳み時に表示する部分 */
+.task-form-header p {
+	color: #222;
+}
+
+/* 展開時のスタイル */
+.task-form.expanded {
+	/* 内容に応じて高さを自動調整 */
+	height: auto;
+	margin: 10px;
+	padding: 15px;
+}
+
+.task-form.hidden {
+	display: none;
+}
+
+
+/* タスク記入欄 */
+.task-input {
+	width: 95%;
+	padding: 10px;
+	margin-right: 20px;
+	margin-bottom: 15px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	/* 初期状態では非表示 */
+	display: none;
+}
+
+/* 開いた状態 */
+.task-form.expanded .task-form-header p {
+	/* 開いたら「タスクを追加…」非表示 */
+	display: none;
+}
+
+.task-form.expanded .task-input {
+	/* 展開時に入力欄表示 */
+	display: block;
+}
+
+.task-form.expanded .task-icons {
+	/* アイコンを表示 */
+	display: flex;
+}
+
+/* 入力欄とアイコン (初期非表示) */
+.task-input,
+.task-icons {
+	display: none;
+}
+
+.task-input input,
+.task-input textarea {
+	width: 100%;
+	padding: 10px;
+	margin-bottom: 10px;
+	border: none;
+	outline: 0;
+	box-sizing: border-box;
+}
+
+.task-input textarea {
+	height: 200px;
+	resize: none;
+}
+
+.task-input input::placeholder,
+.task-input textarea::placeholder {
+	color: #ccc;
+}
+
+
+/* タスクアイコン */
+.task-icons {
+	/* 初期表示では非表示 */
+	display: none;
+	/* 右詰め配置 */
+	justify-content: flex-end;
+	/* ボタン間の間隔 */
+	gap: 10px;
+}
+
+.task-form.expanded .task-icons {
+	/* 展開時に表示 */
+	display: flex;
+}
+
+.task-icons button {
+	border: none;
+	background-color: transparent;
+	cursor: pointer;
+}
+
+.task-icons img {
+	vertical-align: bottom;
+	width: 24px;
+	height: 24px;
+}
+
+
+
+/* カラーパレットのスタイル */
+.color-palette {
+	display: flex;
+	gap: 10px;
+	margin-top: 15px;
+	padding: 10px;
+}
+
+.color-palette.hidden {
+	display: none;
+}
+
+.color-option {
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+	cursor: pointer;
+	border: 1px solid #888;
+	transition: transform 0.2s;
+}
+
+.color-option:hover {
+	transform: scale(1.1);
+	border: 2px solid #888;
+}
+
+.hidden {
+	display: none;
+}
+
+/* 閉じるボタン */
+.close {
+	font-size: 14px;
+	padding: 5px 10px;
+	border-radius: 5px;
+	transition: background-color 0.3s;
+	border: none;
+	cursor: pointer;
+}
+
+
+
+/* タスク一覧 */
+.task {
+	display: grid;
+	/* 1列3つで自動調整 */
+	grid-template-columns: repeat(3, 1fr);
+	/* 要素間の余白 */
+	gap: 20px;
+	padding-top: 20px;
+	box-sizing: border-box;
+}
+
+.table-box button {
+	height: 45px;
+	border: none;
+	background-color: transparent;
+	cursor: pointer;
+}
+
+.task-list {
+	background-color: #fff;
+	padding: 15px;
+	border-radius: 10px;
+	border: #ccc;
+	box-shadow: 1px 1px 4px 0px rgb(0, 0, 0, 0.25);
+}
+
+.task-list-btn {
+	display: flex;
+	justify-content: flex-end;
+	gap: 10px;
+}
+
+.task-list-btn img {
+	width: 24px;
+	height: 24px;
+}
+
+.edit-btn,
+.delete-btn {
+	height: 45px;
+	border: none;
+	background-color: transparent;
+	cursor: pointer;
+}

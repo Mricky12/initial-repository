@@ -2,7 +2,8 @@
 	pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
-<html>
+<html lang="ja">
+
 <head>
 <meta charset="UTF-8">
 <title>タスク管理システム</title>
@@ -13,6 +14,8 @@
 
 <body>
 	<div class="main-wrapper">
+	
+		<!-- ヘッダー -->
 		<header class="main-header">
 			<div class="logo">
 				<!-- ハンバーガーメニューアイコン -->
@@ -23,10 +26,11 @@
 
 			<div class="header-title">
 				<p>
-					タスク管理システム <br>グループタスク
+					タスク管理システム <br>マイタスク
 				</p>
 			</div>
 
+			<!-- 検索 -->
 			<div class="search">
 				<form action="/search" method="get" class="search-form-4">
 					<button type="submit" aria-label="検索"></button>
@@ -35,6 +39,7 @@
 				</form>
 			</div>
 
+			<!-- ヘッダーアイコン -->
 			<div class="icon-container">
 				<a href="" class="icon-link"> <img src="images\リロードのフリーアイコン.png"
 					alt="リロード">
@@ -48,7 +53,7 @@
 			<div class="icon-container">
 				<a href="" class="icon-link"> <img src="images\メニューの無料アイコン4.png"
 					alt="ホーム">
-				</a> <a href="edituser.html" class="icon-link"> <img
+				</a> <a href="" class="icon-link"> <img
 					src="images\人物のアイコン素材 その3.png" alt="アカウント">
 				</a>
 			</div>
@@ -58,10 +63,10 @@
 			<!-- サイドバー -->
 			<div class="sidebar">
 				<ul class="menu">
-					<li><a href="index.html"><span class="bullet">・</span>マイタスク</a></li>
+					<li><a href="#"><span class="bullet">・</span>マイタスク</a></li>
 					<li><a href="groupcreate.html"><span class="bullet">・</span>グループ作成/編集</a></li>
 					<li><a href="groupmemberedit.html"><span class="bullet">・</span>グループメンバー編集</a></li>
-					<li><a href="#"><span class="bullet">・</span>グループタスク一覧</a></li>
+					<li><a href="grouptask.html"><span class="bullet">・</span>グループタスク一覧</a></li>
 					<li><a href="edituser.html"><span class="bullet">・</span>ユーザー編集</a></li>
 					<li id="logout-link"><a href="#logout"><span
 							class="bullet">・</span>ログアウト</a></li>
@@ -70,20 +75,8 @@
 
 
 
-			<!-- タスク全体コンテナ -->
+			<!-- タスク追加 -->
 			<div class="task-container">
-
-				<!-- グループ選択 -->
-				<div class="select-container">
-					<select class="custom-select" name="custom-select"
-						id="group-select">
-						<option value="" selected>▼グループ選択</option>
-						<option value="group1">グループ1</option>
-						<option value="group2">グループ2</option>
-						<option value="group3">グループ3</option>
-					</select>
-				</div>
-
 				<div class="task-form collapsed" id="taskForm">
 					<!-- 折り畳み時に見せる部分 -->
 					<div class="task-form-header" id="taskFormHeader">
@@ -99,20 +92,21 @@
 					<!-- タスク記入欄内アイコン -->
 					<div class="task-icons">
 						<button class="color" onclick="toggleColorPalette()">
-							<img src="../task_management/images/パレットのアイコン5.png">
+							<img src="images/パレットのアイコン5.png">
 						</button>
 						<input type="file" id="file-input" accept="image/"
 							style="display: none;">
 						<button class="document"
 							onclick="document.getElementById('file-input').click();">
-							<img src="../task_management/images/写真のフリーアイコン5.png">
+							<img src="images/写真のフリーアイコン5.png">
 						</button>
 						<button>
-							<img src="../task_management/images/メニューの無料アイコン9.png">
+							<img src="images/メニューの無料アイコン9.png">
 						</button>
 						<button class="close">閉じる</button>
 						<button class="task-submit">登録</button>
 					</div>
+
 
 					<!-- カラーパレットの表示エリア -->
 					<div id="color-palette" class="color-palette hidden">
@@ -131,7 +125,10 @@
 						<div class="color-option" data-color="#FFDAB9"
 							style="background-color: #FFDAB9;" title="オレンジ"></div>
 					</div>
+
 				</div>
+
+
 
 				<!-- 登録されたタスク -->
 				<div class="task">
@@ -144,7 +141,7 @@
 						<div class="task-list-btn">
 							<p>
 								<button class="edit-btn">
-									<img src="../task_management/images/鉛筆アイコン　6.png" alt="編集">
+									<img src="images/鉛筆アイコン　6.png" alt="編集">
 								</button>
 							</p>
 
@@ -152,7 +149,7 @@
 							<form name="deleteForm" method="post" action="">
 								<p>
 									<button class="delete-btn">
-										<img src="../task_management/images/スタンダードなゴミ箱アイコン.png"
+										<img src="images/スタンダードなゴミ箱アイコン.png"
 											alt="削除">
 									</button>
 								</p>
@@ -169,7 +166,7 @@
 						<div class="task-list-btn">
 							<p>
 								<button class="edit-btn">
-									<img src="../task_management/images/鉛筆アイコン　6.png" alt="編集">
+									<img src="images/鉛筆アイコン　6.png" alt="編集">
 								</button>
 							</p>
 
@@ -177,7 +174,7 @@
 							<form name="deleteForm" method="post" action="">
 								<p>
 									<button class="delete-btn">
-										<img src="../task_management/images/スタンダードなゴミ箱アイコン.png"
+										<img src="images/スタンダードなゴミ箱アイコン.png"
 											alt="削除">
 									</button>
 								</p>
@@ -194,7 +191,7 @@
 						<div class="task-list-btn">
 							<p>
 								<button class="edit-btn">
-									<img src="../task_management/images/鉛筆アイコン　6.png" alt="編集">
+									<img src="images/鉛筆アイコン　6.png" alt="編集">
 								</button>
 							</p>
 
@@ -202,7 +199,7 @@
 							<form name="deleteForm" method="post" action="">
 								<p>
 									<button class="delete-btn">
-										<img src="../task_management/images/スタンダードなゴミ箱アイコン.png"
+										<img src="images/スタンダードなゴミ箱アイコン.png"
 											alt="削除">
 									</button>
 								</p>
@@ -219,7 +216,7 @@
 						<div class="task-list-btn">
 							<p>
 								<button class="edit-btn">
-									<img src="../task_management/images/鉛筆アイコン　6.png" alt="編集">
+									<img src="images/鉛筆アイコン　6.png" alt="編集">
 								</button>
 							</p>
 
@@ -227,7 +224,7 @@
 							<form name="deleteForm" method="post" action="">
 								<p>
 									<button class="delete-btn">
-										<img src="../task_management/images/スタンダードなゴミ箱アイコン.png"
+										<img src="images/スタンダードなゴミ箱アイコン.png"
 											alt="削除">
 									</button>
 								</p>
@@ -245,4 +242,5 @@
 	<script src="js/script.js"></script>
 	<script src="js/task.js"></script>
 </body>
+
 </html>

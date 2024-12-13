@@ -1,3 +1,5 @@
+@charset "UTF-8";
+
 /* ヘッダーまたメニューバーの共通要素 */
 /* 基本スタイル */
 body {
@@ -181,26 +183,33 @@ body {
 
 /* アイコン部分 */
 .icon-container {
-  display: flex; /* 横並びにする */
-  gap: 20px; /* アイコン間の間隔 */
-  justify-content: center; /* 中央揃え */
-  align-items: center; /* 縦方向の中央揃え */
-  padding: 20px;
+	display: flex;
+	/* 横並びにする */
+	gap: 20px;
+	/* 中央揃え */
+	align-items: center;
+	/* 縦方向の中央揃え */
+	padding: 20px;
 }
 
 .icon-link {
-  display: inline-block;
-  text-decoration: none; /* 下線を消す */
-  transition: transform 0.3s ease; /* ホバー時のアニメーション */
+	display: inline-block;
+	text-decoration: none;
+	/* 下線を消す */
+	transition: transform 0.3s ease;
+	/* ホバー時のアニメーション */
 }
 
 .icon-link img {
-  width: 20px; /* アイコンの幅 */
-  height: 20px; /* アイコンの高さ */
+	width: 20px;
+	/* アイコンの幅 */
+	height: 20px;
+	/* アイコンの高さ */
 }
 
 .icon-link:hover img {
-  transform: scale(1.1); /* ホバー時に拡大 */
+	transform: scale(1.1);
+	/* ホバー時に拡大 */
 }
 
 /* メイン部分 */
@@ -241,3 +250,179 @@ body {
 	color: #222;
 }
 
+
+/* レスポンシブスタイル */
+/* タブレット対応 */
+@media screen and (max-width: 768px) {
+	body {
+		font-size: 14px;
+		/* 全体のフォントサイズを縮小 */
+	}
+
+	.main-header {
+		height: 60px;
+		/* ヘッダーの高さを縮小 */
+		font-size: 0.9rem;
+		/* ヘッダーの文字サイズ縮小 */
+	}
+
+	.header-title {
+		font-size: 0.8rem;
+		/* タイトル文字サイズ縮小 */
+	}
+
+	.hamburger {
+		width: 24px;
+		/* ハンバーガーアイコンの幅縮小 */
+		height: 18px;
+	}
+
+	.hamburger span {
+		height: 3px;
+		/* アイコンの線を細く */
+	}
+
+	.menu li a {
+		font-size: 0.9rem;
+		/* メニュー文字サイズ縮小 */
+	}
+
+	.menu .bullet {
+		font-size: 1.2rem;
+		/* バレットのサイズ縮小 */
+	}
+
+	.icon-container {
+		gap: 15px;
+		/* アイコン間の間隔を縮小 */
+	}
+
+	.icon-link img {
+		width: 16px;
+		/* アイコンの幅を縮小 */
+		height: 16px;
+		/* アイコンの高さを縮小 */
+	}
+
+	.search-form-4 input {
+		width: 80%;
+		/* 検索ボックス幅を調整 */
+		height: 35px;
+		/* 高さを縮小 */
+		font-size: 0.9em;
+		/* 文字サイズ縮小 */
+	}
+
+	.search-form-4 button {
+		width: 35px;
+		/* 検索ボタンの幅縮小 */
+		height: 35px;
+	}
+
+	.container {
+		gap: 10px;
+		/* 子要素間の余白を縮小 */
+	}
+
+	.sidebar {
+		flex: 0 0 200px;
+		/* サイドバー幅を縮小 */
+	}
+
+	.task-content {
+		font-size: 0.9rem;
+		/* メインコンテンツの文字サイズ縮小 */
+	}
+
+	.task {
+		grid-template-columns: repeat(2, 1fr);
+		/* 画面幅が1024px以下で2列 */
+	}
+}
+
+
+
+/* スマホ対応 */
+@media screen and (max-width: 480px) {
+	body {
+		font-size: 12px;
+		/* さらにフォントサイズを縮小 */
+	}
+
+	.main-header {
+		height: 50px;
+		/* ヘッダーの高さをさらに縮小 */
+		font-size: 0.8rem;
+	}
+
+	.header-title {
+		font-size: 0.7rem;
+		/* タイトル文字サイズ縮小 */
+	}
+
+	.hamburger {
+		width: 20px;
+		/* ハンバーガーアイコンの幅縮小 */
+		height: 15px;
+	}
+
+	.hamburger span {
+		height: 2px;
+		/* アイコンの線をさらに細く */
+	}
+
+	.menu li a {
+		font-size: 0.8rem;
+		/* メニュー文字サイズ縮小 */
+	}
+
+	.menu .bullet {
+		font-size: 1rem;
+		/* バレットのサイズ縮小 */
+	}
+
+	.icon-container {
+		gap: 10px;
+		/* アイコン間の間隔をさらに縮小 */
+	}
+
+	.icon-link img {
+		width: 14px;
+		/* アイコンの幅を縮小 */
+		height: 14px;
+	}
+
+	.search-form-4 input {
+		width: 70%;
+		/* 検索ボックス幅をさらに調整 */
+		height: 30px;
+		/* 高さをさらに縮小 */
+		font-size: 0.8em;
+	}
+
+	.search-form-4 button {
+		width: 30px;
+		/* 検索ボタンの幅縮小 */
+		height: 30px;
+	}
+
+	.container {
+		gap: 5px;
+		/* 子要素間の余白を縮小 */
+	}
+
+	.sidebar {
+		flex: 0 0 150px;
+		/* サイドバー幅をさらに縮小 */
+	}
+
+	.task-content {
+		font-size: 0.8rem;
+		/* メインコンテンツの文字サイズ縮小 */
+	}
+
+	.task {
+		grid-template-columns: repeat(1, 1fr);
+		/* 画面幅が600px以下で1列 */
+	}
+}
