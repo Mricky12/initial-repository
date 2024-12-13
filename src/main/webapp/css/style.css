@@ -1,0 +1,422 @@
+@charset "UTF-8";
+
+/* 基本スタイル */
+body {
+	margin: 0;
+	font-family: Arial, sans-serif;
+	/* 基本フォントサイズ */
+	font-size: 16px;
+	/* X軸のスクロールを無効化 */
+	overflow-x: hidden;
+	/* Y軸のスクロールは有効 */
+	overflow-y: auto;
+}
+
+p {
+	color: #222;
+}
+
+/* ボディの中全体 */
+.main-wrapper {
+	width: 100%;
+}
+
+/* ヘッダー部分 */
+.main-header {
+	width: 100%;
+	height: 80px;
+	position: fixed;
+	top: 0px;
+	/* 子要素を横並び */
+	display: flex;
+	/*親要素に対して垂直方向に中央揃え*/
+	align-items: center;
+	/* 子要素を等間隔にする */
+	justify-content: space-between;
+	/* 下に影を追加 */
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	background: #fff;
+}
+
+/* ハンバーガーアイコン(ヘッダー)*/
+.logo {
+	/* 余白調整 */
+	margin: 0 20px;
+}
+
+/* ハンバーガーメニューアイコンのスタイル */
+.hamburger {
+	cursor: pointer;
+	width: 30px;
+	height: 20px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.hamburger span {
+	display: block;
+	height: 3px;
+	width: 100%;
+	background-color: #333;
+	border-radius: 2px;
+	transition: all 0.3s;
+}
+
+/* ハンバーガーアイコンのアクティブ状態 */
+.hamburger.active span:nth-child(1) {
+	transform: rotate(45deg) translate(6px, 6px);
+}
+
+.hamburger.active span:nth-child(2) {
+	opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+	transform: rotate(-45deg) translate(6px, -6px);
+}
+
+.header-title {
+	font-size: 20px;
+	text-align-last: center;
+}
+
+/* 初期状態: メニューを非表示 */
+.menu {
+	display: none;
+	/* 要素を完全に非表示 */
+	position: absolute;
+	/* 親に基づいて配置 */
+	top: 20%;
+	left: 1%;
+	width: 100%;
+	padding: 10px 0;
+	list-style: none;
+	/* デフォルトのリストマーカーを無効化 */
+}
+
+/* メニューアイテムのスタイル */
+.menu li {
+	/* 上下に余白 */
+	padding: 5px 0;
+}
+
+/* メニューのリンクの設定 */
+.menu li a {
+	color: #333;
+	/* 紫にならないように色設定 */
+	text-decoration: none;
+	/* 下線を消す */
+	font-size: 16px;
+	/* font-weight: bold; */
+	display: block;
+	width: 220px;
+	padding: 10px;
+}
+
+.menu .bullet {
+	font-weight: bold;
+	/* 太字 */
+	margin-right: 5px;
+	/* テキストとの間隔 */
+	font-size: 20px;
+	/* サイズを少し大きくする */
+}
+
+/* マウスが乗ったときのホバー状態 */
+.menu a:hover {
+	background-color: #e0e0e0;
+	/* グレーの背景 */
+	border-radius: 40px;
+	/* 角をさらに丸める */
+	margin-left: 10px;
+	font-size: 18px;
+}
+
+/* クリックした後のフォーカス状態 */
+.menu a:focus {
+	background-color: #FEEFC3;
+	/* 黄色の背景 */
+	border-radius: 40px;
+	/* 角をさらに丸める */
+	outline: none;
+	/* デフォルトのフォーカス枠を削除 */
+	margin-left: 10px;
+	font-size: 18px;
+}
+
+/* メニュー表示状態 */
+.menu.active {
+	display: block;
+}
+
+/* 検索ボックス */
+.search-form-4 {
+	display: flex;
+	align-items: center;
+	overflow: hidden;
+	/* border: 1px solid #777777; */
+	background-color: #f2f2f2;
+	border-radius: 3px;
+}
+
+.search-form-4 input {
+	width: 500px;
+	height: 45px;
+	padding: 5px 15px 5px 0;
+	border: none;
+	box-sizing: border-box;
+	font-size: 1em;
+	outline: none;
+	background-color: #f2f2f2;
+}
+
+.search-form-4 input::placeholder {
+	color: #777777;
+}
+
+/* 検索アイコン */
+.search-form-4 button {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 45px;
+	height: 45px;
+	border: none;
+	background-color: transparent;
+	cursor: pointer;
+}
+
+.search-form-4 button::before {
+	width: 24px;
+	height: 24px;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M18.031 16.6168L22.3137 20.8995L20.8995 22.3137L16.6168 18.031C15.0769 19.263 13.124 20 11 20C6.032 20 2 15.968 2 11C2 6.032 6.032 2 11 2C15.968 2 20 6.032 20 11C20 13.124 19.263 15.0769 18.031 16.6168ZM16.0247 15.8748C17.2475 14.6146 18 12.8956 18 11C18 7.1325 14.8675 4 11 4C7.1325 4 4 7.1325 4 11C4 14.8675 7.1325 18 11 18C12.8956 18 14.6146 17.2475 15.8748 16.0247L16.0247 15.8748Z' fill='%23777777'%3E%3C/path%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	content: '';
+}
+
+/* アイコン部分 */
+.icon-container {
+	display: flex;
+	/* 横並びにする */
+	gap: 20px;
+	/* 中央揃え */
+	align-items: center;
+	/* 縦方向の中央揃え */
+	padding: 20px;
+}
+
+.icon-link {
+	display: inline-block;
+	text-decoration: none;
+	/* 下線を消す */
+	transition: transform 0.3s ease;
+	/* ホバー時のアニメーション */
+}
+
+.icon-link img {
+	width: 20px;
+	/* アイコンの幅 */
+	height: 20px;
+	/* アイコンの高さ */
+}
+
+.icon-link:hover img {
+	transform: scale(1.1);
+	/* ホバー時に拡大 */
+}
+
+/* メイン部分 */
+.container {
+	display: flex;
+	/* 子要素を横並びに */
+	gap: 230px;
+	/* 子要素間の間隔 */
+	margin-top: 80px;
+	/* ヘッダーの高さに合わせて余白を追加 */
+	width: 100%;
+	/* 親要素の幅を最大に使う */
+}
+
+.sidebar {
+	flex: 0 0 250px;
+	/* 固定幅を設定  */
+}
+
+
+
+/* レスポンシブスタイル */
+/* タブレット対応 */
+@media screen and (max-width: 768px) {
+	body {
+		font-size: 14px;
+		/* 全体のフォントサイズを縮小 */
+	}
+
+	.main-header {
+		height: 60px;
+		/* ヘッダーの高さを縮小 */
+		font-size: 0.9rem;
+		/* ヘッダーの文字サイズ縮小 */
+	}
+
+	.header-title {
+		font-size: 0.8rem;
+		/* タイトル文字サイズ縮小 */
+	}
+
+	.hamburger {
+		width: 24px;
+		/* ハンバーガーアイコンの幅縮小 */
+		height: 18px;
+	}
+
+	.hamburger span {
+		height: 3px;
+		/* アイコンの線を細く */
+	}
+
+	.menu li a {
+		font-size: 0.9rem;
+		/* メニュー文字サイズ縮小 */
+	}
+
+	.menu .bullet {
+		font-size: 1.2rem;
+		/* バレットのサイズ縮小 */
+	}
+
+	.icon-container {
+		gap: 15px;
+		/* アイコン間の間隔を縮小 */
+	}
+
+	.icon-link img {
+		width: 16px;
+		/* アイコンの幅を縮小 */
+		height: 16px;
+		/* アイコンの高さを縮小 */
+	}
+
+	.search-form-4 input {
+		width: 80%;
+		/* 検索ボックス幅を調整 */
+		height: 35px;
+		/* 高さを縮小 */
+		font-size: 0.9em;
+		/* 文字サイズ縮小 */
+	}
+
+	.search-form-4 button {
+		width: 35px;
+		/* 検索ボタンの幅縮小 */
+		height: 35px;
+	}
+
+	.container {
+		gap: 10px;
+		/* 子要素間の余白を縮小 */
+	}
+
+	.sidebar {
+		flex: 0 0 200px;
+		/* サイドバー幅を縮小 */
+	}
+
+	.task-content {
+		font-size: 0.9rem;
+		/* メインコンテンツの文字サイズ縮小 */
+	}
+
+	.task {
+		grid-template-columns: repeat(2, 1fr);
+		/* 画面幅が1024px以下で2列 */
+	}
+}
+
+
+
+/* スマホ対応 */
+@media screen and (max-width: 480px) {
+	body {
+		font-size: 12px;
+		/* さらにフォントサイズを縮小 */
+	}
+
+	.main-header {
+		height: 50px;
+		/* ヘッダーの高さをさらに縮小 */
+		font-size: 0.8rem;
+	}
+
+	.header-title {
+		font-size: 0.7rem;
+		/* タイトル文字サイズ縮小 */
+	}
+
+	.hamburger {
+		width: 20px;
+		/* ハンバーガーアイコンの幅縮小 */
+		height: 15px;
+	}
+
+	.hamburger span {
+		height: 2px;
+		/* アイコンの線をさらに細く */
+	}
+
+	.menu li a {
+		font-size: 0.8rem;
+		/* メニュー文字サイズ縮小 */
+	}
+
+	.menu .bullet {
+		font-size: 1rem;
+		/* バレットのサイズ縮小 */
+	}
+
+	.icon-container {
+		gap: 10px;
+		/* アイコン間の間隔をさらに縮小 */
+	}
+
+	.icon-link img {
+		width: 14px;
+		/* アイコンの幅を縮小 */
+		height: 14px;
+	}
+
+	.search-form-4 input {
+		width: 70%;
+		/* 検索ボックス幅をさらに調整 */
+		height: 30px;
+		/* 高さをさらに縮小 */
+		font-size: 0.8em;
+	}
+
+	.search-form-4 button {
+		width: 30px;
+		/* 検索ボタンの幅縮小 */
+		height: 30px;
+	}
+
+	.container {
+		gap: 5px;
+		/* 子要素間の余白を縮小 */
+	}
+
+	.sidebar {
+		flex: 0 0 150px;
+		/* サイドバー幅をさらに縮小 */
+	}
+
+	.task-content {
+		font-size: 0.8rem;
+		/* メインコンテンツの文字サイズ縮小 */
+	}
+
+	.task {
+		grid-template-columns: repeat(1, 1fr);
+		/* 画面幅が600px以下で1列 */
+	}
+}
