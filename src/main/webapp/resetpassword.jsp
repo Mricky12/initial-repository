@@ -26,7 +26,7 @@
         </header>
         <div class="body-wrapper">
             <div class="user-box">
-                <form class="reset-form" id="registerForm" method="post" action="">
+                <form class="reset-form" id="resetForm" method="post" action="resetpassword">
                     
                     <div class="input-box">
                         <input type="text" class="text" name="user_password" id="user_password" placeholder="パスワード">
@@ -37,7 +37,7 @@
                     <p class="pw-comment">半角英字、数字を組み合わせて8文字以上で<br>
                         入力してください。</p>
 
-                    <button type="button" class="button" value="" onclick="validatePassword()">次へ</button>
+                    <button type="button" class="button" value="" onclick="resetpasswordValidation()">次へ</button>
                 </form>
             </div>
 

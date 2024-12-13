@@ -60,13 +60,41 @@ public class UsersDAO {
         return false;
     }
 
-    // パスワードを更新（再設定）
-    public boolean updatePassword(String email, String newPassword, Connection connection) throws SQLException {
-        String query = "UPDATE users SET user_password = ? WHERE user_email = ? AND user_deleted_at IS NULL";
+ // ユーザー名とメールアドレスを基にユーザー情報を取得
+    public UsersDTO findUserByEmailAndName(String name, String email, Connection connection) throws SQLException {
+        UsersDTO user = null;
+        String query = "SELECT * FROM users WHERE user_name = ? AND user_email = ? AND user_deleted_at IS NULL";
+
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, name);
+            stmt.setString(2, email);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    user = new UsersDTO(
+                        rs.getInt("user_id"),
+                        rs.getString("user_name"),
+                        rs.getString("user_email"),
+                        rs.getString("user_password"),
+                        rs.getTimestamp("user_deleted_at") != null 
+                            ? rs.getTimestamp("user_deleted_at").toLocalDateTime()
+                            : null
+                    );
+                }
+            }
+        }
+        return user;
+    }
+    
+    
+    
+ // ユーザーIDを使ってパスワードを更新する
+    public boolean updatePasswordById(int userId, String newPassword, Connection connection) throws SQLException {
+        String query = "UPDATE users SET user_password = ? WHERE user_id = ? AND user_deleted_at IS NULL";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, newPassword);
-            stmt.setString(2, email);
+            stmt.setInt(2, userId);
             return stmt.executeUpdate() > 0;
         }
+        
     }
 }
