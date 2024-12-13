@@ -42,6 +42,26 @@ function identitycheckValidation() {
 }
 
 
+function resetpasswordValidation() {
+	console.log("バリデーション開始");
+    // エラーメッセージをリセット
+    clearErrors();
+
+    // 各項目のバリデーション
+    let isError = false;
+    if (!validatePassword()) isError = true;
+
+    // エラーがない場合、送信
+    if (!isError) {
+		console.log("フォームを送信します");
+        alert("パスワードの変更が完了しました。ログイン画面に戻ります。");
+        document.getElementById("resetForm").submit();
+    }		else {
+		        console.log("バリデーションに失敗しました");
+		    }
+}
+
+
 function clearErrors() {
     document.querySelectorAll(".error-message").forEach((el) => (el.textContent = ""));
 }
