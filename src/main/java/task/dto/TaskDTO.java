@@ -2,7 +2,7 @@ package task.dto;
 
 public class TaskDTO {
 
-	//	プライベートなフィールド
+	//	フィールド定義
 	private int taskId; //タスクID
 	private String taskTitle; //タスクタイトル
 	private String task; //タスク内容
@@ -27,57 +27,58 @@ public class TaskDTO {
 		this.trash = trash;
 	}
 
-	//Getter/Setterメソッド
+	//Getterメソッド
 	public int getTaskId() {
 		return taskId;
-	}
-
-	public void setTaskId(int taskId) {
-		this.taskId = taskId;
 	}
 
 	public String getTaskTitle() {
 		return taskTitle;
 	}
 
-	public void setTaskTitle(String taskTitle) {
-		this.taskTitle = taskTitle;
-	}
-
 	public String getTask() {
 		return task;
-	}
-
-	public void setTask(String task) {
-		this.task = task;
 	}
 
 	public byte[] getTaskImage() {
 		return taskImage;
 	}
 
-	public void settaskImage(byte[] taskImage) {
-		this.taskImage = taskImage;
-	}
-
 	public int getUserId() {
 		return userId;
-	}
-
-	public void setUserId(int userId) {
-		this.userId = userId;
 	}
 
 	public Integer getColorId() {
 		return colorId;
 	}
 
-	public void setColorId(Integer colorId) {
-		this.colorId = colorId;
-	}
-
 	public boolean isTrash() {
 		return trash;
+	}
+
+	//	Setterメソッド
+	public void setTaskId(int taskId) {
+		this.taskId = taskId;
+	}
+
+	public void setTaskTitle(String taskTitle) {
+		this.taskTitle = taskTitle;
+	}
+
+	public void setTask(String task) {
+		this.task = task;
+	}
+
+	public void settaskImage(byte[] taskImage) {
+		this.taskImage = taskImage;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+
+	public void setColorId(Integer colorId) {
+		this.colorId = colorId;
 	}
 
 	public void setTrash(boolean trash) {

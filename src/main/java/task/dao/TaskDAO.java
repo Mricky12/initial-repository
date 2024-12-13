@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import task.DBCon;
@@ -42,30 +43,30 @@ public class TaskDAO {
 	//	タスク取得(SELECT BY ID)
 	public TaskDTO getTaskById(int taskId) {
 		String sql = "SELECT * FROM tasks WHERE task_id= ?";
-		try(Connection conn = DBCon.getConnection());
-				PreparedStatement pstmt = conn.prepareStatement(sql){
-					
-					pstmt.setInt(1,taskId);
-					ResultSet rs = pstmt.executeQuery();
-					
-					if(rs.next()) {
-						TaskDTO task = new TaskDTO();
-						task.setTaskId(rs.getInt("task_id"));
-						task.setTaskTitle(rs.getString("task_title"));
-						task.setTask(rs.getString("task"));
-						task.setTaskImage(rs.getBytes("task_image"));
-						task.setUserId(rs.getInt("user_id"));
-						task.setColorId(rs.getObject("color_id") !=null ? rs.getInt("color_id"):null);
-						task.setTrash(rs.getBoolean("trash"));
-						return task;
-					}
-									
-				}catch (SQLException e) {
-					e.printStackTrace();
-				}
-//		データが見つからない場合
+		try (Connection conn = DBCon.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+			pstmt.setInt(1, taskId);
+			ResultSet rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				TaskDTO task = new TaskDTO();
+				task.setTaskId(rs.getInt("task_id"));
+				task.setTaskTitle(rs.getString("task_title"));
+				task.setTask(rs.getString("task"));
+				task.setTaskImage(rs.getBytes("task_image"));
+				task.setUserId(rs.getInt("user_id"));
+				task.setColorId(rs.getObject("color_id") != null ? rs.getInt("color_id") : null);
+				task.setTrash(rs.getBoolean("trash"));
+				return task;
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		//		データが見つからない場合
 		return null;
-		
+
 	}
 
 	//	タスク一覧取得 (SELECT ALL)
@@ -83,7 +84,7 @@ public class TaskDAO {
 				task.setTask(rs.getString("task"));
 				task.setTaskImage(rs.getBytes("task_image"));
 				task.setUserId(rs.getInt("user_id"));
-				task.ColorId(rs.getObject("color_id") != null ? rs.getInt("color_id") : null);
+				task.setColorId(rs.getObject("color_id") != null ? rs.getInt("color_id") : null);
 				task.setTrash(rs.getBoolean("trash"));
 				taskList.add(task);
 			}
@@ -101,7 +102,7 @@ public class TaskDAO {
 
 			pstmt.setString(1, task.getTaskTitle());
 			pstmt.setString(2, task.getTask());
-			pstmt.setBytes(3, getTaskImage());
+			pstmt.setBytes(3, task.getTaskImage());
 			pstmt.setInt(4, task.getUserId());
 			if (task.getColorId() != null) {
 				pstmt.setInt(5, task.getColorId());
@@ -112,6 +113,27 @@ public class TaskDAO {
 			pstmt.setInt(7, task.getTaskId());
 
 			int rows = pstmt.executeUpdate();
+			//	更新成功の場合true
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	//	タスク削除 (DELETE)
+	public boolean deleteTask(int taskId) {
+		String sql = "DELETE FROM tasks WHERE task_id = ?";
+		try (Connection conn = DBCon.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+			pstmt.setInt(1, taskId);
+			int rows = pstmt.executeUpdate();
+			//	削除成功の場合trueを返す
+			return rows > 0;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
 		}
 	}
 
