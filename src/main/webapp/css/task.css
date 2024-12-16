@@ -1,6 +1,17 @@
 @charset "UTF-8";
 
 /* main */
+.main-wrapper {
+    display: flex;
+    justify-content: center; /* 水平方向中央揃え */
+    align-items: center; /* 垂直方向中央揃え */
+    height: 100vh; /* 画面全体の高さ */
+    box-sizing: border-box;
+    background-color: #f9f9f9; /* 背景色を設定（任意） */
+    margin: 0;
+    padding: 0;
+}
+
 .task-container {
 	padding: 20px auto;
 	box-sizing: border-box;
@@ -14,6 +25,7 @@
 	display: flex;
 	background: #f2f2f2;
 	border-radius: 5px;
+	text-align: center;
 }
 
 
@@ -21,10 +33,12 @@
 .task-form {
 	width: 550px;
 	max-width: 90%;
+	margin: 0 auto;
 	padding: 20px;
 	background-color: #fff;
 	border: #ccc;
 	border-radius: 10px;
+	box-sizing: border-box;
 	box-shadow: 1px 1px 4px 0px rgb(0, 0, 0, 0.25);
 	/* 縦方向中央揃えに並べる */
 	flex-direction: column;
@@ -47,6 +61,7 @@
 /* 折り畳み時に表示する部分 */
 .task-form-header p {
 	color: #222;
+	margin: 0 auto;
 }
 
 /* 展開時のスタイル */
@@ -72,6 +87,13 @@
 	border-radius: 5px;
 	/* 初期状態では非表示 */
 	display: none;
+}
+
+/* タスクなしメッセージ */
+.no-tasks-message {
+	color: #222;
+	margin-top: 20px;
+	text-align: center;
 }
 
 /* 開いた状態 */
@@ -209,15 +231,20 @@
 .task-list {
 	background-color: #fff;
 	padding: 15px;
+	margin: 10px 0;
 	border-radius: 10px;
 	border: #ccc;
 	box-shadow: 1px 1px 4px 0px rgb(0, 0, 0, 0.25);
+	box-sizing: border-box;
+	text-align: left;
 }
 
+/* アイコンボタン配置 */
 .task-list-btn {
 	display: flex;
 	justify-content: flex-end;
 	gap: 10px;
+	margin-top: 10px;
 }
 
 .task-list-btn img {

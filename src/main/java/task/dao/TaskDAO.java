@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,8 +15,9 @@ import task.dto.TaskDTO;
 public class TaskDAO {
 
 	//タスク登録(INSERT)
-	public boolean insertTask(TaskDAO task) {
-		String sql = "INSERT INTO tasks (task_title,task,task_image,user_id,color_id,trash VALUE (?, ?, ?, ?, ?, ?)";
+	public boolean insertTask(TaskDTO task) {
+		String sql = "INSERT INTO tasks (task_title,task,task_image,user_id,color_id,trash VALUES (?, ?, ?, ?, ?, ?)";
+
 		try (Connection conn = DBCon.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
@@ -96,7 +98,7 @@ public class TaskDAO {
 
 	//	タスク更新 (UPDATE)
 	public boolean updateTask(TaskDTO task) {
-		String sql = "UPDATE tasks SET task_title = ?, task = ?,task_image = ?,user_id = ?,color_id = ?, trash = ? WHERE task_id =?";
+		String sql = "UPDATE tasks SET task_title = ?, task = ?, task_image = ?, user_id = ?, color_id = ?, trash = ? WHERE task_id = ?";
 		try (Connection conn = DBCon.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
@@ -104,6 +106,7 @@ public class TaskDAO {
 			pstmt.setString(2, task.getTask());
 			pstmt.setBytes(3, task.getTaskImage());
 			pstmt.setInt(4, task.getUserId());
+
 			if (task.getColorId() != null) {
 				pstmt.setInt(5, task.getColorId());
 			} else {
@@ -113,7 +116,9 @@ public class TaskDAO {
 			pstmt.setInt(7, task.getTaskId());
 
 			int rows = pstmt.executeUpdate();
-			//	更新成功の場合true
+			// 更新成功の場合 true を返す
+			return rows > 0;
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;

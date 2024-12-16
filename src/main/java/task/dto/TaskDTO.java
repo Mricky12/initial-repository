@@ -16,8 +16,8 @@ public class TaskDTO {
 	}
 
 	// 全フィールドを因数に持つコンストラクタ
-	public TaskDTO(int taskId, String taskTitle, String task, byte[] taskImage, int userID, Integer colorId,
-			boolean trash, int userId) {
+	public TaskDTO(int taskId, String taskTitle, String task, byte[] taskImage, int userId, Integer colorId,
+			boolean trash) {
 		this.taskId = taskId;
 		this.taskTitle = taskTitle;
 		this.task = task;
@@ -69,7 +69,7 @@ public class TaskDTO {
 		this.task = task;
 	}
 
-	public void settaskImage(byte[] taskImage) {
+	public void setTaskImage(byte[] taskImage) {
 		this.taskImage = taskImage;
 	}
 
