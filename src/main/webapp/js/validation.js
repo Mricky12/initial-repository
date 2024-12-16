@@ -67,21 +67,21 @@ function clearErrors() {
 }
 
 function validateName() {
-    const name = document.getElementById("user_name").value.trim();
+    const name = document.getElementById("name").value.trim();
     const nameError = document.getElementById("nameError");
 
     if (name === "") {
         nameError.textContent = "※必須項目です。";
         return false;
-    } else if (name.length <= 2) {
-        nameError.textContent = "※3文字以上入力してください。";
+    } else if (name.length <= 1) {
+        nameError.textContent = "※2文字以上入力してください。";
         return false;
     }
     return true;
 }
 
 function validateEmail() {
-    const email = document.getElementById("user_email").value.trim();
+    const email = document.getElementById("email").value.trim();
     const emailError = document.getElementById("emailError");
     const emailPattern = /^[a-z\d][\w.-]*@[\w.-]+\.[a-z\d]+$/i;
 
@@ -96,7 +96,7 @@ function validateEmail() {
 }
 
 function validatePassword() {
-    const password = document.getElementById("user_password").value.trim();
+    const password = document.getElementById("password").value.trim();
     const confirmPassword = document.getElementById("confirm_password").value.trim();
     const passwordError = document.getElementById("passwordError");
     const passwordPattern = /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/;

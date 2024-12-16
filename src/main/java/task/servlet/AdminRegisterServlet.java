@@ -16,7 +16,7 @@ import task.dto.AdminsDTO;
 /**
  * Servlet implementation class AdminRegisterServlet
  */
-@WebServlet(name = "adminregister", urlPatterns = "/admin-register")
+@WebServlet(name = "adminregister", urlPatterns = "/adminregister")
 public class AdminRegisterServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -48,7 +48,7 @@ public class AdminRegisterServlet extends HttpServlet {
             admin.setAdminEmail(adminEmail);
             admin.setAdminPassword(adminPassword);
 
-            if (adminsDAO.insertAdmin(admin)) {
+            if (adminsDAO.insertAdmin(admin, connection)) {
                 // 登録成功時、トップページへリダイレクト
                 response.sendRedirect("top");
             } else {

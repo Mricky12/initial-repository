@@ -23,17 +23,17 @@
             <div class="user-box">
                 <form class="register-form" id="registerForm" method="post" action="register">
                     <div class="input-box">
-                        <input type="text" class="text" name="user_name" id="user_name" placeholder="ユーザー名">
+                        <input type="text" class="text" name="user_name" id="name" placeholder="ユーザー名">
                         <p class="error-message" id="nameError"></p>
                     </div>
                     <div class="input-box">
-                        <input type="email" class="text" name="user_email" id="user_email" placeholder="メールアドレス">
+                        <input type="email" class="text" name="user_email" id="email" placeholder="メールアドレス">
                         <p class="error-message" id="emailError"></p>
                     </div>
                     <div class="input-box2">
-                        <input type="password" class="text2" name="user_password" id="user_password" placeholder="パスワード">
+                        <input type="text" class="text2" name="user_password" id="password" placeholder="パスワード">
                         
-                        <input type="password" class="text3" name="confirm_password" id="confirm_password" placeholder="パスワード確認">
+                        <input type="text" class="text3" name="confirm_password" id="confirm_password" placeholder="パスワード確認">
                     	
                     </div>
                     <p class="error-message" id="passwordError"></p>

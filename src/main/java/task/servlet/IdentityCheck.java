@@ -49,9 +49,9 @@ public class IdentityCheck extends HttpServlet {
 	        if (user != null) {
 	            // ユーザーIDをセッションに保存
 	            request.getSession().setAttribute("user_id", user.getId());
-	            response.sendRedirect("resetpassword.jsp");
+	            response.sendRedirect("resetpassword");
 	        } else {
-	            request.setAttribute("error", "ユーザーが見つかりません。");
+	            request.setAttribute("error", "※ユーザー名、メールアドレスに間違いがあるようです。※");
 	            request.getRequestDispatcher("identitycheck.jsp").forward(request, response);
 	        }
 	    } catch (Exception e) {

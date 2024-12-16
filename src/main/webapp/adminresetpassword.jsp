@@ -25,11 +25,11 @@
             </div>
         </header>
         <div class="body-wrapper">
-            <div class="user-box">
-                <form class="reset-form" id="resetForm" method="post" action="resetpassword">
+            <div class="admin-box">
+                <form class="reset-form" id="resetForm" method="post" action="adminresetpassword">
                     
                     <div class="input-box">
-                        <input type="text" class="text" name="user_password" id="password" placeholder="パスワード">
+                        <input type="text" class="text" name="admin_password" id="password" placeholder="パスワード">
                         <input type="text" class="text" name="confirm_password" id="confirm_password" placeholder="パスワード確認">
                     </div>
                     <p class="error-message" id="passwordError"></p>

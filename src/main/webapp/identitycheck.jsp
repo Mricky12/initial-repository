@@ -31,9 +31,18 @@
                 <form class="reset-form" id="resetForm" method="post" action="identitycheck">
                     <div class="input-box">
                         <p class="check-comment">続行するには、<br>本人確認を行ってください。</p>                   
-                        <input type="text" class="text" name="user_name" id="user_name" placeholder="ユーザー名">
+                        
+                        
+                         <!-- エラーメッセージを表示 -->
+    					<c:if test="${not empty error}">
+        					<p class="identity-error">${error}</p>
+    					</c:if>
+                        
+                        
+                        
+                        <input type="text" class="text" name="user_name" id="name" placeholder="ユーザー名">
                         <p class="error-message" id="nameError"></p>
-                        <input type="email" class="text" name="user_email" id="user_email" placeholder="メールアドレス">
+                        <input type="email" class="text" name="user_email" id="email" placeholder="メールアドレス">
                     	<p class="error-message" id="emailError"></p>
                     </div>
                     <button type="button" class="button" value="" onclick="identitycheckValidation()">次へ</button>
