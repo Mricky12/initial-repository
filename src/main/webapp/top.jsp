@@ -43,8 +43,8 @@
                         <input type="email" class="text" name="email" placeholder="メールアドレス" required><br>
                         <input type="password" class="text" name="password" placeholder="パスワード" required><br>
                     </div>
-                    <a href="admin-register" onclick="return validateAdmin()">管理者登録はこちら</a><br>
-                    <a href="adminidentitycheck.jsp" onclick="return validateAdmin()">パスワードをお忘れの方</a><br>
+                    <a href="adminregister" onclick="return validateAdmin()">管理者登録はこちら</a><br>
+                    <a href="adminidentitycheck" onclick="return validateAdmin()">パスワードをお忘れの方</a><br>
                     <button type="submit" class="button" value="" onclick="return validateAdmin()">次へ</button>
                     <input type="hidden" name="action" value="admin" >
                 </form>
