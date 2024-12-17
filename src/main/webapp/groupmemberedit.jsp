@@ -59,7 +59,7 @@
         <div class="container">
             <div class="sidebar">
                 <ul class="menu">
-                    <li><a href="index.jsp"><span class="bullet">・</span>マイタスク</a></li>
+                    <li><a href="myselftask.jsp"><span class="bullet">・</span>マイタスク</a></li>
                     <li><a href="groupcreate.jsp"><span class="bullet">・</span>グループ作成/編集</a></li>
                     <li><a href=""><span class="bullet">・</span>グループメンバー編集</a></li>
                     <li><a href="grouptask.jsp"><span class="bullet">・</span>グループタスク一覧</a></li>

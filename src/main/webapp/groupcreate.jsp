@@ -69,16 +69,18 @@
             </div>
             <div class="main-content">
                 <p>グループ作成</p>
-                <div class="main-content-child">
-                    <div class="form-group">
-                        <label for="groupname">グループ名</label>
-                        <input type="groupname" id="groupname" class="form-control" placeholder="">
-                    </div>
-                </div>
-                <div class="button-container">
-                    <button class="cancel-button" type="button">キャンセル</button>
-                    <button class="bule-button search-button" type="button">作成</button>
-                </div>
+                <form action="groupregister" method="post" class="main-content-child">
+                	
+                    	<div class="form-group">
+                        	<label for="groupname">グループ名</label>
+                        	<input type="text" id="groupname" name="group_name" class="form-control" placeholder="">
+                    	</div>
+                	
+                	<div class="button-container">
+                    	<button class="cancel-button" type="button" onclick="window.location.href=''">キャンセル</button>
+                    	<button class="bule-button search-button" type="submit">作成</button>
+                	</div>
+             	</form>   	
             </div>
             <div class="main-content">
                 <p>グループ名変更</p>
