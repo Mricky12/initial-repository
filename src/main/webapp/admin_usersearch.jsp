@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
@@ -52,7 +53,7 @@
         <div class="container">
             <div class="sidebar">
                 <ul class="menu">
-                    <li><a href="#"><span class="bullet">・</span>ユーザー検索</a></li>
+                    <li><a href=""><span class="bullet">・</span>ユーザー検索</a></li>
                     <li><a href="admin_edit.jsp"><span class="bullet">・</span>管理者編集</a></li>
                     <li><a href="#logout" id="logout-link"><span class="bullet">・</span>ログアウト</a></li>
                 </ul>
@@ -79,10 +80,41 @@
                 </div>
                 
             </div>
-            
+            <div class="result-content">
+                <div id="results" id="result-table" >
+                    <div id="results">
+                        <table class="result-table">
+                            <thead>
+                                <tr>
+                                    <th>ユーザーID</th>
+                                    <th>名前</th>
+                                    <th>メールアドレス</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>山田 太郎</td>
+                                    <td>yamada@example.com</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>佐藤 花子</td>
+                                    <td>sato@example.com</td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>鈴木 次郎</td>
+                                    <td>suzuki@example.com</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>        
+                </div>
+            </div>
         </div>    
         
     </div>
     <script src="./js/script.js"></script>
 </body>
-</html>
+</html>    

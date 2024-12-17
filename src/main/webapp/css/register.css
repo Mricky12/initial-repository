@@ -21,16 +21,18 @@
 
 .register-form{
     width: 500px;
-    height: 600px;
+    min-height: 560px;
     border-radius:60px;
     box-shadow:0 10px 15px #b2b2b2;
+	padding-bottom: 40px;
 }
 
 .reset-form{
     width: 500px;
-    height: 480px;
+    min-height: 430px;
     border-radius:60px;
     box-shadow:0 10px 15px #b2b2b2;
+	padding-bottom: 40px;
 }
 
 .input-box{
@@ -117,7 +119,8 @@ a:visited {
     width: 100px;
 	height: 55px;
     font-size: 22px;
-    margin: 40px 340px;
+	margin-top: 40px;
+    margin-left: 340px;
     background-color: rgb(0, 126, 210);
     color: white;
     border-radius:5px;
@@ -150,6 +153,5 @@ a:visited {
 	color: red;
 	font-size: 13px;
 	margin-top: 50px;
-	margin-bottom: -70px;
-	
+	margin-bottom: -50px;
 }

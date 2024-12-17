@@ -21,7 +21,7 @@
         </header>
         <div class="body-wrapper">
             <div class="user-box">
-                <form class="register-form" id="registerForm" method="post" action="admin-register">
+                <form class="register-form" id="registerForm" method="post" action="adminregister">
                     <div class="input-box">
                         <input type="text" class="text" name="user_name" id="name" placeholder="ユーザー名">
                         <p class="error-message" id="nameError"></p>

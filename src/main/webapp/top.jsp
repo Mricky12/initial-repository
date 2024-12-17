@@ -40,6 +40,13 @@
                 <form method="post" action="/java_task/top" id="adminLoginForm">
                     <p>管 理 者<br>ロ グ イ ン</p>
                     <div class="input-box">
+                    
+                    <!-- エラーメッセージを表示 -->
+    					<c:if test="${not empty error}">
+        					
+    					</c:if><p class="identity-error">${error}</p>
+                    
+                    
                         <input type="email" class="text" name="email" placeholder="メールアドレス" required><br>
                         <input type="password" class="text" name="password" placeholder="パスワード" required><br>
                     </div>
