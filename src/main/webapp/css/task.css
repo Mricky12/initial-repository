@@ -2,19 +2,18 @@
 
 /* main */
 .main-wrapper {
-    display: flex;
-    justify-content: center; /* 水平方向中央揃え */
-    align-items: center; /* 垂直方向中央揃え */
-    height: 100vh; /* 画面全体の高さ */
-    box-sizing: border-box;
-    background-color: #f9f9f9; /* 背景色を設定（任意） */
-    margin: 0;
-    padding: 0;
+	display: flex;
+	/* 水平方向中央揃え */
+	justify-content: center;
+	/* 垂直方向中央揃え */
+	align-items: center;
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
 }
 
-.task-container {
-	padding: 20px auto;
-	box-sizing: border-box;
+.main-container {
+	align-items: center;
 }
 
 
@@ -61,7 +60,6 @@
 /* 折り畳み時に表示する部分 */
 .task-form-header p {
 	color: #222;
-	margin: 0 auto;
 }
 
 /* 展開時のスタイル */

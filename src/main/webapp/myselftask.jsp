@@ -9,9 +9,9 @@
 <head>
 <meta charset="UTF-8">
 <title>タスク管理システム</title>
-<link href="./css/reset.css" rel="stylesheet" type="text/css" />
+<link href="css/reset.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" href="css/task.css">
-<link href="./css/style.css" rel="stylesheet" type="text/css" />
+<link href="css/style.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
@@ -70,7 +70,7 @@
 					<li><a href="groupmemberedit.jsp"><span class="bullet">・</span>グループメンバー編集</a></li>
 					<li><a href="grouptask.jsp"><span class="bullet">・</span>グループタスク一覧</a></li>
 					<li><a href="edituser.jsp"><span class="bullet">・</span>ユーザー編集</a></li>
-					<li id="logout-link"><a href="top.jsp"><span
+					<li id="logout-link"><a href="java_task/top.jsp"><span
 							class="bullet">・</span>ログアウト</a></li>
 				</ul>
 			</div>
@@ -78,8 +78,9 @@
 
 
 			<!-- タスク追加 -->
-			<div class="task-container">
-				<form method="post" action="TaskServlet">
+			<div class="main-container">
+				<form method="post" action="TaskServlet"
+					enctype="multipart/form-data">
 					<div class="task-form collapsed" id="taskForm">
 						<!-- 折り畳み時に見せる部分 -->
 						<div class="task-form-header" id="taskFormHeader">
@@ -96,20 +97,20 @@
 
 						<!-- タスク記入欄内アイコン -->
 						<div class="task-icons">
-							<button class="color" onclick="toggleColorPalette()">
+							<button type="button" class="color" onclick="toggleColorPalette()">
 								<img src="images/パレットのアイコン5.png">
 							</button>
 							<input type="file" id="file-input" accept="image/"
 								style="display: none;">
-							<button class="document"
+							<button type="button" class="document"
 								onclick="document.getElementById('file-input').click();">
 								<img src="images/写真のフリーアイコン5.png">
 							</button>
-							<button>
+							<button type="button">
 								<img src="images/メニューの無料アイコン9.png">
 							</button>
-							<button class="close">閉じる</button>
-							<button class="task-submit">登録</button>
+							<button  class="close">閉じる</button>
+							<button type="submit" class="task-submit">登録</button>
 						</div>
 
 
@@ -143,14 +144,14 @@
 						for (TaskDTO task : taskList) {
 					%>
 
-					<!-- 例1 -->
 					<div class="task-list">
 						<p class="task-item-title"><%=task.getTaskTitle()%></p>
 						<p class="task-item-detail"><%=task.getTask()%></p>
 
 						<!-- 編集ボタン -->
 						<div class="task-list-btn">
-							<form method="post" action="TaskServlet">
+							<form method="post" action="TaskServlet"
+								enctype="multipart/form-data">
 								<input type="hidden" name="action" value="update"> <input
 									type="hidden" name="taskId" value="<%=task.getTaskId()%>">
 								<input type="text" name="taskTitle"

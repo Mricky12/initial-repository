@@ -14,9 +14,17 @@ import task.dto.TaskDTO;
 
 public class TaskDAO {
 
+	private Connection conn;
+
+	// データベース接続情報
+	private static final String JDBC_URL = "jdbc:mysql://localhost:3306/taskstmdb";
+	private static final String USER = "root";
+	private static final String PASSWORD = "";
+	private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
+
 	//タスク登録(INSERT)
 	public boolean insertTask(TaskDTO task) {
-		String sql = "INSERT INTO tasks (task_title,task,task_image,user_id,color_id,trash VALUES (?, ?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO tasks (task_title, task, task_image, user_id, color_id, trash) VALUES (?, ?, ?, ?, ?, ?)";
 
 		try (Connection conn = DBCon.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -33,16 +41,17 @@ public class TaskDAO {
 			pstmt.setBoolean(6, task.isTrash());
 
 			int rows = pstmt.executeUpdate();
-			//			登録成功した場合trueを返す
+			//登録成功した場合trueを返す
 			return rows > 0;
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+			//エラー時
 			return false;
 		}
 	}
 
-	//	タスク取得(SELECT BY ID)
+	//タスク取得(SELECT BY ID)
 	public TaskDTO getTaskById(int taskId) {
 		String sql = "SELECT * FROM tasks WHERE task_id= ?";
 		try (Connection conn = DBCon.getConnection();
@@ -140,6 +149,38 @@ public class TaskDAO {
 			e.printStackTrace();
 			return false;
 		}
+	}
+
+	// タスク検索 (SEARCH BY KEYWORD)
+	public List<TaskDTO> searchTasks(String keyword) {
+		List<TaskDTO> taskList = new ArrayList<>();
+		String sql = "SELECT * FROM tasks WHERE task_title LIKE ? OR task LIKE ?";
+
+		try (Connection conn = DBCon.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+			// 部分一致検索のためLIKEを使用
+			String searchKeyword = "%" + keyword + "%";
+			pstmt.setString(1, searchKeyword);
+			pstmt.setString(2, searchKeyword);
+
+			ResultSet rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				TaskDTO task = new TaskDTO();
+				task.setTaskId(rs.getInt("task_id"));
+				task.setTaskTitle(rs.getString("task_title"));
+				task.setTask(rs.getString("task"));
+				task.setTaskImage(rs.getBytes("task_image"));
+				task.setUserId(rs.getInt("user_id"));
+				task.setColorId(rs.getObject("color_id") != null ? rs.getInt("color_id") : null);
+				task.setTrash(rs.getBoolean("trash"));
+				taskList.add(task);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return taskList;
 	}
 
 }
