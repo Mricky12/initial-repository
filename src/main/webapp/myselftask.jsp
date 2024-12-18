@@ -9,7 +9,6 @@
 <head>
 <meta charset="UTF-8">
 <title>タスク管理システム</title>
-<link href="css/reset.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" href="css/task.css">
 <link href="css/style.css" rel="stylesheet" type="text/css" />
 </head>
@@ -79,8 +78,8 @@
 
 			<!-- タスク追加 -->
 			<div class="main-container">
-				<form method="post" action="TaskServlet"
-					enctype="multipart/form-data">
+				<form action="${pageContext.request.contextPath}/myselftask"
+					method="post" enctype="multipart/form-data">
 					<div class="task-form collapsed" id="taskForm">
 						<!-- 折り畳み時に見せる部分 -->
 						<div class="task-form-header" id="taskFormHeader">
@@ -97,19 +96,20 @@
 
 						<!-- タスク記入欄内アイコン -->
 						<div class="task-icons">
-							<button type="button" class="color" onclick="toggleColorPalette()">
+							<button type="button" class="color"
+								onclick="toggleColorPalette()">
 								<img src="images/パレットのアイコン5.png">
 							</button>
 							<input type="file" id="file-input" accept="image/"
 								style="display: none;">
-							<button type="button" class="document"
+							<button type="button" class="document" name="taskImage"
 								onclick="document.getElementById('file-input').click();">
 								<img src="images/写真のフリーアイコン5.png">
 							</button>
 							<button type="button">
 								<img src="images/メニューの無料アイコン9.png">
 							</button>
-							<button  class="close">閉じる</button>
+							<button class="close">閉じる</button>
 							<button type="submit" class="task-submit">登録</button>
 						</div>
 
@@ -150,8 +150,8 @@
 
 						<!-- 編集ボタン -->
 						<div class="task-list-btn">
-							<form method="post" action="TaskServlet"
-								enctype="multipart/form-data">
+							<form method="post"
+								action="${pageContext.request.contextPath}/myselftask">
 								<input type="hidden" name="action" value="update"> <input
 									type="hidden" name="taskId" value="<%=task.getTaskId()%>">
 								<input type="text" name="taskTitle"
@@ -163,7 +163,8 @@
 							</form>
 
 							<!-- 削除ボタン -->
-							<form name="deleteForm" method="post" action="TaskServlet">
+							<form name="deleteForm" method="post"
+								action="${pageContext.request.contextPath}/myselftask">
 								<input type="hidden" name="action" value="delete"> <input
 									type="hidden" name="taskId" value="<%=task.getTaskId()%>">
 								<button class="delete-btn">

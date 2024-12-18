@@ -29,6 +29,8 @@ public class TaskDAO {
 		try (Connection conn = DBCon.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
+			// 必要な場合のみ設定
+			conn.setAutoCommit(false);
 			pstmt.setString(1, task.getTaskTitle());
 			pstmt.setString(2, task.getTask());
 			pstmt.setBytes(3, task.getTaskImage());
@@ -39,6 +41,13 @@ public class TaskDAO {
 				pstmt.setNull(5, Types.INTEGER);
 			}
 			pstmt.setBoolean(6, task.isTrash());
+
+			System.out.println("Task Title: " + task.getTaskTitle());
+			System.out.println("Task Content: " + task.getTask());
+			System.out.println("Task Image: " + (task.getTaskImage() != null ? task.getTaskImage().length : "null"));
+			System.out.println("User ID: " + task.getUserId());
+			System.out.println("Color ID: " + task.getColorId());
+			System.out.println("Trash: " + task.isTrash());
 
 			int rows = pstmt.executeUpdate();
 			//登録成功した場合trueを返す

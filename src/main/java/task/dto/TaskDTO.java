@@ -1,5 +1,8 @@
 package task.dto;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 public class TaskDTO {
 
 	//	フィールド定義
@@ -83,6 +86,43 @@ public class TaskDTO {
 
 	public void setTrash(boolean trash) {
 		this.trash = trash;
+	}
+
+	//Override: toStringメソッド
+	@Override
+	public String toString() {
+		return "TaskDTO{" +
+				"taskId=" + taskId +
+				", taskTitle='" + taskTitle + '\'' +
+				", task='" + task + '\'' +
+				", taskImage=" + Arrays.toString(taskImage) +
+				", userId=" + userId +
+				", colorId=" + colorId +
+				", trash=" + trash +
+				'}';
+	}
+
+	// Override: hashCodeメソッド
+	@Override
+	public int hashCode() {
+		return Objects.hash(taskId, taskTitle, task, Arrays.hashCode(taskImage), userId, colorId, trash);
+	}
+
+	// Override: equalsメソッド
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null || getClass() != obj.getClass())
+			return false;
+		TaskDTO taskDTO = (TaskDTO) obj;
+		return taskId == taskDTO.taskId &&
+				userId == taskDTO.userId &&
+				trash == taskDTO.trash &&
+				Objects.equals(taskTitle, taskDTO.taskTitle) &&
+				Objects.equals(task, taskDTO.task) &&
+				Arrays.equals(taskImage, taskDTO.taskImage) &&
+				Objects.equals(colorId, taskDTO.colorId);
 	}
 
 }

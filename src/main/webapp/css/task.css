@@ -1,21 +1,15 @@
 @charset "UTF-8";
 
 /* main */
-.main-wrapper {
-	display: flex;
+.main-container {
 	/* 水平方向中央揃え */
 	justify-content: center;
 	/* 垂直方向中央揃え */
 	align-items: center;
 	box-sizing: border-box;
-	margin: 0;
+	margin: 15px auto;
 	padding: 0;
 }
-
-.main-container {
-	align-items: center;
-}
-
 
 /* セレクトボックスコンテナ全体 */
 .select-container {
@@ -31,8 +25,6 @@
 /* タスク追加フォーム */
 .task-form {
 	width: 550px;
-	max-width: 90%;
-	margin: 0 auto;
 	padding: 20px;
 	background-color: #fff;
 	border: #ccc;
@@ -90,7 +82,7 @@
 /* タスクなしメッセージ */
 .no-tasks-message {
 	color: #222;
-	margin-top: 20px;
+	margin: 0;
 	text-align: center;
 }
 
