@@ -16,12 +16,6 @@ public class TaskDAO {
 
 	private Connection conn;
 
-	// データベース接続情報
-	private static final String JDBC_URL = "jdbc:mysql://localhost:3306/taskstmdb";
-	private static final String USER = "root";
-	private static final String PASSWORD = "";
-	private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
-
 	//色一覧取得
 	public List<TaskDTO> getAllColors() {
 		String sql = "SELECT color_id, color_name, color_code FROM colors";
