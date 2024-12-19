@@ -157,49 +157,53 @@
 							色デバッグ:
 							<%=task.getColorId()%></p>
 
-						<!-- 編集ボタン -->
-						<div class="task-list-btn">
-							<form method="post" action="myselftask">
-								<input type="hidden" name="action" value="update"> <input
-									type="hidden" name="taskId" value="<%=task.getTaskId()%>">
-								<input type="text" name="taskTitle"
-									value="<%=task.getTaskTitle()%>">
-								<textarea name="taskContent" required><%=task.getTask()%></textarea>
-								<button type="submit" class="edit-btn">
-									<img src="images/鉛筆アイコン　6.png" alt="編集">
-								</button>
-							</form>
-
-							<!-- 削除ボタン -->
-							<form name="deleteForm" method="post" action="myselftask">
-								<input type="hidden" name="action" value="delete"> <input
-									type="hidden" name="taskId" value="<%=task.getTaskId()%>">
-								<button class="delete-btn">
-									<img src="images/スタンダードなゴミ箱アイコン.png" alt="削除">
-								</button>
-							</form>
+						<!-- 編集フォーム部分（非表示） -->
+						<div class="task-edit hidden" id="edit-<%=task.getTaskId()%>">
+							<input type="text" id="edit-title-<%=task.getTaskId()%>"
+								value="<%=task.getTaskTitle()%>">
+							<textarea id="edit-content-<%=task.getTaskId()%>"><%=task.getTask()%></textarea>
 						</div>
+
+						<!-- ボタン部分 -->
+						<div class="task-list-btn">
+							<button class="edit-btn"
+								onclick="toggleEditMode(<%=task.getTaskId()%>)">
+								<img src="images/鉛筆アイコン　6.png" alt="編集">
+							</button>
+							<button class="save-btn hidden"
+								onclick="saveTask(<%=task.getTaskId()%>)">保存</button>
+						</div>
+
+						<!-- 削除ボタン -->
+						<form name="deleteForm" method="post" action="myselftask">
+							<input type="hidden" name="action" value="delete"> <input
+								type="hidden" name="taskId" value="<%=task.getTaskId()%>">
+							<button class="delete-btn">
+								<img src="images/スタンダードなゴミ箱アイコン.png" alt="削除">
+							</button>
+						</form>
 					</div>
-
-					<%
-					}
-					} else {
-					%>
-
-					<!-- タスクがない場合 -->
-					<div class="no-tasks-message">
-						<p>タスクはありません。</p>
-					</div>
-
-					<%
-					}
-					%>
-
-
 				</div>
 
+				<%
+				}
+				} else {
+				%>
+
+				<!-- タスクがない場合 -->
+				<div class="no-tasks-message">
+					<p>タスクはありません。</p>
+				</div>
+
+				<%
+				}
+				%>
+
+
 			</div>
+
 		</div>
+	</div>
 	</div>
 
 	<!-- javascript -->
