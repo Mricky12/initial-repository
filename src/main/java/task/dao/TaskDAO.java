@@ -14,8 +14,6 @@ import task.dto.TaskDTO;
 
 public class TaskDAO {
 
-	private Connection conn;
-
 	//色一覧取得
 	public List<TaskDTO> getAllColors() {
 		String sql = "SELECT color_id, color_name, color_code FROM colors";
