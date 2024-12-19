@@ -246,6 +246,8 @@ button {
     font-size: 13px;
     cursor: pointer;
     border-radius: 5px; /* ボタンの角を丸くする */
+	border: 1px solid #ccc; /* 境界線を追加 */
+	background-color: white;
 }
 
 .cancel-button {
@@ -305,6 +307,8 @@ button {
 .result-table tbody tr:nth-child(even) {
     background-color: #d8d1d1; /* 偶数行 */
 }
+
+
 
 
 
