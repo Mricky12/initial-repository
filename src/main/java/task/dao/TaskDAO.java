@@ -22,6 +22,28 @@ public class TaskDAO {
 	private static final String PASSWORD = "";
 	private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
 
+	//色一覧取得
+	public List<TaskDTO> getAllColors() {
+		String sql = "SELECT color_id, color_name, color_code FROM colors";
+		List<TaskDTO> colorList = new ArrayList<>();
+
+		try (Connection conn = DBCon.getConnection();
+				Statement stmt = conn.createStatement();
+				ResultSet rs = stmt.executeQuery(sql)) {
+
+			while (rs.next()) {
+				TaskDTO color = new TaskDTO();
+				color.setColorId(rs.getInt("color_id"));
+				color.setColorCode(rs.getString("color_code"));
+				color.setTaskTitle(rs.getString("color_name")); // 仮にcolor_nameをtaskTitleに流用
+				colorList.add(color);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return colorList;
+	}
+
 	//タスク登録(INSERT)
 	public boolean insertTask(TaskDTO task) {
 		String sql = "INSERT INTO tasks (task_title, task, task_image, user_id, color_id, trash) VALUES (?, ?, ?, ?, ?, ?)";
@@ -29,27 +51,27 @@ public class TaskDAO {
 		try (Connection conn = DBCon.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-			// 必要な場合のみ設定
-			conn.setAutoCommit(false);
 			pstmt.setString(1, task.getTaskTitle());
 			pstmt.setString(2, task.getTask());
-			pstmt.setBytes(3, task.getTaskImage());
+
+			if (task.getTaskImage() != null) {
+				pstmt.setBytes(3, task.getTaskImage());
+			} else {
+				pstmt.setNull(3, Types.BLOB);
+			}
+
 			pstmt.setInt(4, task.getUserId());
+
 			if (task.getColorId() != null) {
 				pstmt.setInt(5, task.getColorId());
 			} else {
 				pstmt.setNull(5, Types.INTEGER);
 			}
+
 			pstmt.setBoolean(6, task.isTrash());
 
-			System.out.println("Task Title: " + task.getTaskTitle());
-			System.out.println("Task Content: " + task.getTask());
-			System.out.println("Task Image: " + (task.getTaskImage() != null ? task.getTaskImage().length : "null"));
-			System.out.println("User ID: " + task.getUserId());
-			System.out.println("Color ID: " + task.getColorId());
-			System.out.println("Trash: " + task.isTrash());
-
 			int rows = pstmt.executeUpdate();
+			System.out.println("TaskDAO: insertTask - Rows Affected: " + rows);
 			//登録成功した場合trueを返す
 			return rows > 0;
 
@@ -91,8 +113,13 @@ public class TaskDAO {
 
 	//	タスク一覧取得 (SELECT ALL)
 	public List<TaskDTO> getAllTasks() {
+		String sql = "SELECT t.task_id, t.task_title, t.task, t.task_image, t.user_id, t.color_id, " +
+				"c.color_code " +
+				"FROM tasks t " +
+				"LEFT JOIN colors c ON t.color_id = c.color_id";
+
 		List<TaskDTO> taskList = new ArrayList<>();
-		String sql = "SELECT * FROM tasks";
+
 		try (Connection conn = DBCon.getConnection();
 				Statement stmt = conn.createStatement();
 				ResultSet rs = stmt.executeQuery(sql)) {
@@ -105,24 +132,47 @@ public class TaskDAO {
 				task.setTaskImage(rs.getBytes("task_image"));
 				task.setUserId(rs.getInt("user_id"));
 				task.setColorId(rs.getObject("color_id") != null ? rs.getInt("color_id") : null);
-				task.setTrash(rs.getBoolean("trash"));
+				task.setColorCode(rs.getString("color_code"));
 				taskList.add(task);
 			}
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		System.out.println("Task List Size: " + taskList.size());
 		return taskList;
 	}
 
-	//	タスク更新 (UPDATE)
+	// タスク更新 (UPDATE)
 	public boolean updateTask(TaskDTO task) {
+		if (task.getTaskId() == null || task.getTaskId() <= 0) {
+			throw new IllegalArgumentException("Task ID is invalid.");
+		}
+
+		// 現在のタスクデータを取得
+		TaskDTO existingTask = getTaskById(task.getTaskId());
+		if (existingTask == null) {
+			System.out.println("TaskDAO: updateTask - 指定されたTaskIDが存在しません: " + task.getTaskId());
+			return false;
+		}
+
+		// 画像データが新たに指定されていない場合は既存データを使用
+		byte[] imageBytes = task.getTaskImage() != null ? task.getTaskImage() : existingTask.getTaskImage();
+
 		String sql = "UPDATE tasks SET task_title = ?, task = ?, task_image = ?, user_id = ?, color_id = ?, trash = ? WHERE task_id = ?";
+
 		try (Connection conn = DBCon.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
 			pstmt.setString(1, task.getTaskTitle());
 			pstmt.setString(2, task.getTask());
-			pstmt.setBytes(3, task.getTaskImage());
+
+			if (imageBytes != null) {
+				pstmt.setBytes(3, imageBytes);
+			} else {
+				pstmt.setNull(3, Types.BLOB);
+			}
+
 			pstmt.setInt(4, task.getUserId());
 
 			if (task.getColorId() != null) {
@@ -130,11 +180,13 @@ public class TaskDAO {
 			} else {
 				pstmt.setNull(5, Types.INTEGER);
 			}
+
 			pstmt.setBoolean(6, task.isTrash());
 			pstmt.setInt(7, task.getTaskId());
 
 			int rows = pstmt.executeUpdate();
-			// 更新成功の場合 true を返す
+			System.out.println("TaskDAO: updateTask - Rows Affected: " + rows);
+
 			return rows > 0;
 
 		} catch (SQLException e) {

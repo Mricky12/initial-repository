@@ -6,13 +6,14 @@ import java.util.Objects;
 public class TaskDTO {
 
 	//	フィールド定義
-	private int taskId; //タスクID
+	private Integer taskId; //タスクID
 	private String taskTitle; //タスクタイトル
 	private String task; //タスク内容
 	private byte[] taskImage; //タスク画像
 	private int userId; //ユーザーID
 	private Integer colorId; //カラーID（NULL許容なのでInteger）
 	private boolean trash; //ゴミ箱フラグ
+	private String colorCode; // カラーコードを格納するフィールド
 
 	// コンストラクタ
 	public TaskDTO() {
@@ -31,7 +32,7 @@ public class TaskDTO {
 	}
 
 	//Getterメソッド
-	public int getTaskId() {
+	public Integer getTaskId() {
 		return taskId;
 	}
 
@@ -59,8 +60,12 @@ public class TaskDTO {
 		return trash;
 	}
 
+	public String getColorCode() {
+		return colorCode;
+	}
+
 	//	Setterメソッド
-	public void setTaskId(int taskId) {
+	public void setTaskId(Integer taskId) {
 		this.taskId = taskId;
 	}
 
@@ -86,6 +91,10 @@ public class TaskDTO {
 
 	public void setTrash(boolean trash) {
 		this.trash = trash;
+	}
+
+	public void setColorCode(String colorCode) {
+		this.colorCode = colorCode;
 	}
 
 	//Override: toStringメソッド

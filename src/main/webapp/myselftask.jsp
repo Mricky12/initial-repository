@@ -10,7 +10,7 @@
 <meta charset="UTF-8">
 <title>タスク管理システム</title>
 <link rel="stylesheet" href="css/task.css">
-<link href="css/style.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
@@ -42,20 +42,20 @@
 
 			<!-- ヘッダーアイコン -->
 			<div class="icon-container">
-				<a href="" class="icon-link"> <img src="images\リロードのフリーアイコン.png"
+				<a href="" class="icon-link"> <img src="images/リロードのフリーアイコン.png"
 					alt="リロード">
-				</a> <a href="" class="icon-link"> <img src="images\narabikae.png"
+				</a> <a href="" class="icon-link"> <img src="images/narabikae.png"
 					alt="リスト表示">
-				</a> <a href="" class="icon-link"> <img src="images\無料の設定歯車アイコン.png"
+				</a> <a href="" class="icon-link"> <img src="images/無料の設定歯車アイコン.png"
 					alt="設定">
 				</a>
 			</div>
 
 			<div class="icon-container">
-				<a href="" class="icon-link"> <img src="images\メニューの無料アイコン4.png"
+				<a href="" class="icon-link"> <img src="images/メニューの無料アイコン4.png"
 					alt="ホーム">
 				</a> <a href="" class="icon-link"> <img
-					src="images\人物のアイコン素材 その3.png" alt="アカウント">
+					src="images/人物のアイコン素材 その3.png" alt="アカウント">
 				</a>
 			</div>
 		</header>
@@ -78,8 +78,10 @@
 
 			<!-- タスク追加 -->
 			<div class="main-container">
-				<form action="${pageContext.request.contextPath}/myselftask"
-					method="post" enctype="multipart/form-data">
+				<form action="myselftask" method="post"
+					enctype="multipart/form-data">
+					<input type="hidden" name="action" value="create">
+
 					<div class="task-form collapsed" id="taskForm">
 						<!-- 折り畳み時に見せる部分 -->
 						<div class="task-form-header" id="taskFormHeader">
@@ -109,28 +111,30 @@
 							<button type="button">
 								<img src="images/メニューの無料アイコン9.png">
 							</button>
-							<button class="close">閉じる</button>
+							<button type="button" class="close">閉じる</button>
 							<button type="submit" class="task-submit">登録</button>
 						</div>
 
-
 						<!-- カラーパレットの表示エリア -->
+						<input type="hidden" id="selected-color" name="colorId" value="">
+
 						<div id="color-palette" class="color-palette hidden">
-							<div class="color-option" data-color="#FFFFFF"
+							<div class="color-option" data-color="#FFFFFF" data-id="1"
 								style="background-color: #FFFFFF;" title="白"></div>
-							<div class="color-option" data-color="#ADD8E6"
+							<div class="color-option" data-color="#ADD8E6" data-id="2"
 								style="background-color: #ADD8E6;" title="青"></div>
-							<div class="color-option" data-color="#FFB6C1"
+							<div class="color-option" data-color="#FFB6C1" data-id="3"
 								style="background-color: #FFB6C1;" title="赤"></div>
-							<div class="color-option" data-color="#FFFBB9"
+							<div class="color-option" data-color="#FFFBB9" data-id="4"
 								style="background-color: #FFFBB9;" title="黄色"></div>
-							<div class="color-option" data-color="#90EE90"
+							<div class="color-option" data-color="#90EE90" data-id="5"
 								style="background-color: #90EE90;" title="緑"></div>
-							<div class="color-option" data-color="#D8BFD8"
+							<div class="color-option" data-color="#D8BFD8" data-id="6"
 								style="background-color: #D8BFD8;" title="紫"></div>
-							<div class="color-option" data-color="#FFDAB9"
+							<div class="color-option" data-color="#FFDAB9" data-id="7"
 								style="background-color: #FFDAB9;" title="オレンジ"></div>
 						</div>
+
 					</div>
 				</form>
 
@@ -144,14 +148,18 @@
 						for (TaskDTO task : taskList) {
 					%>
 
-					<div class="task-list">
+					<div class="task-list"
+						style="background-color:<%=task.getColorCode() != null ? task.getColorCode() : "#FFFFFF"%>;">
 						<p class="task-item-title"><%=task.getTaskTitle()%></p>
 						<p class="task-item-detail"><%=task.getTask()%></p>
+						<%-- デバッグ表示 --%>
+						<p>
+							色デバッグ:
+							<%=task.getColorId()%></p>
 
 						<!-- 編集ボタン -->
 						<div class="task-list-btn">
-							<form method="post"
-								action="${pageContext.request.contextPath}/myselftask">
+							<form method="post" action="myselftask">
 								<input type="hidden" name="action" value="update"> <input
 									type="hidden" name="taskId" value="<%=task.getTaskId()%>">
 								<input type="text" name="taskTitle"
@@ -163,8 +171,7 @@
 							</form>
 
 							<!-- 削除ボタン -->
-							<form name="deleteForm" method="post"
-								action="${pageContext.request.contextPath}/myselftask">
+							<form name="deleteForm" method="post" action="myselftask">
 								<input type="hidden" name="action" value="delete"> <input
 									type="hidden" name="taskId" value="<%=task.getTaskId()%>">
 								<button class="delete-btn">
@@ -172,30 +179,32 @@
 								</button>
 							</form>
 						</div>
-
-						<%
-						}
-						} else {
-						%>
-
-						<!-- タスクがない場合 -->
-						<div class="no-tasks-message">
-							<p>タスクはありません。</p>
-						</div>
-
-						<%
-						}
-						%>
-
 					</div>
 
+					<%
+					}
+					} else {
+					%>
+
+					<!-- タスクがない場合 -->
+					<div class="no-tasks-message">
+						<p>タスクはありません。</p>
+					</div>
+
+					<%
+					}
+					%>
+
+
 				</div>
+
 			</div>
 		</div>
+	</div>
 
-		<!-- javascript -->
-		<script src="js/script.js"></script>
-		<script src="js/task.js"></script>
+	<!-- javascript -->
+	<script src="js/script.js"></script>
+	<script src="js/task.js"></script>
 </body>
 
 </html>
