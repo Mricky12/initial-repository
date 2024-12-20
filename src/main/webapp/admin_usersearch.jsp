@@ -1,12 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="java.util.List" %>
+<%@ page import="task.dto.AdminSystemDTO" %>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>タスク管理システム</title>
-    <link href="./css/reset.css" rel="stylesheet" type="text/css"/>
+    <title>タスク管理システム</title>   
     <link href="./css/admin.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
@@ -60,60 +61,72 @@
             </div>
             <div class="main-content">
                 <p>ユーザー検索</p>
-                <div class="main-content-child">
-                    <div class="form-group">
-                        <label for="userid">ユーザーID</label>
-                        <input type="userid" id="userid" class="form-control" placeholder="">
+                <form action="admin_usersearch" method="GET" id="searchForm">
+                    <div class="main-content-child">
+                        <div class="form-group">
+                            <label for="userid">ユーザーID</label>
+                            <input type="text" id="userid" name="userid" class="form-control" placeholder="">
+                        </div>
+                        <div class="form-group">
+                            <label for="name">名前</label>
+                            <input type="text" id="name" name="name" class="form-control" placeholder="">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">メールアドレス</label>
+                            <input type="text" id="email" name="email" class="form-control" placeholder="">
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="name">名前</label>
-                        <input type="name" id="name" class="form-control" placeholder="">
+                    <div class="button-container">
+                        <button class="cancel-button" type="reset">キャンセル</button>
+                        <button class="search-button" type="submit">検索</button>
                     </div>
-                    <div class="form-group">
-                        <label for="email">メールアドレス</label>
-                        <input type="email" id="email" class="form-control" placeholder="">
-                    </div>
-                </div>
-                <div class="button-container">
-                    <button class="cancel-button" type="button">キャンセル</button>
-                    <button class=" search-button" type="button">検索</button>
-                </div>
-                
+                </form>
             </div>
             <div class="result-content">
                 <div id="results" id="result-table" >
-                    <div id="results">
-                        <table class="result-table">
-                            <thead>
-                                <tr>
-                                    <th>ユーザーID</th>
-                                    <th>名前</th>
-                                    <th>メールアドレス</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>山田 太郎</td>
-                                    <td>yamada@example.com</td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>佐藤 花子</td>
-                                    <td>sato@example.com</td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>鈴木 次郎</td>
-                                    <td>suzuki@example.com</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>        
+                    <table class="result-table">
+                        <thead>
+                            <tr>
+                                <th>ユーザーID</th>
+                                <th>名前</th>
+                                <th>メールアドレス</th>
+                                <th>　　</th>
+                            </tr>
+                        </thead>
+                       <tbody>
+    						<%
+        					// 修正済み: サーブレットで設定した "users" リストを取得
+        					List<AdminSystemDTO> users = (List<AdminSystemDTO>) request.getAttribute("users");
+        						if (users != null && !users.isEmpty()) {
+            						for (AdminSystemDTO user : users) {
+    						%>
+			                <tr>
+			                    <td><%= user.getUserId() %></td>
+			                    <td><%= user.getName() %></td>
+			                    <td><%= user.getEmail() %></td>
+			                    <td>
+			                        <form clss="delete" action="admin_usersearch" method="POST">
+			                            <input type="hidden" name="userid" value="<%= user.getUserId() %>">
+			                            <button type="submit">削除</button>
+			                        </form>
+			                    </td>
+			                </tr>
+						    <%
+						            }
+						        } else {
+						    %>
+						        <tr>
+						            <td colspan="4">検索結果をここに表示します。</td>
+						        </tr>
+						    <%
+						        }
+						    %>
+						</tbody>
+
+                    </table>
                 </div>
             </div>
         </div>    
-        
     </div>
     <script src="./js/script.js"></script>
 </body>
