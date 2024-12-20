@@ -152,10 +152,7 @@
 						style="background-color:<%=task.getColorCode() != null ? task.getColorCode() : "#FFFFFF"%>;">
 						<p class="task-item-title"><%=task.getTaskTitle()%></p>
 						<p class="task-item-detail"><%=task.getTask()%></p>
-						<%-- デバッグ表示 --%>
-						<p>
-							色デバッグ:
-							<%=task.getColorId()%></p>
+
 
 						<!-- 編集フォーム部分（非表示） -->
 						<div class="task-edit hidden" id="edit-<%=task.getTaskId()%>">
@@ -172,16 +169,17 @@
 							</button>
 							<button class="save-btn hidden"
 								onclick="saveTask(<%=task.getTaskId()%>)">保存</button>
-						</div>
 
-						<!-- 削除ボタン -->
-						<form name="deleteForm" method="post" action="myselftask">
-							<input type="hidden" name="action" value="delete"> <input
-								type="hidden" name="taskId" value="<%=task.getTaskId()%>">
-							<button class="delete-btn">
-								<img src="images/スタンダードなゴミ箱アイコン.png" alt="削除">
-							</button>
-						</form>
+
+							<!-- 削除ボタン -->
+							<form name="deleteForm" method="post" action="myselftask">
+								<input type="hidden" name="action" value="delete"> <input
+									type="hidden" name="taskId" value="<%=task.getTaskId()%>">
+								<button class="delete-btn">
+									<img src="images/スタンダードなゴミ箱アイコン.png" alt="削除">
+								</button>
+							</form>
+						</div>
 					</div>
 				</div>
 
