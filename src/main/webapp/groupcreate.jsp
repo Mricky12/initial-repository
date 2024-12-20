@@ -1,5 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+ <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+ <%@ page import="task.dto.GroupsDTO" %>
+    
+
+   
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -9,8 +13,10 @@
     <link href="./css/reset.css" rel="stylesheet" type="text/css"/>
     <link href="./css/style.css" rel="stylesheet" type="text/css"/>
     <link href="./css/main.css" rel="stylesheet" type="text/css"/>
+    
 </head>
 <body>
+	
     <div class="main-wrapper">
         <header class="main-header">
             <div class="logo">
@@ -67,8 +73,32 @@
                     <li><a href="#logout" id="logout-link"><span class="bullet">・</span>ログアウト</a></li>
                 </ul>
             </div>
+            <script>
+            	/* 成功時にはアラートが表示 */
+    			document.addEventListener("DOMContentLoaded", function () {
+        			const urlParams = new URLSearchParams(window.location.search);
+        			const success = urlParams.get("success");
+        			const groupName = urlParams.get("groupName");
+
+        			if (success === "true" && groupName) {
+            			const decodedGroupName = decodeURIComponent(groupName);
+            			alert(`グループ「${decodedGroupName}」が正常に作成されました。`);
+            			window.location.href = "groupmemberedit.jsp"; // 作成完了後に遷移
+        			}
+
+        			const errorMessage = document.getElementById("error-message").dataset.error;
+        			if (errorMessage) {
+            			alert(errorMessage);
+        			}
+    			});
+			</script>
+            
             <div class="main-content">
                 <p>グループ作成</p>
+                <%-- エラーメッセージをJavaScriptで処理するため、データ属性として設定 --%>
+    			<div id="error-message" data-error="<%= request.getAttribute("error") != null ? request.getAttribute("error") : "" %>"></div>
+    			
+    			
                 <form action="groupregister" method="post" class="main-content-child">
                 	
                     	<div class="form-group">
@@ -80,7 +110,8 @@
                     	<button class="cancel-button" type="button" onclick="window.location.href=''">キャンセル</button>
                     	<button class="bule-button search-button" type="submit">作成</button>
                 	</div>
-             	</form>   	
+             	</form>
+          
             </div>
             <div class="main-content">
                 <p>グループ名変更</p>
@@ -120,5 +151,6 @@
         
     </div>
     <script src="./js/script.js"></script>
+    <script src="./js/group_create.js" defer></script>
 </body>
 </html>
