@@ -61,7 +61,7 @@ public class LoginServlet extends HttpServlet {
 
 	    // 入力チェック
 	    if (email == null || email.trim().isEmpty() || password == null || password.trim().isEmpty()) {
-	        request.setAttribute("error", "メールアドレスまたはパスワードを入力してください。");
+	        request.setAttribute("error", "※メールアドレス、パスワードを入力してください。※");
 	        request.getRequestDispatcher("top.jsp").forward(request, response);
 	        return;
 	    }
@@ -79,7 +79,7 @@ public class LoginServlet extends HttpServlet {
 	                response.sendRedirect("admin_usersearch.jsp"); // 管理者用ページへリダイレクト
 	            } else {
 	                // 管理者エラーメッセージ
-	                request.setAttribute("adminError", "メールアドレスまたはパスワードが間違っています。");
+	                request.setAttribute("adminError", "※メールアドレス、パスワードが間違っています。※");
 	                request.getRequestDispatcher("top.jsp").forward(request, response);
 	            }
 
@@ -95,7 +95,7 @@ public class LoginServlet extends HttpServlet {
 	                response.sendRedirect("myselftask.jsp"); // ユーザー用ページへリダイレクト
 	            } else {
 	                // ユーザーエラーメッセージ
-	                request.setAttribute("userError", "メールアドレスまたはパスワードが間違っています。");
+	                request.setAttribute("userError", "※メールアドレス、パスワードが間違っています。※");
 	                request.getRequestDispatcher("top.jsp").forward(request, response);
 	            }
 
