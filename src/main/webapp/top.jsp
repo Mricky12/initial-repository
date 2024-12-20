@@ -25,6 +25,13 @@
                 <form method="post" action="top">
                     <p>ユ ー ザ ー<br>ロ グ イ ン</p>
                     <div class="input-box">
+                    
+                    <!-- エラーメッセージを表示 -->
+    					<c:if test="${not empty userError}">
+    						<p class="identity-error">${userError}</p>
+						</c:if>
+                    
+                    
                         <input type="email" class="text" name="email" placeholder="メールアドレス" required><br>
                         <input type="password" class="text" name="password" placeholder="パスワード" required><br>
                     </div>
@@ -37,14 +44,14 @@
 
             <!-- 管理者ログイン -->
             <div class="admin-box">
-                <form method="post" action="/java_task/top" id="adminLoginForm">
+                <form method="post" action="top" id="adminLoginForm">
                     <p>管 理 者<br>ロ グ イ ン</p>
                     <div class="input-box">
                     
                     <!-- エラーメッセージを表示 -->
-    					<c:if test="${not empty error}">
-        					
-    					</c:if><p class="identity-error">${error}</p>
+    					<c:if test="${not empty adminError}">
+    						<p class="identity-error">${adminError}</p>
+						</c:if>
                     
                     
                         <input type="email" class="text" name="email" placeholder="メールアドレス" required><br>

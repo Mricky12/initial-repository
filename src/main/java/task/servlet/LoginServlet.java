@@ -53,44 +53,60 @@ public class LoginServlet extends HttpServlet {
 		
 	}
 	@Override
-    // POSTリクエスト処理
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String action = request.getParameter("action");
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-       
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+	        throws ServletException, IOException {
+	    String action = request.getParameter("action");
+	    String email = request.getParameter("email");
+	    String password = request.getParameter("password");
 
-        try (Connection connection = DBCon.getConnection()) {
-            if ("admin".equals(action)) {
-                AdminsDAO adminsDAO = new AdminsDAO();
-                AdminsDTO admin = adminsDAO.findAdminByEmailAndPassword(email, password, connection);
+	    // 入力チェック
+	    if (email == null || email.trim().isEmpty() || password == null || password.trim().isEmpty()) {
+	        request.setAttribute("error", "メールアドレスまたはパスワードを入力してください。");
+	        request.getRequestDispatcher("top.jsp").forward(request, response);
+	        return;
+	    }
 
-                if (admin != null) {
-                    HttpSession session = request.getSession();
-                    session.setAttribute("loggedInAdmin", admin);
-                    response.sendRedirect("admin_usersearch.jsp");
-                } else {
-                    request.setAttribute("error", "※メールアドレス、パスワードが間違っています。※");
-                    request.getRequestDispatcher("top.jsp").forward(request, response);
-                }
-            } else if ("user".equals(action)) {
-                UsersDAO usersDAO = new UsersDAO();
-                UsersDTO user = usersDAO.findUserByEmailAndPassword(email, password, connection);
+	    try (Connection connection = DBCon.getConnection()) {
+	        if ("admin".equals(action)) {
+	            // 管理者ログイン処理
+	            AdminsDAO adminsDAO = new AdminsDAO();
+	            AdminsDTO admin = adminsDAO.findAdminByEmailAndPassword(email, password, connection);
 
-                if (user != null) {
-                    HttpSession session = request.getSession();
-                    session.setAttribute("loggedInUser", user);
-                    response.sendRedirect("myselftask.jsp");
-                } else {
-                    request.setAttribute("error", "ユーザーメールアドレスまたはパスワードが間違っています。");
-                    request.getRequestDispatcher("top.jsp").forward(request, response);
-                }
-            } else {
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "無効なアクションです。");
-            }
-        } catch (SQLException e) {
-            throw new ServletException("データベース接続エラー", e);
-        }
-    }
-     
+	            if (admin != null) {
+	                // セッションに管理者情報を格納
+	                HttpSession session = request.getSession();
+	                session.setAttribute("loggedInAdmin", admin);
+	                response.sendRedirect("admin_usersearch.jsp"); // 管理者用ページへリダイレクト
+	            } else {
+	                // 管理者エラーメッセージ
+	                request.setAttribute("adminError", "メールアドレスまたはパスワードが間違っています。");
+	                request.getRequestDispatcher("top.jsp").forward(request, response);
+	            }
+
+	        } else if ("user".equals(action)) {
+	            // ユーザーログイン処理
+	            UsersDAO usersDAO = new UsersDAO();
+	            UsersDTO user = usersDAO.findUserByEmailAndPassword(email, password, connection);
+
+	            if (user != null) {
+	                // セッションにユーザー情報を格納
+	                HttpSession session = request.getSession();
+	                session.setAttribute("loggedInUser", user);
+	                response.sendRedirect("myselftask.jsp"); // ユーザー用ページへリダイレクト
+	            } else {
+	                // ユーザーエラーメッセージ
+	                request.setAttribute("userError", "メールアドレスまたはパスワードが間違っています。");
+	                request.getRequestDispatcher("top.jsp").forward(request, response);
+	            }
+
+	        } else {
+	            // アクションが不正な場合
+	            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "無効なアクションです。");
+	        }
+
+	    } catch (SQLException e) {
+	        // データベース接続エラー処理
+	        throw new ServletException("データベース接続エラー", e);
+	    }
+	}
 }
