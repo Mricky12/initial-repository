@@ -1,7 +1,6 @@
 package task.servlet;
 
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
@@ -15,8 +14,8 @@ import task.DBCon;
 import task.dao.GroupsDAO;
 import task.dto.GroupsDTO;
 
-@WebServlet(name = "GroupRegisterServlet", urlPatterns = "/groupregister")
-public class GroupRegisterServlet extends HttpServlet {
+@WebServlet(name = "GroupServlet", urlPatterns = "/group")
+public class GroupServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	// GroupsDAOのインスタンスを作成
@@ -29,23 +28,23 @@ public class GroupRegisterServlet extends HttpServlet {
 		groupsDAO = new GroupsDAO(conn);
 	}
 
-    // doGetメソッド：グループリストを取得してJSPに渡す
+    // doGetメソッド：グループリストをDAOから取得してJSPに渡す
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
             request.setCharacterEncoding("UTF-8");
 
-            // グループリストを取得
+            // グループリストを格納
             List<GroupsDTO> listGroupsDTO = groupsDAO.getAll();
             System.out.println("サーブレットで取得したグループ: " + listGroupsDTO);
          // デバッグ出力: リストサイズを確認
 			/*System.out.println("グループリストのサイズ: " + (listGroupsDTO != null ? listGroupsDTO.size() : "null"));*/
-            // グループリストをリクエストにセットしJSPに渡す
+            // 取得したグループリストをリクエストにセットしJSPに渡す
             request.setAttribute("groups", listGroupsDTO);
 
             // JSPにフォワード
-            request.getRequestDispatcher("/groupmemberedit.jsp").forward(request, response);
+            request.getRequestDispatcher("/group.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("error", "データの取得中にエラーが発生しました。");
@@ -53,7 +52,7 @@ public class GroupRegisterServlet extends HttpServlet {
         }
     }
 
-    // doPostメソッド：グループ名を受け取って新規登録
+    // doPostメソッド：JSPからグループ名を受け取って新規登録
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -78,8 +77,9 @@ public class GroupRegisterServlet extends HttpServlet {
             // 作成結果に応じた処理
             if (isCreated) {
                 // 作成成功時はリダイレクト
-                response.sendRedirect("groupmemberedit.jsp?success=true&groupName="
-                        + URLEncoder.encode(groupName, "UTF-8"));
+				/*response.sendRedirect("groupmemberedit?success=true&groupName="
+				        + URLEncoder.encode(groupName, "UTF-8"));*/
+            	doGet(request, response);
             } else {
                 // 作成失敗時にエラーメッセージを表示
                 request.setAttribute("error", "グループ登録に失敗しました。");

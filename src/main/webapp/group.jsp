@@ -1,5 +1,6 @@
  <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+ <%@ page import="java.util.List" %>   
  <%@ page import="task.dto.GroupsDTO" %>
     
 
@@ -65,9 +66,9 @@
         <div class="container">
             <div class="sidebar">
                 <ul class="menu">
-                    <li><a href="index.jsp"><span class="bullet">・</span>マイタスク</a></li>
+                    <li><a href="myselftask.jsp"><span class="bullet">・</span>マイタスク</a></li>
                     <li><a href="#"><span class="bullet">・</span>グループ作成/編集</a></li>
-                    <li><a href="groupmemberedit.jsp"><span class="bullet">・</span>グループメンバー編集</a></li>
+                    <li><a href="groupmember.jsp"><span class="bullet">・</span>グループメンバー編集</a></li>
                     <li><a href="grouptask.jsp"><span class="bullet">・</span>グループタスク一覧</a></li>
                     <li><a href="edituser.jsp"><span class="bullet">・</span>ユーザー編集</a></li>
                     <li><a href="#logout" id="logout-link"><span class="bullet">・</span>ログアウト</a></li>
@@ -99,7 +100,7 @@
     			<div id="error-message" data-error="<%= request.getAttribute("error") != null ? request.getAttribute("error") : "" %>"></div>
     			
     			
-                <form action="groupregister" method="post" class="main-content-child">
+                <form action="group" method="post" class="main-content-child">
                 	
                     	<div class="form-group">
                         	<label for="groupname">グループ名</label>
@@ -117,9 +118,27 @@
                 <p>グループ名変更</p>
                 <div class="main-content-child">
                     <div class="form-group">
-                        <select name="company_id" id="company">
-                            <option value="">▼グループ選択</option>
-                            
+                        <select name="groupId" >
+                            <option value="" selected>▼グループ選択</option>
+                    		<%
+                    		// グループリストをリクエストから取得
+                   			List<GroupsDTO> groups = (List<GroupsDTO>) request.getAttribute("groups");
+                    		if (groups != null && !groups.isEmpty()) {
+                        		for (GroupsDTO group : groups) {
+                        			// デバッグ出力
+                                    System.out.println("JSPで取得したグループID: " + group.getGroupId() + ", グループ名: " + group.getGroupName());
+
+                    		%>
+                        		<option value="<%= group.getGroupId() %>"><%= group.getGroupName() %></option>
+                    		<%
+                        		}
+                    		} else {
+                   	 		%>
+                        		<option value="">グループがありません</option>
+                    		<%
+                    		}
+                    		%>
+                      
                         </select>
                     </div>
                     <div class="form-group">
@@ -136,9 +155,27 @@
                 <p>グループ削除</p>
                 <div class="main-content-child">
                     <div class="form-group">
-                        <select name="company_id" id="company">
-                            <option value="">▼グループ選択</option>
-                            
+                        <select name="groupId" >
+                            <option value="" selected>▼グループ選択</option>
+                    		<%
+                    		// グループリストをリクエストから取得
+                   			List<GroupsDTO> groups = (List<GroupsDTO>) request.getAttribute("groups");
+                    		if (groups != null && !groups.isEmpty()) {
+                        		for (GroupsDTO group : groups) {
+                        			// デバッグ出力
+                                    System.out.println("JSPで取得したグループID: " + group.getGroupId() + ", グループ名: " + group.getGroupName());
+
+                    		%>
+                        		<option value="<%= group.getGroupId() %>"><%= group.getGroupName() %></option>
+                    		<%
+                        		}
+                    		} else {
+                   	 		%>
+                        		<option value="">グループがありません</option>
+                    		<%
+                    		}
+                    		%>
+                      
                         </select>
                     </div>
                 </div>
