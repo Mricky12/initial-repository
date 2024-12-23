@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
             // JavaScript内でdecodeURIComponentを使用
             const decodedGroupName = decodeURIComponent(groupName);
             alert(`グループ「${decodedGroupName}」が正常に作成されました。`);
-            window.location.href = "groupmemberedit.jsp"; // 作成完了後に遷移
+            window.location.href = ""; // 作成完了後に遷移
         }
    
     // フォーム送信時のバリデーション

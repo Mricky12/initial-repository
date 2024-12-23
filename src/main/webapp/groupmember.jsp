@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import ="java.util.List" %>    
-<%@ page import="task.dto.GroupsDTO" %>    
+<%@ page import="task.dto.GroupsDTO" %> 
+<%@ page import="task.dto.UsersDTO" %>   
     
 <!DOCTYPE html>
 <html lang="ja">
@@ -54,7 +55,7 @@
                 <a href="" class="icon-link">
                     <img src="images\メニューの無料アイコン4.png" alt="ホーム">
                 </a>
-                <a href="./edituser.jsp" class="icon-link">
+                <a href="" class="icon-link">
                     <img src="images\人物のアイコン.form素材 その3.png" alt="アカウント">
                 </a>
             </div>
@@ -72,38 +73,18 @@
             </div>
             <div class="main-content">
                 <p>グループメンバー削除</p>
-                <div class="main-content-child">
-                    <!-- グループ選択 -->
-					<div class="select-container">
-  						<select class="custom-select" name="custom-select" id="group-select">
-    					<option value="" selected>▼グループ選択</option>
-    					<option value="group1">グループ1</option>
-    					<option value="group2">グループ2</option>
-    					<option value="group3">グループ3</option>
-  						</select>
-					</div>
-                    
-                </div>
-                <div class="button-container">
-                    <button class="cancel-button" type="button">キャンセル</button>
-                    <button class="bule-button search-button" type="button">追加</button>
-                </div>
-            </div>
-            <div class="main-content">
-                <p>グループメンバー追加</p>
-                <form action="edit" method="post" class="main-content-child">
-                    <!-- グループ選択 -->
-					<div class="select-container">
-  						<!-- グループリストを動的に表示 -->
-            			<select name="groupId" class="group-select">
-                    		<option value="" selected>▼グループ選択</option>
+                <form action="group" method="post" class="main-content-child">
+                	<input type="hidden" name="action" value="update">
+                    <div class="form-group">
+                        <select name="groupId" required>
+                            <option value="" selected>▼グループ選択</option>
                     		<%
                     		// グループリストをリクエストから取得
-                   			List<GroupsDTO> groups = (List<GroupsDTO>) request.getAttribute("groups");
+                   			List<GroupsDTO> groups = (List<GroupsDTO>) request.getAttribute("userGroups");
                     		if (groups != null && !groups.isEmpty()) {
                         		for (GroupsDTO group : groups) {
                         			// デバッグ出力
-                                    System.out.println("JSPで取得したグループID: " + group.getGroupId() + ", グループ名: " + group.getGroupName());
+                                    /* System.out.println("JSPで取得したグループID: " + group.getGroupId() + ", グループ名: " + group.getGroupName()); */
 
                     		%>
                         		<option value="<%= group.getGroupId() %>"><%= group.getGroupName() %></option>
@@ -115,6 +96,42 @@
                     		<%
                     		}
                     		%>
+                      
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="newName">新しい名前</label>
+                        <input type="text" id="newName"name="newName" class="form-control" placeholder="" required>
+                    </div>
+                	<div class="button-container">
+                    	<button class="cancel-button" type="button" onclick="window.location.href=''">キャンセル</button>
+                    	<button class="bule-button search-button" type="submit">追加</button>
+                	</div>
+            	</form>
+                
+            </div>
+            <div class="main-content">
+                <p>グループメンバー追加</p>
+                <form action="edit" method="post" class="main-content-child">
+                    <!-- グループ選択 -->
+					<div class="select-container">
+  						<!-- グループリストを動的に表示 -->
+            			<select name="groupId" class="group-select">
+                    		<option value="" selected>▼グループ選択</option>
+                    		<%
+                			// グループリストをリクエストから取得
+                			if (groups != null && !groups.isEmpty()) {
+                    			for (GroupsDTO group : groups) {
+                        			%>
+                        			<option value="<%= group.getGroupId() %>"><%= group.getGroupName() %></option>
+                        			<%
+                    			}
+                			} else {
+                    			%>
+                    			<option value="">グループがありません</option>
+                    			<%
+                			}
+                			%>
                 		</select>
 					</div>
                     <div class="form-group">

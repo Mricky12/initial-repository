@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
  <%@ page import="java.util.List" %>   
  <%@ page import="task.dto.GroupsDTO" %>
-    
+ <%@ page import="task.dto.UsersDTO" %>   
 
    
 <!DOCTYPE html>
@@ -84,7 +84,7 @@
         			if (success === "true" && groupName) {
             			const decodedGroupName = decodeURIComponent(groupName);
             			alert(`グループ「${decodedGroupName}」が正常に作成されました。`);
-            			window.location.href = "groupmemberedit.jsp"; // 作成完了後に遷移
+            			window.location.href = ""; // 作成完了後に遷移
         			}
 
         			const errorMessage = document.getElementById("error-message").dataset.error;
@@ -93,6 +93,10 @@
         			}
     			});
 			</script>
+			<!-- エラーメッセージの表示 -->
+            <% if (request.getAttribute("error") != null) { %>
+    			<script>alert("<%= request.getAttribute("error") %>");</script>
+			<% } %>
             
             <div class="main-content">
                 <p>グループ作成</p>
@@ -101,11 +105,11 @@
     			
     			
                 <form action="group" method="post" class="main-content-child">
-                	
-                    	<div class="form-group">
-                        	<label for="groupname">グループ名</label>
-                        	<input type="text" id="groupname" name="group_name" class="form-control" placeholder="">
-                    	</div>
+                	<input type="hidden" name="action" value="create">
+                    <div class="form-group">
+                        <label for="groupname">グループ名</label>
+                        <input type="text" id="groupname" name="group_name" class="form-control" placeholder="">
+                    </div>
                 	
                 	<div class="button-container">
                     	<button class="cancel-button" type="button" onclick="window.location.href=''">キャンセル</button>
@@ -116,17 +120,18 @@
             </div>
             <div class="main-content">
                 <p>グループ名変更</p>
-                <div class="main-content-child">
+                <form action="group" method="post" class="main-content-child">
+                	<input type="hidden" name="action" value="update">
                     <div class="form-group">
-                        <select name="groupId" >
+                        <select name="groupId" required>
                             <option value="" selected>▼グループ選択</option>
                     		<%
                     		// グループリストをリクエストから取得
-                   			List<GroupsDTO> groups = (List<GroupsDTO>) request.getAttribute("groups");
+                   			List<GroupsDTO> groups = (List<GroupsDTO>) request.getAttribute("userGroups");
                     		if (groups != null && !groups.isEmpty()) {
                         		for (GroupsDTO group : groups) {
                         			// デバッグ出力
-                                    System.out.println("JSPで取得したグループID: " + group.getGroupId() + ", グループ名: " + group.getGroupName());
+                                    /* System.out.println("JSPで取得したグループID: " + group.getGroupId() + ", グループ名: " + group.getGroupName()); */
 
                     		%>
                         		<option value="<%= group.getGroupId() %>"><%= group.getGroupName() %></option>
@@ -142,49 +147,44 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="name">新しい名前</label>
-                        <input type="name" id="name" class="form-control" placeholder="">
+                        <label for="newName">新しい名前</label>
+                        <input type="text" id="newName"name="newName" class="form-control" placeholder="" required>
                     </div>
-                </div>
-                <div class="button-container">
-                    <button class="cancel-button" type="button">キャンセル</button>
-                    <button class="bule-button search-button" type="button">変更</button>
-                </div>
-            </div>
+                	<div class="button-container">
+                    	<button class="cancel-button" type="button" onclick="window.location.href=''">キャンセル</button>
+                    	<button class="bule-button search-button" type="submit">変更</button>
+                	</div>
+            	</form>
+            </div>	
             <div class="main-content">
                 <p>グループ削除</p>
-                <div class="main-content-child">
+                <form action="group" method="post" class="main-content-child">
+                    <input type="hidden" name="action" value="delete">
                     <div class="form-group">
                         <select name="groupId" >
                             <option value="" selected>▼グループ選択</option>
                     		<%
-                    		// グループリストをリクエストから取得
-                   			List<GroupsDTO> groups = (List<GroupsDTO>) request.getAttribute("groups");
-                    		if (groups != null && !groups.isEmpty()) {
-                        		for (GroupsDTO group : groups) {
-                        			// デバッグ出力
-                                    System.out.println("JSPで取得したグループID: " + group.getGroupId() + ", グループ名: " + group.getGroupName());
-
-                    		%>
-                        		<option value="<%= group.getGroupId() %>"><%= group.getGroupName() %></option>
-                    		<%
-                        		}
-                    		} else {
-                   	 		%>
-                        		<option value="">グループがありません</option>
-                    		<%
-                    		}
-                    		%>
-                      
+                			// グループリストをリクエストから取得
+                			if (groups != null && !groups.isEmpty()) {
+                    			for (GroupsDTO group : groups) {
+                        			%>
+                        			<option value="<%= group.getGroupId() %>"><%= group.getGroupName() %></option>
+                        			<%
+                    			}
+                			} else {
+                    			%>
+                    			<option value="">グループがありません</option>
+                    			<%
+                			}
+                			%>
                         </select>
                     </div>
-                </div>
-                <div class="button-container">
-                    <button class="cancel-button" type="button">キャンセル</button>
-                    <button class="bule-button search-button" type="button">削除</button>
-                </div>
-            </div>
-        </div>    
+                	<div class="button-container">
+                    	<button class="cancel-button" type="button">キャンセル</button>
+                    	<button class="bule-button search-button" type="submit">削除</button>
+                	</div>
+            	</form>
+        	</div>    
         
     </div>
     <script src="./js/script.js"></script>
