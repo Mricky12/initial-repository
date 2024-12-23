@@ -10,7 +10,7 @@ public class TaskDTO {
 	private String taskTitle; //タスクタイトル
 	private String task; //タスク内容
 	private byte[] taskImage; //タスク画像
-	private int userId; //ユーザーID
+	private Integer userId; //ユーザーID
 	private Integer colorId; //カラーID（NULL許容なのでInteger）
 	private boolean trash; //ゴミ箱フラグ
 	private String colorCode; // カラーコードを格納するフィールド
@@ -48,7 +48,7 @@ public class TaskDTO {
 		return taskImage;
 	}
 
-	public int getUserId() {
+	public Integer getUserId() {
 		return userId;
 	}
 
@@ -81,7 +81,7 @@ public class TaskDTO {
 		this.taskImage = taskImage;
 	}
 
-	public void setUserId(int userId) {
+	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
 

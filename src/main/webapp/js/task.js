@@ -45,6 +45,44 @@ document.addEventListener("DOMContentLoaded", function() {
 			taskForm.classList.add("collapsed");
 		}
 	});
+
+	// 保存ボタンをクリックした際のイベント
+	document.querySelectorAll(".save-button").forEach((button) => {
+		button.addEventListener("click", () => {
+			const taskId = button.dataset.taskId; // 保存ボタンに付与されたタスクID
+			const taskTitle = document.querySelector(`#taskTitle-${taskId}`).value; // テキストボックスの値
+			const taskContent = document.querySelector(`#taskContent-${taskId}`).value;
+
+			// バリデーション：データが空かどうか確認
+			if (!taskTitle.trim() && !taskContent.trim()) {
+				alert("タイトルまたは内容を入力してください。");
+				return;
+			}
+
+			// AJAXリクエストを送信
+			fetch("myselftask", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/x-www-form-urlencoded",
+				},
+				body: `action=update&taskId=${encodeURIComponent(taskId)}&taskTitle=${encodeURIComponent(taskTitle)}&taskContent=${encodeURIComponent(taskContent)}`
+			})
+				.then(response => {
+					if (response.ok) {
+						return response.text();
+					}
+					throw new Error("サーバーエラー");
+				})
+				.then(() => {
+					alert("タスクが更新されました。");
+					window.location.reload(); // 更新後にページをリロード
+				})
+				.catch(error => {
+					console.error("Error:", error);
+					alert("タスクの更新に失敗しました。");
+				});
+		});
+	});
 });
 
 
@@ -91,3 +129,73 @@ document.addEventListener("DOMContentLoaded", function() {
 		});
 	});
 });
+
+
+
+function toggleEditMode(taskId) {
+	// タスク表示エリアの取得
+	const taskElement = document.getElementById(`task-${taskId}`);
+	const taskTitleElement = taskElement.querySelector(".task-title");
+	const taskDetailElement = taskElement.querySelector(".task-content");
+	const editButton = taskElement.querySelector(".edit-btn");
+	const saveButton = taskElement.querySelector(".save-btn");
+
+	// すでに編集モードの場合は処理しない
+	if (taskElement.dataset.editing === "true") return;
+
+	// 編集モードに切り替え
+	taskElement.dataset.editing = "true";
+
+	// 現在のタイトルと詳細を取得
+	const currentTitle = taskTitleElement.textContent.trim();
+	const currentDetail = taskDetailElement.textContent.trim();
+
+	// タイトルと内容を編集可能なフォームに切り替え
+	taskTitleElement.innerHTML = `<input type="text" id="edit-title-${taskId}" value="${currentTitle}" class="edit-input">`;
+	taskDetailElement.innerHTML = `<textarea id="edit-content-${taskId}" class="edit-textarea">${currentDetail}</textarea>`;
+
+	// ボタンの表示/非表示を切り替え
+	editButton.classList.add("hidden");
+	saveButton.classList.remove("hidden");
+}
+
+function saveTask(taskId) {
+	const taskTitleInput = document.getElementById(`edit-title-${taskId}`);
+	const taskContentInput = document.getElementById(`edit-content-${taskId}`);
+
+	const newTitle = taskTitleInput.value.trim();
+	const newContent = taskContentInput.value.trim();
+
+	// バリデーション：タイトルと内容が空の場合は警告
+	if (!newTitle && !newContent) {
+		alert("タスクタイトルまたは内容を入力してください。");
+		return;
+	}
+
+	// データ送信用のフォームデータ作成
+	const formData = new FormData();
+	formData.append("action", "update");
+	formData.append("taskId", taskId);
+	formData.append("taskTitle", newTitle);
+	formData.append("taskContent", newContent);
+
+	// AJAXリクエスト
+	fetch("myselftask", {
+		method: "POST",
+		body: formData,
+	})
+		.then((response) => {
+			if (response.ok) {
+				alert("タスクが更新されました。");
+				location.reload(); // 更新後にページをリロード
+			} else {
+				throw new Error("サーバー側でエラーが発生しました。");
+			}
+		})
+		.catch((error) => {
+			console.error("Error:", error);
+			alert("タスクの更新に失敗しました。");
+		});
+}
+
+

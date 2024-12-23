@@ -43,33 +43,37 @@ public class TaskDAO {
 		try (Connection conn = DBCon.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
+			// 必須フィールドの設定
 			pstmt.setString(1, task.getTaskTitle());
 			pstmt.setString(2, task.getTask());
 
+			// 画像データの設定
 			if (task.getTaskImage() != null) {
 				pstmt.setBytes(3, task.getTaskImage());
 			} else {
 				pstmt.setNull(3, Types.BLOB);
 			}
 
+			// ユーザーIDの設定 (仮に固定値または取得ロジックが必要)
 			pstmt.setInt(4, task.getUserId());
 
+			// カラーIDの設定
 			if (task.getColorId() != null) {
 				pstmt.setInt(5, task.getColorId());
 			} else {
 				pstmt.setNull(5, Types.INTEGER);
 			}
 
-			pstmt.setBoolean(6, task.isTrash());
+			// ゴミ箱フラグの設定（デフォルト false）
+			pstmt.setBoolean(6, false);
 
+			// SQL 実行
 			int rows = pstmt.executeUpdate();
 			System.out.println("TaskDAO: insertTask - Rows Affected: " + rows);
-			//登録成功した場合trueを返す
 			return rows > 0;
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-			//エラー時
 			return false;
 		}
 	}
@@ -94,13 +98,11 @@ public class TaskDAO {
 				task.setTrash(rs.getBoolean("trash"));
 				return task;
 			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		//		データが見つからない場合
+		//データが見つからない場合
 		return null;
-
 	}
 
 	//	タスク一覧取得 (SELECT ALL)
@@ -127,7 +129,6 @@ public class TaskDAO {
 				task.setColorCode(rs.getString("color_code"));
 				taskList.add(task);
 			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -137,49 +138,23 @@ public class TaskDAO {
 
 	// タスク更新 (UPDATE)
 	public boolean updateTask(TaskDTO task) {
-		if (task.getTaskId() == null || task.getTaskId() <= 0) {
-			throw new IllegalArgumentException("Task ID is invalid.");
-		}
-
-		// 現在のタスクデータを取得
-		TaskDTO existingTask = getTaskById(task.getTaskId());
-		if (existingTask == null) {
-			System.out.println("TaskDAO: updateTask - 指定されたTaskIDが存在しません: " + task.getTaskId());
-			return false;
-		}
-
-		// 画像データが新たに指定されていない場合は既存データを使用
-		byte[] imageBytes = task.getTaskImage() != null ? task.getTaskImage() : existingTask.getTaskImage();
-
-		String sql = "UPDATE tasks SET task_title = ?, task = ?, task_image = ?, user_id = ?, color_id = ?, trash = ? WHERE task_id = ?";
-
+		String sql = "UPDATE tasks SET task_title = ?, task = ?, color_id = ? WHERE task_id = ?";
 		try (Connection conn = DBCon.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
 			pstmt.setString(1, task.getTaskTitle());
 			pstmt.setString(2, task.getTask());
 
-			if (imageBytes != null) {
-				pstmt.setBytes(3, imageBytes);
-			} else {
-				pstmt.setNull(3, Types.BLOB);
-			}
-
-			pstmt.setInt(4, task.getUserId());
-
 			if (task.getColorId() != null) {
-				pstmt.setInt(5, task.getColorId());
+				pstmt.setInt(3, task.getColorId());
 			} else {
-				pstmt.setNull(5, Types.INTEGER);
+				pstmt.setNull(3, Types.INTEGER);
 			}
 
-			pstmt.setBoolean(6, task.isTrash());
-			pstmt.setInt(7, task.getTaskId());
+			pstmt.setInt(4, task.getTaskId());
 
-			int rows = pstmt.executeUpdate();
-			System.out.println("TaskDAO: updateTask - Rows Affected: " + rows);
-
-			return rows > 0;
+			int rowsAffected = pstmt.executeUpdate();
+			return rowsAffected > 0;
 
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -8,7 +8,7 @@
 	align-items: center;
 	box-sizing: border-box;
 	margin: 15px auto;
-	padding: 0;
+	padding: 20px;
 }
 
 /* セレクトボックスコンテナ全体 */
@@ -81,8 +81,13 @@
 
 /* タスクなしメッセージ */
 .no-tasks-message {
-	color: #222;
-	margin: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	/* ヘッダー部分を除いた高さ */
+	/*	height: calc(100vh - 100px);*/
+	margin: 0 auto;
+	font-size: 1.2rem;
 	text-align: center;
 }
 
@@ -202,12 +207,13 @@
 
 /* タスク一覧 */
 .task {
-	display: grid;
-	/* 1列3つで自動調整 */
-	/*	grid-template-columns: repeat(3, 1fr);*/
+	display: flex;
+	flex-wrap: wrap;
 	/* 要素間の余白 */
 	gap: 20px;
-	grid-columm: 160px;
+	justify-content: space-between;
+	/* サイドバーの幅を考慮 */
+	margin: 0px 20px 0px 270px;
 	padding-top: 20px;
 	box-sizing: border-box;
 }
@@ -220,6 +226,8 @@
 }
 
 .task-list {
+	/* 3列配置 (gapを考慮) */
+	width: calc(33.33% - 20px);
 	padding: 15px;
 	margin: 10px 0;
 	border-radius: 10px;
@@ -247,7 +255,8 @@
 }
 
 .edit-btn,
-.delete-btn {
+.delete-btn,
+save-btn {
 	height: 45px;
 	border: none;
 	background-color: transparent;

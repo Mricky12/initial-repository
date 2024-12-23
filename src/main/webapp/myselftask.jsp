@@ -3,6 +3,10 @@
 <%@ page import="task.dto.TaskDTO"%>
 <%@ page import="java.util.List"%>
 
+<%
+List<TaskDTO> taskList = (List<TaskDTO>) request.getAttribute("taskList");
+%>
+
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -60,13 +64,15 @@
 			</div>
 		</header>
 
+
+
 		<div class="container">
 			<!-- サイドバー -->
 			<div class="sidebar">
 				<ul class="menu">
 					<li><a href="#"><span class="bullet">・</span>マイタスク</a></li>
-					<li><a href="groupcreate.jsp"><span class="bullet">・</span>グループ作成/編集</a></li>
-					<li><a href="groupmemberedit.jsp"><span class="bullet">・</span>グループメンバー編集</a></li>
+					<li><a href="group.jsp"><span class="bullet">・</span>グループ作成/編集</a></li>
+					<li><a href="groupmember.jsp"><span class="bullet">・</span>グループメンバー編集</a></li>
 					<li><a href="grouptask.jsp"><span class="bullet">・</span>グループタスク一覧</a></li>
 					<li><a href="edituser.jsp"><span class="bullet">・</span>ユーザー編集</a></li>
 					<li id="logout-link"><a href="java_task/top.jsp"><span
@@ -102,8 +108,8 @@
 								onclick="toggleColorPalette()">
 								<img src="images/パレットのアイコン5.png">
 							</button>
-							<input type="file" id="file-input" accept="image/"
-								style="display: none;">
+							<input type="file" id="file-input" name="taskImage"
+								accept="image/*" style="display: none;">
 							<button type="button" class="document" name="taskImage"
 								onclick="document.getElementById('file-input').click();">
 								<img src="images/写真のフリーアイコン5.png">
@@ -137,72 +143,82 @@
 
 					</div>
 				</form>
+			</div>
+		</div>
 
 
 
-				<!-- 登録されたタスク一覧 -->
-				<div class="task">
-					<%
-					List<TaskDTO> taskList = (List<TaskDTO>) request.getAttribute("taskList");
-					if (taskList != null && !taskList.isEmpty()) {
-						for (TaskDTO task : taskList) {
-					%>
+		<!-- 登録されたタスク一覧 -->
+		<div class="task">
+			<%
+			if (taskList != null && !taskList.isEmpty()) {
+				for (TaskDTO task : taskList) {
+			%>
 
-					<div class="task-list"
-						style="background-color:<%=task.getColorCode() != null ? task.getColorCode() : "#FFFFFF"%>;">
-						<p class="task-item-title"><%=task.getTaskTitle()%></p>
-						<p class="task-item-detail"><%=task.getTask()%></p>
+			<!-- タスク表示 -->
+			<div class="task-list" id="task-<%=task.getTaskId()%>"
+				style="background-color:<%=task.getColorCode() != null ? task.getColorCode() : "#FFFFFF"%>;">
+				<!-- タイトル -->
+				<p class="task-item-title"><%=task.getTaskTitle() != null ? task.getTaskTitle() : "タイトルなし"%></p>
+				<!-- 詳細 -->
+				<p class="task-item-detail"><%=task.getTask() != null ? task.getTask() : "詳細なし"%></p>
 
-
-						<!-- 編集フォーム部分（非表示） -->
-						<div class="task-edit hidden" id="edit-<%=task.getTaskId()%>">
-							<input type="text" id="edit-title-<%=task.getTaskId()%>"
-								value="<%=task.getTaskTitle()%>">
-							<textarea id="edit-content-<%=task.getTaskId()%>"><%=task.getTask()%></textarea>
-						</div>
-
-						<!-- ボタン部分 -->
-						<div class="task-list-btn">
-							<button class="edit-btn"
-								onclick="toggleEditMode(<%=task.getTaskId()%>)">
-								<img src="images/鉛筆アイコン　6.png" alt="編集">
-							</button>
-							<button class="save-btn hidden"
-								onclick="saveTask(<%=task.getTaskId()%>)">保存</button>
+				<!-- 編集フォーム部分（非表示） -->
+				<form action="myselftask" method="post" class="hidden"
+					id="edit-form-<%=task.getTaskId()%>">
+					<input type="hidden" name="action" value="update"> <input
+						type="hidden" name="taskId" value="<%=task.getTaskId()%>">
+					<input type="text" name="taskTitle"
+						value="<%=task.getTaskTitle()%>">
+					<textarea name="taskContent"><%=task.getTask()%></textarea>
+				</form>
 
 
-							<!-- 削除ボタン -->
-							<form name="deleteForm" method="post" action="myselftask">
-								<input type="hidden" name="action" value="delete"> <input
-									type="hidden" name="taskId" value="<%=task.getTaskId()%>">
-								<button class="delete-btn">
-									<img src="images/スタンダードなゴミ箱アイコン.png" alt="削除">
-								</button>
-							</form>
-						</div>
-					</div>
+				<!-- ボタン部分 -->
+				<div class="task-list-btn">
+					<!-- 編集ボタン -->
+					<button class="edit-btn"
+						onclick="toggleEditMode(<%=task.getTaskId()%>)">
+						<img src="images/鉛筆アイコン　6.png" alt="編集">
+					</button>
+
+					<!-- 保存ボタン -->
+					<button class="save-btn hidden"
+						onclick="saveTask(<%=task.getTaskId()%>)">
+						<img src="images/鉛筆アイコン　6.png" alt="保存">
+					</button>
+
+					<!-- 削除ボタン -->
+					<form name="deleteForm" method="post" action="myselftask">
+						<input type="hidden" name="action" value="delete"> <input
+							type="hidden" name="taskId" value="<%=task.getTaskId()%>">
+						<button class="delete-btn">
+							<img src="images/スタンダードなゴミ箱アイコン.png" alt="削除">
+						</button>
+					</form>
 				</div>
-
-				<%
-				}
-				} else {
-				%>
-
-				<!-- タスクがない場合 -->
-				<div class="no-tasks-message">
-					<p>タスクはありません。</p>
-				</div>
-
-				<%
-				}
-				%>
-
-
 			</div>
 
+			<%
+			}
+			%>
+
+			<%
+			} else {
+			%>
+
+			<!-- タスクがない場合 -->
+			<div class="no-tasks-message">
+				<p>タスクはありません。</p>
+			</div>
+
+			<%
+			}
+			%>
 		</div>
+
 	</div>
-	</div>
+
 
 	<!-- javascript -->
 	<script src="js/script.js"></script>
