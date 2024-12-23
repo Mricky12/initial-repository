@@ -113,3 +113,57 @@ function validatePassword() {
     }
     return true;
 }
+
+
+
+function editValidation() {
+    // エラーメッセージをリセット
+    clearErrors();
+
+    // 各項目のバリデーション
+    let isError = false;
+    if (!validateEditName()) isError = true;
+    if (!validateEditEmail()) isError = true;
+    if (!validateEditPassword()) isError = true;
+
+    // エラーがない場合、送信
+    if (!isError) {
+        alert("管理者情報が更新されました。");
+        document.getElementById("editForm").submit();
+    }
+}
+
+function validateEditName() {
+    const name = document.getElementById("name").value.trim();
+    const nameError = document.getElementById("nameError");
+
+    if (name.length > 0 && name.length <= 1) {
+        nameError.textContent = "※2文字以上入力してください。";
+        return false;
+    }
+    return true;
+}
+
+function validateEditEmail() {
+    const email = document.getElementById("email").value.trim();
+    const emailError = document.getElementById("emailError");
+    const emailPattern = /^[a-z\d][\w.-]*@[\w.-]+\.[a-z\d]+$/i;
+
+    if (email.length > 0 && !emailPattern.test(email)) {
+        emailError.textContent = "※ xxx@xxx.xxxの形式で入力してください。";
+        return false;
+    }
+    return true;
+}
+
+function validateEditPassword() {
+    const password = document.getElementById("password").value.trim();
+    const passwordError = document.getElementById("passwordError");
+    const passwordPattern = /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/;
+
+    if (password.length > 0 && !passwordPattern.test(password)) {
+        passwordError.textContent = "※下記の条件で入力してください";
+        return false;
+    }
+    return true;
+}

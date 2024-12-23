@@ -9,10 +9,12 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import task.DBCon;
 import task.dao.AdminSystemDAO;
 import task.dto.AdminSystemDTO;
+import task.dto.AdminsDTO;
 
 /**
  * Servlet implementation class AdminUserSearchServlet
@@ -28,6 +30,17 @@ public class AdminUserSearchServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
   
+            HttpSession session = request.getSession();
+            AdminsDTO loggedInAdmin = (AdminsDTO) session.getAttribute("loggedInAdmin");
+
+            if (loggedInAdmin == null) {
+                session.setAttribute("error", "セッションが切れました。再度ログインしてください。");
+                response.sendRedirect("top");
+                return;
+            }
+    	
+    	
+    	
     
  // リクエストパラメータを取得
     String userId = request.getParameter("userid");

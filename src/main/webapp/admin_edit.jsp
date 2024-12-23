@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>タスク管理システム</title>
-    <link href="./css/reset.css" rel="stylesheet" type="text/css"/>
     <link href="./css/admin.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
@@ -58,35 +57,50 @@
                 </ul>
             </div>
             <div class="main-content">
-                <p>管理者編集</p>
-                <div class="main-content-child">
-                    <div class="form-group">
-                        <label for="name">名前</label>
-                        <input type="text" id="name" class="form-control" placeholder="">
-                    </div>
-                    <div class="form-group">
-                        <label for="email">メールアドレス</label>
-                        <input type="email" id="email" class="form-control" placeholder="">
-                    </div>
-                    <div class="form-group">
-                        <label for="password">パスワード</label>
-                        <input type="password" id="password" class="form-control" placeholder="">
-                        
-                    </div>
-                    <small class="form-text">半角英字、数字を組み合わせて8文字以上で入力してください。</small>
-                </div>
-                <div class="button-container">
-                    <button class="bule-button" type="button">変更</button>
-                </div>
-                <hr><p>管理者退会</p>
-                <div class="main-content-child">
-                    <a class="unsubscribe" href="">退会する</a>
-                </div>
+                <p class="main-p">管理者編集</p>
+                
+                	<form action="admin_edit" method="post" id="editForm">
+                        <input type="hidden" name="action" value="edit">
+                        <div class="main-content-child">
+		                    <div class="form-group">
+		                        <label for="name">名前</label>
+		                        <input type="text" id="name" class="form-control" placeholder="">
+		                        
+		                    </div>
+		                    <p class="error-message" id="nameError"></p>
+		                    <div class="form-group">
+		                        <label for="email">メールアドレス</label>
+		                        <input type="email" id="email" class="form-control" placeholder="">
+		                        
+		                    </div>
+		                    <p class="error-message" id="emailError"></p>
+		                    <div class="form-group">
+		                        <label for="password">パスワード</label>
+		                        <input type="password" id="password" class="form-control" placeholder="" autocomplete="current-password">
+		                        		                        
+		                    </div>
+		                    <p class="error-message" id="passwordError"></p>
+		                    <small class="form-text">半角英字、数字を組み合わせて8文字以上で入力してください。</small>
+	                		</div>
+			                <div class="button-container">
+			                    <button class="bule-button" type="button" onclick="editValidation()">変更</button>
+			                </div>
+						</form>
+		                <hr>
+		                <p class="main-p">管理者退会</p>
+		                <div class="main-content-child">
+		                	 <!-- 退会フォーム -->
+                    		<form action="admin_edit" method="post" onsubmit="return confirm('本当に退会しますか？')">
+                        		<input type="hidden" name="action" value="delete">
+		                    	<button type="submit" class="unsubscribe">退会する</button>
+		                    </form>
+		                </div>
             </div>
            
         </div>    
         
     </div>
-    <script src="./js/script.js"></script>
+    <script src="./js/script.js "></script>
+    <script src="./js/validation.js "></script>
 </body>
 </html>
