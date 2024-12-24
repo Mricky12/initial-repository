@@ -197,7 +197,7 @@ public class GroupsDAO {
     public List<GroupsDTO> getGroupsByUserId(int userId) throws SQLException {
         String sql = "SELECT g.group_id, g.group_name " +
                      "FROM groups g " +
-                     "JOIN user_groups ug ON g.group_id = ug.group_id " +
+                     "JOIN users_groups ug ON g.group_id = ug.group_id " +
                      "WHERE ug.user_id = ?";
         List<GroupsDTO> groups = new ArrayList<>();
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -216,7 +216,7 @@ public class GroupsDAO {
 
     // ユーザーをグループに追加
     public boolean addUserToGroup(int userId, int groupId) throws SQLException {
-        String sql = "INSERT INTO user_groups (user_id, group_id) VALUES (?, ?)";
+        String sql = "INSERT INTO users_groups (user_id, group_id) VALUES (?, ?)";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, userId);
             stmt.setInt(2, groupId);
@@ -226,7 +226,7 @@ public class GroupsDAO {
 
     // ユーザーをグループから削除
     public boolean removeUserFromGroup(int userId, int groupId) throws SQLException {
-        String sql = "DELETE FROM user_groups WHERE user_id = ? AND group_id = ?";
+        String sql = "DELETE FROM users_groups WHERE user_id = ? AND group_id = ?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, userId);
             stmt.setInt(2, groupId);
