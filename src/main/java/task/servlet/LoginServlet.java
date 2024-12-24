@@ -10,7 +10,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-
 import task.DBCon;
 import task.dao.AdminsDAO;
 import task.dao.UsersDAO;
@@ -88,12 +87,13 @@ public class LoginServlet extends HttpServlet {
 	            // ユーザーログイン処理
 	            UsersDAO usersDAO = new UsersDAO();
 	            UsersDTO user = usersDAO.findUserByEmailAndPassword(email, password, connection);
-
+	            
+	            
 	            if (user != null) {
 	                // セッションにユーザー情報を格納
 	                HttpSession session = request.getSession();
 	                session.setAttribute("loggedInUser", user);
-	                response.sendRedirect("myselftask.jsp"); // ユーザー用ページへリダイレクト
+	                response.sendRedirect("myselftask"); // ユーザー用ページへリダイレクト
 	            } else {
 	                // ユーザーエラーメッセージ
 	                request.setAttribute("userError", "※メールアドレス、パスワードが間違っています。※");

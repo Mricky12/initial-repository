@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpSession;
 import task.DBCon;
 import task.dao.GroupsDAO;
 import task.dto.GroupsDTO;
+import task.dto.UsersDTO;
 
 /*@WebServlet(name = "GroupServlet", urlPatterns = "/group")
 public class GroupServlet extends HttpServlet {
@@ -222,11 +223,13 @@ public class GroupServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             HttpSession session = request.getSession();
-            int userId = (int) session.getAttribute("userId"); // セッションからユーザーIDを取得
-
+            UsersDTO loggedInUser =(UsersDTO) session.getAttribute("loggedInUser"); // セッションからユーザーIDを取得
+			/*System.out.println("おはようJava!!");
+			System.out.println(loggedInUser.getId());
+			System.out.println(loggedInUser.getName());*/
             // ユーザーに紐付くグループリストを取得
-            List<GroupsDTO> userGroups = groupsDAO.getGroupsByUserId(userId);
-            request.setAttribute("userGroups", userGroups);
+			List<GroupsDTO> userGroups = groupsDAO.getGroupsByUserId(loggedInUser.getId());
+			request.setAttribute("userGroups", userGroups);
 
             // JSPへフォワード
             request.getRequestDispatcher("/group.jsp").forward(request, response);
@@ -245,12 +248,12 @@ public class GroupServlet extends HttpServlet {
             if ("create".equals(action)) {
                 String groupName = request.getParameter("group_name");
                 HttpSession session = request.getSession();
-                int userId = (int) session.getAttribute("userId"); // セッションからユーザーIDを取得
+                UsersDTO loggedInUser =(UsersDTO) session.getAttribute("loggedInUser"); // セッションからユーザーIDを取得
 
                 // 新しいグループを作成
                 GroupsDTO group = new GroupsDTO();
                 group.setGroupName(groupName);
-                group.setUserId(userId);
+                group.getloggedInUser(loggedInUser);
                 boolean isCreated = groupsDAO.insertGroup(group);
 
                 request.setAttribute(isCreated ? "message" : "error",
