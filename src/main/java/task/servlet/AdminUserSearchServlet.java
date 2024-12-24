@@ -32,6 +32,8 @@ public class AdminUserSearchServlet extends HttpServlet {
   
             HttpSession session = request.getSession();
             AdminsDTO loggedInAdmin = (AdminsDTO) session.getAttribute("loggedInAdmin");
+            
+            
 
             if (loggedInAdmin == null) {
                 session.setAttribute("error", "セッションが切れました。再度ログインしてください。");

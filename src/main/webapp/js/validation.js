@@ -21,7 +21,6 @@ function handleValidation() {
 
     // エラーがない場合、送信
     if (!isError) {
-        alert("登録完了しました。ログイン画面に戻ります。");
         document.getElementById("registerForm").submit();
     }
 }
@@ -54,7 +53,6 @@ function resetpasswordValidation() {
     // エラーがない場合、送信
     if (!isError) {
 		console.log("フォームを送信します");
-        alert("パスワードの変更が完了しました。ログイン画面に戻ります。");
         document.getElementById("resetForm").submit();
     }		else {
 		        console.log("バリデーションに失敗しました");
@@ -128,7 +126,7 @@ function editValidation() {
 
     // エラーがない場合、送信
     if (!isError) {
-        alert("管理者情報が更新されました。");
+        
         document.getElementById("editForm").submit();
     }
 }

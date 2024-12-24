@@ -41,7 +41,7 @@ document.getElementById("logout-link").addEventListener("click", function(event)
 
 	// 「はい」が押された場合はトップページ
 	if (isConfirmed) {
-		window.location.href = "../top.html";
+		window.location.href = "top";
 	}
 	// 「いいえ」の場合は何もしない（ダイアログが閉じるだけ）
 });

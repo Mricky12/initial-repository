@@ -53,7 +53,7 @@
                 <ul class="menu">
                     <li><a href="admin_usersearch.jsp"><span class="bullet">・</span>ユーザー検索</a></li>
                     <li><a href="admin_edit.jsp"><span class="bullet">・</span>管理者編集</a></li>
-                    <li><a href="#logout" id="logout-link"><span class="bullet">・</span>ログアウト</a></li>
+                    <li><a href="logout" id="logout-link"><span class="bullet">・</span>ログアウト</a></li>
                 </ul>
             </div>
             <div class="main-content">
@@ -64,19 +64,19 @@
                         <div class="main-content-child">
 		                    <div class="form-group">
 		                        <label for="name">名前</label>
-		                        <input type="text" id="name" class="form-control" placeholder="">
+		                        <input type="text" id="name" name="name" class="form-control" placeholder="">
 		                        
 		                    </div>
 		                    <p class="error-message" id="nameError"></p>
 		                    <div class="form-group">
 		                        <label for="email">メールアドレス</label>
-		                        <input type="email" id="email" class="form-control" placeholder="">
+		                        <input type="email" id="email" name="email" class="form-control" placeholder="">
 		                        
 		                    </div>
 		                    <p class="error-message" id="emailError"></p>
 		                    <div class="form-group">
 		                        <label for="password">パスワード</label>
-		                        <input type="password" id="password" class="form-control" placeholder="" autocomplete="current-password">
+		                        <input type="password" id="password" name="password" class="form-control" placeholder="" autocomplete="current-password">
 		                        		                        
 		                    </div>
 		                    <p class="error-message" id="passwordError"></p>

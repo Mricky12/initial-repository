@@ -54,9 +54,9 @@
         <div class="container">
             <div class="sidebar">
                 <ul class="menu">
-                    <li><a href=""><span class="bullet">・</span>ユーザー検索</a></li>
-                    <li><a href="admin_edit.jsp"><span class="bullet">・</span>管理者編集</a></li>
-                    <li><a href="#logout" id="logout-link"><span class="bullet">・</span>ログアウト</a></li>
+                    <li><a href="admin_usersearch"><span class="bullet">・</span>ユーザー検索</a></li>
+                    <li><a href="admin_edit"><span class="bullet">・</span>管理者編集</a></li>
+                    <li><a href="logout" id="logout-link"><span class="bullet">・</span>ログアウト</a></li>
                 </ul>
             </div>
             <div class="main-content">
