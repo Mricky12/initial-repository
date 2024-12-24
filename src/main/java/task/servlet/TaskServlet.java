@@ -19,28 +19,10 @@ import task.dto.TaskDTO;
 //アップロードファイルの最大サイズを5MBに設定
 @MultipartConfig(maxFileSize = 1024 * 1024 * 5)
 public class TaskServlet extends HttpServlet {
-	private HttpServletRequest request;
-	// セッションを取得（存在しない場合は新しく作成）
-	HttpSession session = request.getSession(true);
-
-	// ユーザー情報やタスク情報をセッションに保存
-	String userId = request.getParameter("userId");
-	{ // 例: ユーザーIDをリクエストから取得
-
-		// userIdがnullでないことを確認
-		if (userId != null) {
-			// セッションにユーザーIDを設定
-			session.setAttribute("userId", userId);
-		} else {
-			// userIdがnullの場合の処理（エラーメッセージなど）
-			System.out.println("ユーザーIDが指定されていません。");
-		}
-	}
-	// タスク名をリクエストから取得
-	String taskName = request.getParameter("taskName");
 
 	@Override
 	public void init() throws ServletException {
+		super.init();
 		new TaskDAO();
 		System.out.println("TaskServlet: init() - DAO初期化完了");
 	}
@@ -56,14 +38,8 @@ public class TaskServlet extends HttpServlet {
 		request.setAttribute("taskList", taskList);
 
 		// タスク一覧を取得し、JSPへ転送
-		try {
-			System.out.println("TaskServlet: タスクリストのサイズ: " + taskList.size());
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/myselftask");
-			dispatcher.forward(request, response);
-		} catch (Exception e) {
-			System.out.println("TaskServlet: doGet() - エラー発生: " + e.getMessage());
-			e.printStackTrace();
-		}
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/myselftask.jsp");
+		dispatcher.forward(request, response);
 	}
 
 	@Override
@@ -95,6 +71,7 @@ public class TaskServlet extends HttpServlet {
 			boolean isTaskCreated = insertTask(userId, taskTitle, taskContent, colorId);
 			if (isTaskCreated) {
 				// タスクが正常に登録された場合の処理
+				response.sendRedirect(request.getContextPath() + "/myselftask");
 			} else {
 				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "タスクの登録に失敗しました。");
 			}
