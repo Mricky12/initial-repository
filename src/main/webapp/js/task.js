@@ -22,6 +22,12 @@ document.addEventListener("DOMContentLoaded", function() {
 	// 閉じるボタンの取得
 	const closeButton = document.querySelector("button.close");
 
+	const taskList = document.getElementById("task-list");
+	if (taskList) {
+		// 初期表示を確保
+		taskList.style.display = "block";
+	}
+
 	// 「タスクを追加…」クリックでタスク追加欄を開く
 	taskFormHeader.addEventListener("click", function() {
 		taskForm.classList.remove("collapsed");
@@ -30,7 +36,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
 	// 閉じるボタンでタスク追加欄を閉じる
 	closeButton.addEventListener("click", function() {
-		// 閉じるボタンが正しく取得されているか確認
 		taskForm.classList.remove("expanded");
 		taskForm.classList.add("collapsed");
 	});
@@ -59,6 +64,9 @@ document.addEventListener("DOMContentLoaded", function() {
 				return;
 			}
 
+			// ボタンを無効化して二重送信を防ぐ
+			button.disabled = true;
+
 			// AJAXリクエストを送信
 			fetch("myselftask", {
 				method: "POST",
@@ -80,12 +88,14 @@ document.addEventListener("DOMContentLoaded", function() {
 				.catch(error => {
 					console.error("Error:", error);
 					alert("タスクの更新に失敗しました。");
+				})
+				.finally(() => {
+					// 成功・失敗に関わらずボタンを再度有効化
+					button.disabled = false;
 				});
 		});
 	});
 });
-
-
 
 // カラーパレット関係
 document.addEventListener("DOMContentLoaded", function() {
@@ -129,8 +139,6 @@ document.addEventListener("DOMContentLoaded", function() {
 		});
 	});
 });
-
-
 
 function toggleEditMode(taskId) {
 	// タスク表示エリアの取得
@@ -195,6 +203,39 @@ function saveTask(taskId) {
 		.catch((error) => {
 			console.error("Error:", error);
 			alert("タスクの更新に失敗しました。");
+		});
+}
+
+// 認証トークンを取得する関数（例）
+function getAuthToken() {
+	// ここでトークンを取得するロジックを実装します
+	// 例えば、ローカルストレージやクッキーから取得することができます
+	return localStorage.getItem('authToken'); // 例: localStorageから取得
+}
+
+// タスクを作成する関数
+function createTask(taskTitle, taskContent) {
+	const authToken = getAuthToken(); // 認証トークンを取得
+
+	fetch("myselftask", {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/x-www-form-urlencoded",
+			"Authorization": `Bearer ${authToken}` // 認証トークンを追加
+		},
+		body: `action=create&taskTitle=${encodeURIComponent(taskTitle)}&taskContent=${encodeURIComponent(taskContent)}`
+	})
+		.then(response => {
+			if (!response.ok) {
+				throw new Error('Network response was not ok');
+			}
+			return response.json();
+		})
+		.then(data => {
+			console.log('Success:', data);
+		})
+		.catch((error) => {
+			console.error('Error:', error);
 		});
 }
 

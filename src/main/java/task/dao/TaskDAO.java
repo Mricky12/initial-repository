@@ -55,7 +55,11 @@ public class TaskDAO {
 			}
 
 			// ユーザーIDの設定 (仮に固定値または取得ロジックが必要)
-			pstmt.setInt(4, task.getUserId());
+			if (task.getUserId() != null) {
+				pstmt.setInt(4, task.getUserId());
+			} else {
+				throw new IllegalArgumentException("ユーザーIDが設定されていません。");
+			}
 
 			// カラーIDの設定
 			if (task.getColorId() != null) {

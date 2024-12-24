@@ -15,6 +15,8 @@ List<TaskDTO> taskList = (List<TaskDTO>) request.getAttribute("taskList");
 <title>タスク管理システム</title>
 <link rel="stylesheet" href="css/task.css">
 <link rel="stylesheet" href="css/style.css">
+Authorization: Bearer
+<your_token>
 </head>
 
 <body>
@@ -170,7 +172,7 @@ List<TaskDTO> taskList = (List<TaskDTO>) request.getAttribute("taskList");
 						type="hidden" name="taskId" value="<%=task.getTaskId()%>">
 					<input type="text" name="taskTitle"
 						value="<%=task.getTaskTitle()%>">
-					<textarea name="taskContent"><%=task.getTask()%></textarea>
+					<textarea name="taskContent" name="task"><%=task.getTask()%></textarea>
 				</form>
 
 
