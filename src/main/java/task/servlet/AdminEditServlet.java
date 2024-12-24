@@ -2,8 +2,6 @@ package task.servlet;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -13,6 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import task.DBCon;
+import task.dao.AdminSystemDAO;
 import task.dto.AdminsDTO;
 
 @WebServlet(name = "adminedit", urlPatterns = "/admin_edit")
@@ -27,6 +26,18 @@ public class AdminEditServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html; charset=UTF-8");
         request.getRequestDispatcher("admin_edit.jsp").forward(request, response);
+        
+        
+        HttpSession session = request.getSession();
+        AdminsDTO loggedInAdmin = (AdminsDTO) session.getAttribute("loggedInAdmin");
+        
+       
+
+        if (loggedInAdmin == null) {
+            session.setAttribute("error", "セッションが切れました。再度ログインしてください。");
+            response.sendRedirect("top");
+            return;
+        }
     }
 
 
@@ -35,6 +46,8 @@ public class AdminEditServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         AdminsDTO loggedInAdmin = (AdminsDTO) session.getAttribute("loggedInAdmin");
+        
+        
 
         if (loggedInAdmin == null) {
             session.setAttribute("error", "セッションが切れました。再度ログインしてください。");
@@ -43,54 +56,40 @@ public class AdminEditServlet extends HttpServlet {
         }
 
         String action = request.getParameter("action");
-        if ("edit".equals(action)) {
-            try (Connection connection = DBCon.getConnection()) {
+
+        try (Connection connection = DBCon.getConnection()) {
+            AdminSystemDAO adminDao = new AdminSystemDAO();
+
+            if ("edit".equals(action)) {
+                // 管理者情報の編集
                 String newName = request.getParameter("name");
                 String newEmail = request.getParameter("email");
                 String newPassword = request.getParameter("password");
 
-                StringBuilder updateSql = new StringBuilder("UPDATE admins SET ");
-                boolean hasUpdate = false;
-
                 if (newName != null && !newName.trim().isEmpty()) {
-                    updateSql.append("admin_name = ?, ");
-                    loggedInAdmin.setAdminName(newName); // セッション用
-                    hasUpdate = true;
+                    loggedInAdmin.setAdminName(newName);
                 }
                 if (newEmail != null && !newEmail.trim().isEmpty()) {
-                    updateSql.append("admin_email = ?, ");
-                    loggedInAdmin.setAdminEmail(newEmail); // セッション用
-                    hasUpdate = true;
+                    loggedInAdmin.setAdminEmail(newEmail);
                 }
                 if (newPassword != null && !newPassword.trim().isEmpty()) {
-                    updateSql.append("admin_password = ?, ");
-                    hasUpdate = true;
+                    loggedInAdmin.setAdminPassword(newPassword);
                 }
 
-                if (!hasUpdate) {
-                    response.sendRedirect("admin_edit");
-                    return;
-                }
-
-                updateSql.setLength(updateSql.length() - 2);
-                updateSql.append(" WHERE admin_id = ?");
-
-                try (PreparedStatement ps = connection.prepareStatement(updateSql.toString())) {
-                    int index = 1;
-                    if (newName != null && !newName.trim().isEmpty()) ps.setString(index++, newName);
-                    if (newEmail != null && !newEmail.trim().isEmpty()) ps.setString(index++, newEmail);
-                    if (newPassword != null && !newPassword.trim().isEmpty()) ps.setString(index++, newPassword);
-                    ps.setInt(index, loggedInAdmin.getAdminId());
-                    ps.executeUpdate();
-                }
-
+                adminDao.updateAdmin(loggedInAdmin, connection);
                 session.setAttribute("loggedInAdmin", loggedInAdmin);
                 response.sendRedirect("admin_edit");
-            } catch (SQLException e) {
-                throw new ServletException("データベースエラーが発生しました。", e);
+
+            } else if ("delete".equals(action)) {
+                // 管理者退会処理
+                adminDao.deleteAdmin(loggedInAdmin.getAdminId(), connection);
+                session.invalidate(); // セッションを終了
+                response.sendRedirect("top");
+            } else {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "無効なアクションです。");
             }
-        } else {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "無効なアクションです。");
+        } catch (Exception e) {
+            throw new ServletException("処理中にエラーが発生しました。", e);
         }
     }
-}
+    }

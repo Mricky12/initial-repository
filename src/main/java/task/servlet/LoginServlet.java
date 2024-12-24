@@ -71,12 +71,13 @@ public class LoginServlet extends HttpServlet {
 	            AdminsDAO adminsDAO = new AdminsDAO();
 	            AdminsDTO admin = adminsDAO.findAdminByEmailAndPassword(email, password, connection);
 
+	            
 	            if (admin != null) {
                     HttpSession session = request.getSession();
                     session.invalidate(); // 古いセッションを無効化
                     session = request.getSession(true); // 新しいセッションを作成
                     session.setAttribute("loggedInAdmin", admin);
-                    response.sendRedirect("admin_usersearch.jsp"); // 管理者用ページへリダイレクト
+                    response.sendRedirect("admin_usersearch"); // 管理者用ページへリダイレクト
 	            } else {
 	                // 管理者エラーメッセージ
 	                request.setAttribute("adminError", "※メールアドレス、パスワードが間違っています。※");

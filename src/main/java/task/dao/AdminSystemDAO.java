@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import task.dto.AdminSystemDTO;
+import task.dto.AdminsDTO;
 
 public class AdminSystemDAO {
     public List<AdminSystemDTO> searchUsers(String userId, String name, String email, Connection connection) throws Exception {
@@ -63,4 +64,64 @@ public class AdminSystemDAO {
             ps.executeUpdate();
         }
     }
+
+    public void updateAdmin(AdminsDTO admin, Connection connection) throws Exception {
+        StringBuilder updateSql = new StringBuilder("UPDATE admins SET ");
+        boolean hasUpdate = false;
+
+        if (admin.getAdminName() != null && !admin.getAdminName().trim().isEmpty()) {
+            updateSql.append("admin_name = ?, ");
+            hasUpdate = true;
+        }
+        if (admin.getAdminEmail() != null && !admin.getAdminEmail().trim().isEmpty()) {
+            updateSql.append("admin_email = ?, ");
+            hasUpdate = true;
+        }
+        if (admin.getAdminPassword() != null && !admin.getAdminPassword().trim().isEmpty()) {
+        	updateSql.append("admin_password = ?, ");
+            hasUpdate = true;
+        }
+
+        if (!hasUpdate) {
+            throw new IllegalArgumentException("更新するデータがありません。");
+        }
+
+        updateSql.setLength(updateSql.length() - 2); // 最後のカンマを削除
+        updateSql.append(" WHERE admin_id = ?");
+
+        try (PreparedStatement ps = connection.prepareStatement(updateSql.toString())) {
+            int index = 1;
+            if (admin.getAdminName() != null && !admin.getAdminName().trim().isEmpty()) {
+                ps.setString(index++, admin.getAdminName());
+            }
+            if (admin.getAdminEmail() != null && !admin.getAdminEmail().trim().isEmpty()) {
+                ps.setString(index++, admin.getAdminEmail());
+            }
+            if (admin.getAdminPassword() != null && !admin.getAdminPassword().trim().isEmpty()) {
+                ps.setString(index++, admin.getAdminPassword());
+            }
+            ps.setInt(index, admin.getAdminId());
+            ps.executeUpdate();
+            
+            }
 }
+
+
+
+    public void deleteAdmin(int adminId, Connection connection) throws Exception {
+        String sql = "UPDATE admins SET admin_deleted_at = NOW() WHERE admin_id = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, adminId);
+            ps.executeUpdate();
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
