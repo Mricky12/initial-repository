@@ -61,7 +61,7 @@ Authorization: Bearer
 			<div class="icon-container">
 				<a href="" class="icon-link"> <img src="images/メニューの無料アイコン4.png"
 					alt="ホーム">
-				</a> <a href="" class="icon-link"> <img
+				</a> <a href="edituser.jsp" class="icon-link"> <img
 					src="images/人物のアイコン素材 その3.png" alt="アカウント">
 				</a>
 			</div>
@@ -75,9 +75,9 @@ Authorization: Bearer
 				<ul class="menu">
 					<li><a href="#"><span class="bullet">・</span>マイタスク</a></li>
 					<li><a href="group"><span class="bullet">・</span>グループ作成/編集</a></li>
-					<li><a href="tgroupmember"><span class="bullet">・</span>グループメンバー編集</a></li>
-					<li><a href="grouptask"><span class="bullet">・</span>グループタスク一覧</a></li>
-					<li><a href="edituser"><span class="bullet">・</span>ユーザー編集</a></li>
+					<li><a href="groupmember"><span class="bullet">・</span>グループメンバー編集</a></li>
+					<li><a href="grouptask.jsp"><span class="bullet">・</span>グループタスク一覧</a></li>
+					<li><a href="edituser.jsp"><span class="bullet">・</span>ユーザー編集</a></li>
 					<li id="logout-link"><a href="java_task/top"><span
 							class="bullet">・</span>ログアウト</a></li>
 				</ul>

@@ -64,7 +64,7 @@
                     <li><a href="groupmember"><span class="bullet">・</span>グループメンバー編集</a></li>
                     <li><a href="grouptask.jsp"><span class="bullet">・</span>グループタスク一覧</a></li>
                     <li><a href=""><span class="bullet">・</span>ユーザー編集</a></li>
-                    <li><a href="#logout" id="logout-link"><span class="bullet">・</span>ログアウト</a></li>
+                    <li><a href="logout" id="logout-link"><span class="bullet">・</span>ログアウト</a></li>
                 </ul>
             </div>
             <div class="main-content">
