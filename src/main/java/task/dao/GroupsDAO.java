@@ -9,9 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import task.dto.GroupsDTO;
-import task.dto.UsersDTO;
 
-/*public class GroupsDAO {
+public class GroupsDAO {
 	private Connection conn;
 
     // コンストラクタで DB 接続を受け取る形式
@@ -126,9 +125,9 @@ import task.dto.UsersDTO;
         return this.conn;
     }
     
-}*/
+}
 
-public class GroupsDAO {
+/*public class GroupsDAO {
     private Connection conn;
 
     // コンストラクタで DB 接続を受け取る形式
@@ -192,7 +191,7 @@ public class GroupsDAO {
         }
     }
     
-	/*ここからユーザーの操作*/
+	ここからユーザーの操作
     // ユーザーに紐付くグループ情報を取得
     public List<GroupsDTO> getGroupsByUserId(int userId) throws SQLException {
         String sql = "SELECT g.group_id, g.group_name " +
@@ -315,4 +314,4 @@ public class GroupsDAO {
     public Connection getConnection() {
         return this.conn;
     }
-}
+}*/

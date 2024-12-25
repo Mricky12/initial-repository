@@ -8,7 +8,7 @@ public class GroupsDTO {
    // フィールド定義
    private int groupId; // グループID
    private String groupName; // グループ名
-   private int userId; // ユーザーIDを保持するフィールド
+   
 
    // デフォルトコンストラクタ
    public GroupsDTO() {
@@ -37,15 +37,7 @@ public class GroupsDTO {
        this.groupName = groupName;
    }
 
-   // userId を設定するための setter メソッドを追加
-   public void setUserId(int userId) {
-       this.userId = userId;
-   }
-
-   // userId を取得する getter メソッドも必要なら追加
-   public int getUserId() {
-       return userId;
-   }
+   
    
    @Override
    public String toString() {

@@ -68,10 +68,10 @@
                 <ul class="menu">
                     <li><a href="myselftask.jsp"><span class="bullet">・</span>マイタスク</a></li>
                     <li><a href="#"><span class="bullet">・</span>グループ作成/編集</a></li>
-                    <li><a href="groupmember.jsp"><span class="bullet">・</span>グループメンバー編集</a></li>
-                    <li><a href="grouptask.jsp"><span class="bullet">・</span>グループタスク一覧</a></li>
-                    <li><a href="edituser.jsp"><span class="bullet">・</span>ユーザー編集</a></li>
-                    <li><a href="#logout" id="logout-link"><span class="bullet">・</span>ログアウト</a></li>
+                    <li><a href="groupmember"><span class="bullet">・</span>グループメンバー編集</a></li>
+                    <li><a href="grouptask"><span class="bullet">・</span>グループタスク一覧</a></li>
+                    <li><a href="edituser"><span class="bullet">・</span>ユーザー編集</a></li>
+                    <li><a href="logout" id="logout-link"><span class="bullet">・</span>ログアウト</a></li>
                 </ul>
             </div>
             <script>
@@ -127,7 +127,7 @@
                             <option value="" selected>▼グループ選択</option>
                     		<%
                     		// グループリストをリクエストから取得
-                   			List<GroupsDTO> groups = (List<GroupsDTO>) request.getAttribute("userGroups");
+                   			List<GroupsDTO> groups = (List<GroupsDTO>) request.getAttribute("groups");
                     		if (groups != null && !groups.isEmpty()) {
                         		for (GroupsDTO group : groups) {
                         			// デバッグ出力

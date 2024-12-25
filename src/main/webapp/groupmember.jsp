@@ -99,13 +99,9 @@
                       
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label for="newName">新しい名前</label>
-                        <input type="text" id="newName"name="newName" class="form-control" placeholder="" required>
-                    </div>
                 	<div class="button-container">
                     	<button class="cancel-button" type="button" onclick="window.location.href=''">キャンセル</button>
-                    	<button class="bule-button search-button" type="submit">追加</button>
+                    	<button class="bule-button search-button" type="submit">削除</button>
                 	</div>
             	</form>
                 

@@ -10,13 +10,11 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import task.DBCon;
 import task.dao.GroupsDAO;
 import task.dto.GroupsDTO;
-import task.dto.UsersDTO;
 
-/*@WebServlet(name = "GroupServlet", urlPatterns = "/group")
+@WebServlet(name = "GroupServlet", urlPatterns = "/group")
 public class GroupServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -27,7 +25,7 @@ public class GroupServlet extends HttpServlet {
 	@Override
 	public void init() throws ServletException {
 		Connection conn = DBCon.getConnection();
-		groupsDAOを作成
+		/*groupsDAOを作成*/
 		groupsDAO = new GroupsDAO(conn);
 	}
 
@@ -57,43 +55,43 @@ public class GroupServlet extends HttpServlet {
 
 	// doPostメソッド：JSPからグループ名を受け取って新規登録
 	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-	        throws ServletException, IOException {
-	    try {
-	        request.setCharacterEncoding("UTF-8");
-	        String groupName = request.getParameter("group_name");
-	
-	        // バリデーション：グループ名が空の場合
-	        if (groupName == null || groupName.trim().isEmpty()) {
-	            request.setAttribute("error", "グループ名を入力してください。");
-	            request.getRequestDispatcher("/groupcreate.jsp").forward(request, response);
-	            return;
-	        }
-	
-	        // DTOにデータをセット
-	        GroupsDTO group = new GroupsDTO();
-	        group.setGroupName(groupName);
-	
-	        // DAO経由でデータベースに登録
-	        boolean isCreated = groupsDAO.insertGroup(group);
-	
-	        // 作成結果に応じた処理
-	        if (isCreated) {
-	            // 作成成功時はリダイレクト
-				response.sendRedirect("groupmemberedit?success=true&groupName="
-				        + URLEncoder.encode(groupName, "UTF-8"));
-	        	doGet(request, response);
-	        } else {
-	            // 作成失敗時にエラーメッセージを表示
-	            request.setAttribute("error", "グループ登録に失敗しました。");
-	            request.getRequestDispatcher("/groupcreate.jsp").forward(request, response);
-	        }
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        request.setAttribute("error", "処理中にエラーが発生しました。");
-	        request.getRequestDispatcher("/error.jsp").forward(request, response);
-	    }
-	}
+	/*	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+		        throws ServletException, IOException {
+		    try {
+		        request.setCharacterEncoding("UTF-8");
+		        String groupName = request.getParameter("group_name");
+		
+		        // バリデーション：グループ名が空の場合
+		        if (groupName == null || groupName.trim().isEmpty()) {
+		            request.setAttribute("error", "グループ名を入力してください。");
+		            request.getRequestDispatcher("/groupcreate.jsp").forward(request, response);
+		            return;
+		        }
+		
+		        // DTOにデータをセット
+		        GroupsDTO group = new GroupsDTO();
+		        group.setGroupName(groupName);
+		
+		        // DAO経由でデータベースに登録
+		        boolean isCreated = groupsDAO.insertGroup(group);
+		
+		        // 作成結果に応じた処理
+		        if (isCreated) {
+		            // 作成成功時はリダイレクト
+					response.sendRedirect("groupmemberedit?success=true&groupName="
+					        + URLEncoder.encode(groupName, "UTF-8"));
+		        	doGet(request, response);
+		        } else {
+		            // 作成失敗時にエラーメッセージを表示
+		            request.setAttribute("error", "グループ登録に失敗しました。");
+		            request.getRequestDispatcher("/groupcreate.jsp").forward(request, response);
+		        }
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		        request.setAttribute("error", "処理中にエラーが発生しました。");
+		        request.getRequestDispatcher("/error.jsp").forward(request, response);
+		    }
+		}*/
 
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -205,9 +203,12 @@ public class GroupServlet extends HttpServlet {
 
 
 }
-*/
 
-@WebServlet(name = "GroupServlet", urlPatterns = "/group")
+
+
+
+
+/*@WebServlet(name = "GroupServlet", urlPatterns = "/group")
 public class GroupServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private GroupsDAO groupsDAO;
@@ -224,9 +225,14 @@ public class GroupServlet extends HttpServlet {
         try {
             HttpSession session = request.getSession();
             UsersDTO loggedInUser =(UsersDTO) session.getAttribute("loggedInUser"); // セッションからユーザーIDを取得
-			/*System.out.println("おはようJava!!");
+			System.out.println("おはようJava!!");
 			System.out.println(loggedInUser.getId());
-			System.out.println(loggedInUser.getName());*/
+			System.out.println(loggedInUser.getName());
+            if (loggedInUser == null) {
+                response.sendRedirect("login.jsp");
+                return;
+            }
+            
             // ユーザーに紐付くグループリストを取得
 			List<GroupsDTO> userGroups = groupsDAO.getGroupsByUserId(loggedInUser.getId());
 			request.setAttribute("userGroups", userGroups);
@@ -243,28 +249,35 @@ public class GroupServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+  
         String action = request.getParameter("action");
         try {
-            if ("create".equals(action)) {
-                String groupName = request.getParameter("group_name");
-                HttpSession session = request.getSession();
-                UsersDTO loggedInUser =(UsersDTO) session.getAttribute("loggedInUser"); // セッションからユーザーIDを取得
+            HttpSession session = request.getSession();
+            UsersDTO loggedInUser = (UsersDTO) session.getAttribute("loggedInUser");
 
-                // 新しいグループを作成
-                GroupsDTO group = new GroupsDTO();
-                group.setGroupName(groupName);
-                group.getloggedInUser(loggedInUser);
-                boolean isCreated = groupsDAO.insertGroup(group);
+            if (loggedInUser == null) {
+                response.sendRedirect("login.jsp");
+                return;
+            }
 
-                request.setAttribute(isCreated ? "message" : "error",
-                        isCreated ? "グループを作成しました。" : "グループ作成に失敗しました。");
-            } else if ("delete".equals(action)) {
-                int groupId = Integer.parseInt(request.getParameter("groupId"));
+            String groupName = request.getParameter("group_name");
+            if (groupName == null || groupName.trim().isEmpty()) {
+                request.setAttribute("error", "グループ名を入力してください。");
+                request.getRequestDispatcher("/groupcreate.jsp").forward(request, response);
+                return;
+            }
 
-                // グループ削除
-                boolean isDeleted = groupsDAO.deleteGroup(groupId);
-                request.setAttribute(isDeleted ? "message" : "error",
-                        isDeleted ? "グループを削除しました。" : "グループ削除に失敗しました。");
+            // グループを作成
+            GroupsDTO group = new GroupsDTO();
+            group.setGroupName(groupName);
+            boolean isCreated = groupsDAO.insertGroup(group);
+
+            // グループ作成成功後、ユーザーとグループを紐付け
+            if (isCreated) {
+                groupsDAO.addUserToGroup(loggedInUser.getId(), group.getGroupId());
+                request.setAttribute("message", "グループを作成しました。");
+            } else {
+                request.setAttribute("error", "グループ作成に失敗しました。");
             }
 
             doGet(request, response);
@@ -286,3 +299,4 @@ public class GroupServlet extends HttpServlet {
         }
     }
 }
+*/
