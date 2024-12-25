@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import task.dto.GroupsDTO;
+import task.dto.UsersDTO;
 
 public class GroupsDAO {
 	private Connection conn;
@@ -118,8 +119,36 @@ public class GroupsDAO {
             return false; // 削除に失敗した場合は false を返す
         }
     }
+    
+    public UsersDTO findUserByNameOrEmail(String identifier) throws SQLException {
+        String query = "SELECT * FROM users WHERE username = ? OR email = ?";
+        try (Connection conn = getConnection(); 
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, identifier);
+            stmt.setString(2, identifier);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    UsersDTO user = new UsersDTO();
+                    user.setId(rs.getInt("user_id"));
+                    user.setName(rs.getString("username"));
+                    user.setEmail(rs.getString("email"));
+                    return user;
+                }
+            }
+        }
+        return null;
+    }
 
+    public boolean addUserToGroup(int groupId, int userId) throws SQLException {
+        String query = "INSERT INTO users_groups (group_id, user_id) VALUES (?, ?)";
+        try (Connection conn = getConnection(); 
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, groupId);
+            stmt.setInt(2, userId);
+            return stmt.executeUpdate() > 0;
+        }
 
+    }
     
     public Connection getConnection() {
         return this.conn;

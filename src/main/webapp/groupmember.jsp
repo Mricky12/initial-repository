@@ -73,14 +73,14 @@
             </div>
             <div class="main-content">
                 <p>グループメンバー削除</p>
-                <form action="group" method="post" class="main-content-child">
-                	<input type="hidden" name="action" value="update">
+                <form action="GroupMemberServlet" method="post" class="main-content-child">
+                	<!-- <input type="hidden" name="action" value="update"> -->
                     <div class="form-group">
                         <select name="groupId" required>
                             <option value="" selected>▼グループ選択</option>
                     		<%
                     		// グループリストをリクエストから取得
-                   			List<GroupsDTO> groups = (List<GroupsDTO>) request.getAttribute("userGroups");
+                   			List<GroupsDTO> groups = (List<GroupsDTO>) request.getAttribute("groups");
                     		if (groups != null && !groups.isEmpty()) {
                         		for (GroupsDTO group : groups) {
                         			// デバッグ出力
@@ -108,7 +108,7 @@
             </div>
             <div class="main-content">
                 <p>グループメンバー追加</p>
-                <form action="edit" method="post" class="main-content-child">
+                <form action="GroupMemberServlet" method="post" class="main-content-child">
                     <!-- グループ選択 -->
 					<div class="select-container">
   						<!-- グループリストを動的に表示 -->
@@ -141,7 +141,7 @@
                     </div>
                     <div class="button-container">
                     	<button class="cancel-button" type="button">キャンセル</button>
-                    	<button class="search-button" type="button">追加</button>
+                    	<button class="search-button" type="submit">追加</button>
                 	</div>
                 </form>
                 
