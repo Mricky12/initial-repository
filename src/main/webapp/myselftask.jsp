@@ -74,10 +74,10 @@ Authorization: Bearer
 			<div class="sidebar">
 				<ul class="menu">
 					<li><a href="#"><span class="bullet">・</span>マイタスク</a></li>
-					<li><a href="java_task/tgroup"><span class="bullet">・</span>グループ作成/編集</a></li>
-					<li><a href="java_task/tgroupmember"><span class="bullet">・</span>グループメンバー編集</a></li>
-					<li><a href="java_task/tgrouptask"><span class="bullet">・</span>グループタスク一覧</a></li>
-					<li><a href="java_task/tedituser"><span class="bullet">・</span>ユーザー編集</a></li>
+					<li><a href="group"><span class="bullet">・</span>グループ作成/編集</a></li>
+					<li><a href="tgroupmember"><span class="bullet">・</span>グループメンバー編集</a></li>
+					<li><a href="grouptask"><span class="bullet">・</span>グループタスク一覧</a></li>
+					<li><a href="edituser"><span class="bullet">・</span>ユーザー編集</a></li>
 					<li id="logout-link"><a href="java_task/top"><span
 							class="bullet">・</span>ログアウト</a></li>
 				</ul>
