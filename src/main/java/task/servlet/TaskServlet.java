@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpSession;
 
 import task.dao.TaskDAO;
 import task.dto.TaskDTO;
+import task.dto.UsersDTO;
 
 @WebServlet(name = "myselftask", urlPatterns = "/myselftask")
 //アップロードファイルの最大サイズを5MBに設定
@@ -32,12 +33,20 @@ public class TaskServlet extends HttpServlet {
 			throws ServletException, IOException {
 		System.out.println("TaskServlet: doGet() - GETリクエスト受信");
 
+		HttpSession session = request.getSession();
+		UsersDTO loggedInUser = (UsersDTO) session.getAttribute("loggedInUser");
+
+		if (loggedInUser == null) {
+			session.setAttribute("error", "セッションが切れました。再度ログインしてください。");
+			response.sendRedirect("top");
+			return;
+		}
+
 		TaskDAO taskDAO = new TaskDAO();
 		// 全タスク取得
 		List<TaskDTO> taskList = taskDAO.getAllTasks();
 		request.setAttribute("taskList", taskList);
 
-		// タスク一覧を取得し、JSPへ転送
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/myselftask.jsp");
 		dispatcher.forward(request, response);
 	}
@@ -55,9 +64,10 @@ public class TaskServlet extends HttpServlet {
 
 		if ("create".equals(action)) {
 			HttpSession session = request.getSession();
-			Integer userId = (Integer) session.getAttribute("userId");
+			UsersDTO loggedInUser = (UsersDTO) session.getAttribute("loggedInUser");
 
-			if (userId == null) {
+			if (loggedInUser == null) {
+				// ユーザーがログインしていない場合の処理
 				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "ユーザーがログインしていません。");
 				return;
 			}
@@ -68,7 +78,7 @@ public class TaskServlet extends HttpServlet {
 			int colorId = Integer.parseInt(request.getParameter("colorId"));
 
 			// タスクをデータベースに登録する処理を呼び出す
-			boolean isTaskCreated = insertTask(userId, taskTitle, taskContent, colorId);
+			boolean isTaskCreated = insertTask(loggedInUser.getId(), taskTitle, taskContent, colorId);
 			if (isTaskCreated) {
 				// タスクが正常に登録された場合の処理
 				response.sendRedirect(request.getContextPath() + "/myselftask");
@@ -76,12 +86,18 @@ public class TaskServlet extends HttpServlet {
 				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "タスクの登録に失敗しました。");
 			}
 		}
-
 	}
 
 	private boolean insertTask(Integer userId, String taskTitle, String taskContent, int colorId) {
-		// TODO 自動生成されたメソッド・スタブ
-		return false;
-	}
+		TaskDAO taskDAO = new TaskDAO();
+		TaskDTO task = new TaskDTO();
+		task.setUserId(userId);
+		task.setTaskTitle(taskTitle);
+		task.setTask(taskContent);
+		task.setColorId(colorId);
+		System.out.println("Inserting task for userId: " + userId);
 
+		// タスクをデータベースに登録
+		return taskDAO.insertTask(task, colorId);
+	}
 }

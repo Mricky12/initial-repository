@@ -5,15 +5,16 @@ import java.util.Objects;
 
 public class TaskDTO {
 
-	//	フィールド定義
-	private Integer taskId; //タスクID
-	private String taskTitle; //タスクタイトル
-	private String task; //タスク内容
-	private byte[] taskImage; //タスク画像
-	private Integer userId; //ユーザーID
-	private Integer colorId; //カラーID（NULL許容なのでInteger）
-	private boolean trash; //ゴミ箱フラグ
+	// フィールド定義
+	private Integer taskId; // タスクID
+	private String taskTitle; // タスクタイトル
+	private String task; // タスク内容
+	private byte[] taskImage; // タスク画像
+	private Integer userId; // ユーザーID
+	private Integer colorId; // カラーID（NULL許容なのでInteger）
+	private boolean trash; // ゴミ箱フラグ
 	private String colorCode; // カラーコードを格納するフィールド
+	private UsersDTO loggedInUser; // ログインユーザー情報を格納するフィールド
 
 	// コンストラクタ
 	public TaskDTO() {
@@ -21,7 +22,7 @@ public class TaskDTO {
 
 	// 全フィールドを因数に持つコンストラクタ
 	public TaskDTO(int taskId, String taskTitle, String task, byte[] taskImage, int userId, Integer colorId,
-			boolean trash) {
+			boolean trash, UsersDTO loggedInUser) {
 		this.taskId = taskId;
 		this.taskTitle = taskTitle;
 		this.task = task;
@@ -29,9 +30,10 @@ public class TaskDTO {
 		this.userId = userId;
 		this.colorId = colorId;
 		this.trash = trash;
+		this.loggedInUser = loggedInUser;
 	}
 
-	//Getterメソッド
+	// Getterメソッド
 	public Integer getTaskId() {
 		return taskId;
 	}
@@ -64,7 +66,11 @@ public class TaskDTO {
 		return colorCode;
 	}
 
-	//	Setterメソッド
+	public UsersDTO getLoggedInUser() {
+		return loggedInUser;
+	}
+
+	// Setterメソッド
 	public void setTaskId(Integer taskId) {
 		this.taskId = taskId;
 	}
@@ -97,7 +103,11 @@ public class TaskDTO {
 		this.colorCode = colorCode;
 	}
 
-	//Override: toStringメソッド
+	public void setLoggedInUser(UsersDTO loggedInUser) {
+		this.loggedInUser = loggedInUser;
+	}
+
+	// Override: toStringメソッド
 	@Override
 	public String toString() {
 		return "TaskDTO{" +
@@ -108,13 +118,14 @@ public class TaskDTO {
 				", userId=" + userId +
 				", colorId=" + colorId +
 				", trash=" + trash +
+				", loggedInUser=" + loggedInUser +
 				'}';
 	}
 
 	// Override: hashCodeメソッド
 	@Override
 	public int hashCode() {
-		return Objects.hash(taskId, taskTitle, task, Arrays.hashCode(taskImage), userId, colorId, trash);
+		return Objects.hash(taskId, taskTitle, task, Arrays.hashCode(taskImage), userId, colorId, trash, loggedInUser);
 	}
 
 	// Override: equalsメソッド
@@ -131,7 +142,7 @@ public class TaskDTO {
 				Objects.equals(taskTitle, taskDTO.taskTitle) &&
 				Objects.equals(task, taskDTO.task) &&
 				Arrays.equals(taskImage, taskDTO.taskImage) &&
-				Objects.equals(colorId, taskDTO.colorId);
+				Objects.equals(colorId, taskDTO.colorId) &&
+				Objects.equals(loggedInUser, taskDTO.loggedInUser);
 	}
-
 }
