@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,20 +13,22 @@ import task.dto.TaskDTO;
 
 public class TaskDAO {
 
+	private Object userId;
+
 	// 色一覧取得
 	public List<TaskDTO> getAllColors() {
 		String sql = "SELECT color_id, color_name, color_code FROM colors";
 		List<TaskDTO> colorList = new ArrayList<>();
 
 		try (Connection conn = DBCon.getConnection();
-				Statement stmt = conn.createStatement();
-				ResultSet rs = stmt.executeQuery(sql)) {
+				PreparedStatement pstmt = conn.prepareStatement(sql);
+				ResultSet rs = pstmt.executeQuery()) {
 
 			while (rs.next()) {
 				TaskDTO color = new TaskDTO();
 				color.setColorId(rs.getInt("color_id"));
 				color.setColorCode(rs.getString("color_code"));
-				color.setTaskTitle(rs.getString("color_name")); // 仮にcolor_nameをtaskTitleに流用
+				color.setTaskTitle(rs.getString("color_name"));
 				colorList.add(color);
 			}
 		} catch (SQLException e) {
@@ -45,39 +46,14 @@ public class TaskDAO {
 			pstmt.setString(1, task.getTaskTitle());
 			pstmt.setString(2, task.getTask());
 			pstmt.setInt(3, user_Id);
-			pstmt.setInt(4, task.getColorId());
+			pstmt.setObject(4, task.getColorId(), java.sql.Types.INTEGER);
 
-			int rowsAffected = pstmt.executeUpdate();
-			return rowsAffected > 0; // 1行以上影響を受けた場合は成功
+			return pstmt.executeUpdate() > 0; // 1行以上影響を受けた場合は成功
 		} catch (SQLException e) {
+			System.out.println("Inserting task for userId: " + userId);
 			e.printStackTrace(); // エラーログを出力
 			return false; // 失敗した場合はfalseを返す
 		}
-	}
-
-	// タスク取得(SELECT BY ID)
-	public TaskDTO getTaskById(int taskId) {
-		String sql = "SELECT * FROM tasks WHERE task_id= ?";
-		try (Connection conn = DBCon.getConnection();
-				PreparedStatement pstmt = conn.prepareStatement(sql)) {
-			pstmt.setInt(1, taskId);
-			ResultSet rs = pstmt.executeQuery();
-			if (rs.next()) {
-				TaskDTO task = new TaskDTO();
-				task.setTaskId(rs.getInt("task_id"));
-				task.setTaskTitle(rs.getString("task_title"));
-				task.setTask(rs.getString("task"));
-				task.setTaskImage(rs.getBytes("task_image"));
-				task.setUserId(rs.getInt("user_id"));
-				task.setColorId(rs.getObject("color_id") != null ? rs.getInt("color_id") : null);
-				task.setTrash(rs.getBoolean("trash"));
-				return task;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		// データが見つからない場合
-		return null;
 	}
 
 	// タスク一覧取得 (SELECT ALL)
@@ -88,8 +64,9 @@ public class TaskDAO {
 				"LEFT JOIN colors c ON t.color_id = c.color_id";
 		List<TaskDTO> taskList = new ArrayList<>();
 		try (Connection conn = DBCon.getConnection();
-				Statement stmt = conn.createStatement();
-				ResultSet rs = stmt.executeQuery(sql)) {
+				PreparedStatement pstmt = conn.prepareStatement(sql);
+				ResultSet rs = pstmt.executeQuery()) {
+
 			while (rs.next()) {
 				TaskDTO task = new TaskDTO();
 				task.setTaskId(rs.getInt("task_id"));
@@ -122,11 +99,13 @@ public class TaskDAO {
 			} else {
 				pstmt.setNull(3, Types.INTEGER);
 			}
-
 			pstmt.setInt(4, task.getTaskId());
+
 			int rowsAffected = pstmt.executeUpdate();
+			System.out.println("Rows updated: " + rowsAffected);
 			return rowsAffected > 0;
 		} catch (SQLException e) {
+			System.err.println("Update task failed: " + e.getMessage());
 			e.printStackTrace();
 			return false;
 		}
@@ -138,11 +117,13 @@ public class TaskDAO {
 		try (Connection conn = DBCon.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(sql)) {
 			pstmt.setInt(1, taskId);
+
 			int rows = pstmt.executeUpdate();
+			System.out.println("Rows deleted: " + rows);
 			// 削除成功の場合trueを返す
 			return rows > 0;
-
 		} catch (SQLException e) {
+			System.err.println("Delete task failed: " + e.getMessage());
 			e.printStackTrace();
 			return false;
 		}

@@ -141,31 +141,34 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 function toggleEditMode(taskId) {
-	// タスク表示エリアの取得
 	const taskElement = document.getElementById(`task-${taskId}`);
+	if (!taskElement) {
+		console.error(`Task element with ID "task-${taskId}" not found.`);
+		return; // 処理を終了
+	}
+
 	const taskTitleElement = taskElement.querySelector(".task-title");
 	const taskDetailElement = taskElement.querySelector(".task-content");
-	const editButton = taskElement.querySelector(".edit-btn");
-	const saveButton = taskElement.querySelector(".save-btn");
 
-	// すでに編集モードの場合は処理しない
-	if (taskElement.dataset.editing === "true") return;
+	if (!taskTitleElement || !taskDetailElement) {
+		console.error(`Task title or content element not found in task-${taskId}.`);
+		return; // 処理を終了
+	}
 
-	// 編集モードに切り替え
-	taskElement.dataset.editing = "true";
-
-	// 現在のタイトルと詳細を取得
+	// 以下は通常の処理
 	const currentTitle = taskTitleElement.textContent.trim();
 	const currentDetail = taskDetailElement.textContent.trim();
 
-	// タイトルと内容を編集可能なフォームに切り替え
 	taskTitleElement.innerHTML = `<input type="text" id="edit-title-${taskId}" value="${currentTitle}" class="edit-input">`;
 	taskDetailElement.innerHTML = `<textarea id="edit-content-${taskId}" class="edit-textarea">${currentDetail}</textarea>`;
 
-	// ボタンの表示/非表示を切り替え
+	const editButton = taskElement.querySelector(".edit-btn");
+	const saveButton = taskElement.querySelector(".save-btn");
+
 	editButton.classList.add("hidden");
 	saveButton.classList.remove("hidden");
 }
+
 
 function saveTask(taskId) {
 	const taskTitleInput = document.getElementById(`edit-title-${taskId}`);

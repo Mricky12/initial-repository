@@ -58,46 +58,65 @@ public class TaskServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
 
+		HttpSession session = request.getSession();
+		UsersDTO loggedInUser = (UsersDTO) session.getAttribute("loggedInUser");
+
+		if (loggedInUser == null) {
+			response.sendRedirect("top");
+			return;
+		}
+
 		String action = request.getParameter("action");
 		System.out.println("TaskServlet: doPost() - POSTリクエスト受信");
 		System.out.println("TaskServlet: action = " + action);
+		TaskDAO taskDAO = new TaskDAO();
 
+		//タスク投稿
 		if ("create".equals(action)) {
-			HttpSession session = request.getSession();
-			UsersDTO loggedInUser = (UsersDTO) session.getAttribute("loggedInUser");
-
-			if (loggedInUser == null) {
-				// ユーザーがログインしていない場合の処理
-				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "ユーザーがログインしていません。");
-				return;
-			}
-
-			// タスクの情報を取得
 			String taskTitle = request.getParameter("taskTitle");
 			String taskContent = request.getParameter("taskContent");
 			int colorId = Integer.parseInt(request.getParameter("colorId"));
 
-			// タスクをデータベースに登録する処理を呼び出す
-			boolean isTaskCreated = insertTask(loggedInUser.getId(), taskTitle, taskContent, colorId);
+			TaskDTO task = new TaskDTO();
+			task.setTaskTitle(taskTitle);
+			task.setTask(taskContent);
+			task.setColorId(colorId);
+
+			boolean isTaskCreated = taskDAO.insertTask(task, loggedInUser.getId());
 			if (isTaskCreated) {
-				// タスクが正常に登録された場合の処理
 				response.sendRedirect(request.getContextPath() + "/myselftask");
 			} else {
 				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "タスクの登録に失敗しました。");
 			}
+			//タスク削除
+		} else if ("delete".equals(action)) {
+			int taskId = Integer.parseInt(request.getParameter("taskId"));
+			boolean isTaskDeleted = taskDAO.deleteTask(taskId);
+			if (isTaskDeleted) {
+				response.sendRedirect(request.getContextPath() + "/myselftask");
+			} else {
+				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "タスクの削除に失敗しました。");
+			}
+			//タスク編集
+		} else if ("update".equals(action)) {
+			int taskId = Integer.parseInt(request.getParameter("taskId"));
+			String taskTitle = request.getParameter("taskTitle");
+			String taskContent = request.getParameter("taskContent");
+			String colorIdParam = request.getParameter("colorId");
+			Integer colorId = (colorIdParam != null && !colorIdParam.isEmpty()) ? Integer.parseInt(colorIdParam) : null;
+
+			TaskDTO task = new TaskDTO();
+			task.setTaskId(taskId);
+			task.setTaskTitle(taskTitle);
+			task.setTask(taskContent);
+			task.setColorId(colorId);
+
+			boolean isTaskUpdated = taskDAO.updateTask(task);
+			if (isTaskUpdated) {
+				response.sendRedirect(request.getContextPath() + "/myselftask");
+			} else {
+				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "タスクの更新に失敗しました。");
+			}
 		}
-	}
-
-	private boolean insertTask(Integer userId, String taskTitle, String taskContent, int colorId) {
-		TaskDAO taskDAO = new TaskDAO();
-		TaskDTO task = new TaskDTO();
-		task.setUserId(userId);
-		task.setTaskTitle(taskTitle);
-		task.setTask(taskContent);
-		task.setColorId(colorId);
-		System.out.println("Inserting task for userId: " + userId);
-
-		// タスクをデータベースに登録
-		return taskDAO.insertTask(task, colorId);
 	}
 }
