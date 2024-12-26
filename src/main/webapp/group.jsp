@@ -74,34 +74,18 @@
                     <li><a href="logout" id="logout-link"><span class="bullet">・</span>ログアウト</a></li>
                 </ul>
             </div>
-            <script>
-            	/* 成功時にはアラートが表示 */
-    			document.addEventListener("DOMContentLoaded", function () {
-        			const urlParams = new URLSearchParams(window.location.search);
-        			const success = urlParams.get("success");
-        			const groupName = urlParams.get("groupName");
-
-        			if (success === "true" && groupName) {
-            			const decodedGroupName = decodeURIComponent(groupName);
-            			alert(`グループ「${decodedGroupName}」が正常に作成されました。`);
-            			window.location.href = ""; // 作成完了後に遷移
-        			}
-
-        			const errorMessage = document.getElementById("error-message").dataset.error;
-        			if (errorMessage) {
-            			alert(errorMessage);
-        			}
-    			});
-			</script>
 			<!-- エラーメッセージの表示 -->
             <% if (request.getAttribute("error") != null) { %>
     			<script>alert("<%= request.getAttribute("error") %>");</script>
+			<% } %>
+			<% if (request.getAttribute("message") != null) { %>
+    			<script>alert("<%= request.getAttribute("message") %>");</script>
 			<% } %>
             
             <div class="main-content">
                 <p>グループ作成</p>
                 <%-- エラーメッセージをJavaScriptで処理するため、データ属性として設定 --%>
-    			<div id="error-message" data-error="<%= request.getAttribute("error") != null ? request.getAttribute("error") : "" %>"></div>
+    			<%-- <div id="error-message" data-error="<%= request.getAttribute("error") != null ? request.getAttribute("error") : "" %>"></div> --%>
     			
     			
                 <form action="group" method="post" class="main-content-child">
@@ -188,6 +172,5 @@
         
     </div>
     <script src="./js/script.js"></script>
-    <script src="./js/group_create.js" defer></script>
 </body>
 </html>

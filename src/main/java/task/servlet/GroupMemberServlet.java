@@ -38,8 +38,10 @@ public class GroupMemberServlet extends HttpServlet {
     }
 
     @Override
+	/*ユーザーをグループに追加するリクエストを処理*/
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String groupId = request.getParameter("groupId");
+        String[] Id = request.getParameterValues("Id");
         String member = request.getParameter("member");
 
         if (groupId == null || groupId.isEmpty() || member == null || member.isEmpty()) {

@@ -112,7 +112,7 @@
                     <!-- グループ選択 -->
 					<div class="select-container">
   						<!-- グループリストを動的に表示 -->
-            			<select name="groupId" class="group-select">
+            			<select name="groupId" class="group-select" required>
                     		<option value="" selected>▼グループ選択</option>
                     		<%
                 			// グループリストをリクエストから取得
@@ -132,25 +132,71 @@
 					</div>
                     <div class="form-group">
                         <label for="name">名前<span class="small-text">または</span>メールアドレス</label>
-                        <form id="searchForm"  class="search-form-5">
-                            <button type="submit" aria-label="検索"></button>
+                        <div class="form-group">
+                            <button type="button" id="searchButton">検索</button>
                             <label>
                                 <input type="text" id="searchInput" name="query"class="form-control" placeholder="">
                             </label>
-                        </form>    
+                        </div>    
                     </div>
+                    <!-- 検索結果を表示 -->
+        			<div class="result-content">
+            			<table id="searchResultsTable" class="search-results-table">
+                			<thead>
+                    			<tr>
+                        			<th>選択</th>
+                        			<th>ユーザーID</th>
+                        			<th>名前</th>
+                        			<th>メールアドレス</th>
+                    			</tr>
+                			</thead>
+                			<tbody id="searchResults">
+                    			<!-- 結果が動的に挿入されます -->
+                			</tbody>
+            			</table>
+        			</div>
                     <div class="button-container">
                     	<button class="cancel-button" type="button">キャンセル</button>
                     	<button class="search-button" type="submit">追加</button>
                 	</div>
                 </form>
-                
-                
             </div>
-            <div class="result-content">
-                <!-- 検索結果の表示 -->
-                <div id="searchResults" class="result-content"></div>
-            </div>
+            <script>
+    document.getElementById('searchButton').addEventListener('click', function () {
+        const query = document.getElementById('searchInput').value;
+        const groupId = document.querySelector('.group-select').value;
+
+        if (!query.trim()) {
+            alert('検索条件を入力してください。');
+            return;
+        }
+
+        // AJAX リクエストでサーバーに検索リクエストを送信
+        fetch('GroupMemberServlet?action=search&groupId=' + groupId + '&query=' + encodeURIComponent(query))
+            .then(response => response.json())
+            .then(data => {
+                const resultsTable = document.getElementById('searchResults');
+                resultsTable.innerHTML = ''; // テーブルをクリア
+                if (data && data.length > 0) {
+                    data.forEach(user => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td><input type="checkbox" name="Id" value="${user.Id}"></td>
+                            <td>${user.Id}</td>
+                            <td>${user.username}</td>
+                            <td>${user.email}</td>
+                        `;
+                        resultsTable.appendChild(row);
+                    });
+                } else {
+                    resultsTable.innerHTML = '<tr><td colspan="4">該当するユーザーが見つかりません。</td></tr>';
+                }
+            })
+            .catch(error => {
+                console.error('検索エラー:', error);
+            });
+    });
+</script>
 
         </div>    
         
