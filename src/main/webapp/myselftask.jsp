@@ -61,7 +61,7 @@ Authorization: Bearer
 			<div class="icon-container">
 				<a href="" class="icon-link"> <img src="images/メニューの無料アイコン4.png"
 					alt="ホーム">
-				</a> <a href="edituser.jsp" class="icon-link"> <img
+				</a> <a href="" class="icon-link"> <img
 					src="images/人物のアイコン素材 その3.png" alt="アカウント">
 				</a>
 			</div>
@@ -75,9 +75,9 @@ Authorization: Bearer
 				<ul class="menu">
 					<li><a href="#"><span class="bullet">・</span>マイタスク</a></li>
 					<li><a href="group"><span class="bullet">・</span>グループ作成/編集</a></li>
-					<li><a href="groupmember"><span class="bullet">・</span>グループメンバー編集</a></li>
-					<li><a href="grouptask.jsp"><span class="bullet">・</span>グループタスク一覧</a></li>
-					<li><a href="edituser.jsp"><span class="bullet">・</span>ユーザー編集</a></li>
+					<li><a href="tgroupmember"><span class="bullet">・</span>グループメンバー編集</a></li>
+					<li><a href="grouptask"><span class="bullet">・</span>グループタスク一覧</a></li>
+					<li><a href="edituser"><span class="bullet">・</span>ユーザー編集</a></li>
 					<li id="logout-link"><a href="java_task/top"><span
 							class="bullet">・</span>ログアウト</a></li>
 				</ul>
@@ -152,7 +152,7 @@ Authorization: Bearer
 
 
 		<!-- 登録されたタスク一覧 -->
-		<div class="task">
+		<div class="task" id="task-{{taskId}}">
 			<%
 			if (taskList != null && !taskList.isEmpty()) {
 				for (TaskDTO task : taskList) {
@@ -173,7 +173,11 @@ Authorization: Bearer
 						type="hidden" name="taskId" value="<%=task.getTaskId()%>">
 					<input type="text" name="taskTitle"
 						value="<%=task.getTaskTitle()%>">
-					<textarea name="taskContent" name="task"><%=task.getTask()%></textarea>
+					<textarea name="taskContent"><%=task.getTask()%></textarea>
+					<button type="button" class="save-btn"
+						onclick="saveTask(<%=task.getTaskId()%>)">
+						<img src="images/鉛筆アイコン　6.png" alt="保存">
+					</button>
 				</form>
 
 
@@ -186,10 +190,14 @@ Authorization: Bearer
 					</button>
 
 					<!-- 保存ボタン -->
-					<button class="save-btn hidden"
-						onclick="saveTask(<%=task.getTaskId()%>)">
-						<img src="images/鉛筆アイコン　6.png" alt="保存">
-					</button>
+<!--					<form id="edit-form-{{taskId}}" class="edit-form hidden">-->
+<!--						<input type="hidden" name="colorId" value="{{colorId}}"> <input-->
+<!--							type="text" name="taskTitle" value="{{taskTitle}}">-->
+<!--						<textarea name="taskContent">{{taskContent}}</textarea>-->
+<!--						<button class="save-btn" onclick="saveTask({{taskId}})">-->
+<!--							<img src="images/鉛筆アイコン　6.png" alt="保存">-->
+<!--						</button>-->
+<!--					</form>-->
 
 					<!-- 削除ボタン -->
 					<form name="deleteForm" method="post" action="myselftask">

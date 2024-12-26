@@ -140,48 +140,62 @@ document.addEventListener("DOMContentLoaded", function() {
 	});
 });
 
+//編集関数
 function toggleEditMode(taskId) {
+	// タスク要素を取得
 	const taskElement = document.getElementById(`task-${taskId}`);
-	if (!taskElement) {
-		console.error(`Task element with ID "task-${taskId}" not found.`);
-		return; // 処理を終了
-	}
-
-	const taskTitleElement = taskElement.querySelector(".task-title");
-	const taskDetailElement = taskElement.querySelector(".task-content");
-
-	if (!taskTitleElement || !taskDetailElement) {
-		console.error(`Task title or content element not found in task-${taskId}.`);
-		return; // 処理を終了
-	}
-
-	// 以下は通常の処理
-	const currentTitle = taskTitleElement.textContent.trim();
-	const currentDetail = taskDetailElement.textContent.trim();
-
-	taskTitleElement.innerHTML = `<input type="text" id="edit-title-${taskId}" value="${currentTitle}" class="edit-input">`;
-	taskDetailElement.innerHTML = `<textarea id="edit-content-${taskId}" class="edit-textarea">${currentDetail}</textarea>`;
-
+	const editForm = document.getElementById(`edit-form-${taskId}`);
+	const taskTitle = taskElement.querySelector(".task-item-title");
+	const taskDetail = taskElement.querySelector(".task-item-detail");
 	const editButton = taskElement.querySelector(".edit-btn");
-	const saveButton = taskElement.querySelector(".save-btn");
 
-	editButton.classList.add("hidden");
-	saveButton.classList.remove("hidden");
+	if (editForm.classList.contains("hidden")) {
+		// 編集モードを表示
+		editForm.classList.remove("hidden");
+		taskTitle.classList.add("hidden");
+		taskDetail.classList.add("hidden");
+		editButton.textContent = "キャンセル";
+	} else {
+		// 編集モードを非表示
+		editForm.classList.add("hidden");
+		taskTitle.classList.remove("hidden");
+		taskDetail.classList.remove("hidden");
+		editButton.textContent = "編集";
+	}
 }
 
-
+//タスク更新関数
 function saveTask(taskId) {
-	const taskTitleInput = document.getElementById(`edit-title-${taskId}`);
-	const taskContentInput = document.getElementById(`edit-content-${taskId}`);
+	// フォーム要素を取得
+	const editForm = document.getElementById(`edit-form-${taskId}`);
+	if (!editForm) {
+		console.error(`Edit form not found for task ID: ${taskId}`);
+		alert("編集フォームが見つかりません。");
+		return;
+	}
 
+	// フォーム内のタイトルと内容の入力要素を取得
+	const taskElement = document.getElementById(`task-${taskId}`);
+	const taskTitleInput = editForm.querySelector('input[name="taskTitle"]');
+	const taskContentInput = editForm.querySelector('textarea[name="taskContent"]');
+
+	// 要素が見つからない場合のエラー確認
+	if (!taskTitleInput) {
+		console.error(`Task title input not found for task ID: ${taskId}`);
+		alert("タスクタイトルの入力フィールドが見つかりません。");
+		return;
+	}
+	if (!taskContentInput) {
+		console.error(`Task content input not found for task ID: ${taskId}`);
+		alert("タスク内容の入力フィールドが見つかりません。");
+		return;
+	}
+
+
+	// 各フィールドの値を取得
 	const newTitle = taskTitleInput.value.trim();
 	const newContent = taskContentInput.value.trim();
 
-	// バリデーション：タイトルと内容が空の場合は警告
-	if (!newTitle && !newContent) {
-		alert("タスクタイトルまたは内容を入力してください。");
-		return;
-	}
 
 	// データ送信用のフォームデータ作成
 	const formData = new FormData();
@@ -190,22 +204,36 @@ function saveTask(taskId) {
 	formData.append("taskTitle", newTitle);
 	formData.append("taskContent", newContent);
 
-	// AJAXリクエスト
+	// 認証トークンなどが必要なら設定
+	const token = 'your_token_here'; // 必要に応じて動的に取得する方法を実装
+	const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+
+	// サーバーに送信
 	fetch("myselftask", {
 		method: "POST",
 		body: formData,
 	})
-		.then((response) => {
+		.then(response => {
 			if (response.ok) {
-				alert("タスクが更新されました。");
-				location.reload(); // 更新後にページをリロード
+				return response.text(); // 必要に応じてJSONを使う
 			} else {
-				throw new Error("サーバー側でエラーが発生しました。");
+				throw new Error(`HTTPエラー: ${response.status}`);
 			}
 		})
-		.catch((error) => {
-			console.error("Error:", error);
-			alert("タスクの更新に失敗しました。");
+		.then(data => {
+			// タスク表示を更新
+			const taskTitle = taskElement.querySelector(".task-item-title");
+			const taskDetail = taskElement.querySelector(".task-item-detail");
+			taskTitle.textContent = newTitle;
+			taskDetail.textContent = newContent;
+
+			// 編集モードを終了
+			toggleEditMode(taskId);
+			alert("タスクが更新されました。");
+		})
+		.catch(error => {
+			console.error("エラー:", error);
+			alert("タスクの更新中にエラーが発生しました。");
 		});
 }
 
@@ -241,5 +269,3 @@ function createTask(taskTitle, taskContent) {
 			console.error('Error:', error);
 		});
 }
-
-

@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,28 +85,24 @@ public class TaskDAO {
 	}
 
 	// タスク更新 (UPDATE)
-	public boolean updateTask(TaskDTO task) {
-		String sql = "UPDATE tasks SET task_title = ?, task = ?, color_id = ? WHERE task_id = ?";
+	public void updateTask(TaskDTO task) throws SQLException {
+		if (task.getUserId() == null) {
+			throw new IllegalArgumentException("ユーザーIDがnullです。");
+		}
+
+		String sql = "UPDATE tasks SET title = ?, content = ? WHERE id = ? AND user_id = ?";
 		try (Connection conn = DBCon.getConnection();
-				PreparedStatement pstmt = conn.prepareStatement(sql)) {
+				PreparedStatement stmt = conn.prepareStatement(sql)) {
+			stmt.setString(1, task.getTaskTitle());
+			stmt.setString(2, task.getTask());
+			stmt.setObject(3, task.getColorId(), java.sql.Types.INTEGER);
+			stmt.setInt(4, task.getTaskId());
+			stmt.setInt(5, task.getUserId());
 
-			pstmt.setString(1, task.getTaskTitle());
-			pstmt.setString(2, task.getTask());
-
-			if (task.getColorId() != null) {
-				pstmt.setInt(3, task.getColorId());
-			} else {
-				pstmt.setNull(3, Types.INTEGER);
+			int rowsAffected = stmt.executeUpdate();
+			if (rowsAffected == 0) {
+				throw new SQLException("タスクの更新に失敗しました。影響を受けた行がありません。");
 			}
-			pstmt.setInt(4, task.getTaskId());
-
-			int rowsAffected = pstmt.executeUpdate();
-			System.out.println("Rows updated: " + rowsAffected);
-			return rowsAffected > 0;
-		} catch (SQLException e) {
-			System.err.println("Update task failed: " + e.getMessage());
-			e.printStackTrace();
-			return false;
 		}
 	}
 

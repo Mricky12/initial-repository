@@ -69,54 +69,60 @@ public class TaskServlet extends HttpServlet {
 		String action = request.getParameter("action");
 		System.out.println("TaskServlet: doPost() - POSTリクエスト受信");
 		System.out.println("TaskServlet: action = " + action);
+
 		TaskDAO taskDAO = new TaskDAO();
 
-		//タスク投稿
-		if ("create".equals(action)) {
-			String taskTitle = request.getParameter("taskTitle");
-			String taskContent = request.getParameter("taskContent");
-			int colorId = Integer.parseInt(request.getParameter("colorId"));
+		try {
+			//タスク投稿
+			if ("create".equals(action)) {
+				String taskTitle = request.getParameter("taskTitle");
+				String taskContent = request.getParameter("taskContent");
+				int colorId = Integer.parseInt(request.getParameter("colorId"));
 
-			TaskDTO task = new TaskDTO();
-			task.setTaskTitle(taskTitle);
-			task.setTask(taskContent);
-			task.setColorId(colorId);
+				TaskDTO task = new TaskDTO();
+				task.setTaskTitle(taskTitle);
+				task.setTask(taskContent);
+				task.setColorId(colorId);
 
-			boolean isTaskCreated = taskDAO.insertTask(task, loggedInUser.getId());
-			if (isTaskCreated) {
+				boolean isTaskCreated = taskDAO.insertTask(task, loggedInUser.getId());
+				if (isTaskCreated) {
+					response.sendRedirect(request.getContextPath() + "/myselftask");
+				} else {
+					response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "タスクの登録に失敗しました。");
+				}
+			} //タスク削除
+			else if ("delete".equals(action)) {
+				int taskId = Integer.parseInt(request.getParameter("taskId"));
+				boolean isTaskDeleted = taskDAO.deleteTask(taskId);
+				if (isTaskDeleted) {
+					response.sendRedirect(request.getContextPath() + "/myselftask");
+				} else {
+					response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "タスクの削除に失敗しました。");
+				}
+			} //タスク編集
+			else if ("update".equals(action)) {
+				int taskId = Integer.parseInt(request.getParameter("taskId"));
+				String taskTitle = request.getParameter("taskTitle");
+				String taskContent = request.getParameter("taskContent");
+				String colorIdParam = request.getParameter("colorId");
+				Integer colorId = (colorIdParam != null && !colorIdParam.isEmpty()) ? Integer.parseInt(colorIdParam)
+						: null;
+
+				TaskDTO task = new TaskDTO();
+				task.setTaskId(taskId);
+				task.setTaskTitle(taskTitle);
+				task.setTask(taskContent);
+				task.setColorId(colorId);
+				task.setUserId(loggedInUser.getId());
+
+				taskDAO.updateTask(task);
+
 				response.sendRedirect(request.getContextPath() + "/myselftask");
-			} else {
-				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "タスクの登録に失敗しました。");
 			}
-			//タスク削除
-		} else if ("delete".equals(action)) {
-			int taskId = Integer.parseInt(request.getParameter("taskId"));
-			boolean isTaskDeleted = taskDAO.deleteTask(taskId);
-			if (isTaskDeleted) {
-				response.sendRedirect(request.getContextPath() + "/myselftask");
-			} else {
-				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "タスクの削除に失敗しました。");
-			}
-			//タスク編集
-		} else if ("update".equals(action)) {
-			int taskId = Integer.parseInt(request.getParameter("taskId"));
-			String taskTitle = request.getParameter("taskTitle");
-			String taskContent = request.getParameter("taskContent");
-			String colorIdParam = request.getParameter("colorId");
-			Integer colorId = (colorIdParam != null && !colorIdParam.isEmpty()) ? Integer.parseInt(colorIdParam) : null;
-
-			TaskDTO task = new TaskDTO();
-			task.setTaskId(taskId);
-			task.setTaskTitle(taskTitle);
-			task.setTask(taskContent);
-			task.setColorId(colorId);
-
-			boolean isTaskUpdated = taskDAO.updateTask(task);
-			if (isTaskUpdated) {
-				response.sendRedirect(request.getContextPath() + "/myselftask");
-			} else {
-				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "タスクの更新に失敗しました。");
-			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "タスクの更新に失敗しました。");
 		}
+
 	}
 }
