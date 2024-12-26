@@ -26,6 +26,9 @@ public class UserEditServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		response.setContentType("text/html; charset=UTF-8");
+		request.getRequestDispatcher("edituser.jsp").forward(request, response);
+
 		HttpSession session = request.getSession();
 		UserEditDTO loggedInUser = (UserEditDTO) session.getAttribute("loggedInUser");
 
@@ -34,9 +37,6 @@ public class UserEditServlet extends HttpServlet {
 			response.sendRedirect("top");
 			return;
 		}
-
-		response.setContentType("text/html; charset=UTF-8");
-		request.getRequestDispatcher("edituser.jsp").forward(request, response);
 	}
 
 	@Override
