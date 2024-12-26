@@ -38,9 +38,9 @@ public class GroupServlet extends HttpServlet {
 
 			// グループリストを格納
 			List<GroupsDTO> listGroupsDTO = groupsDAO.getAll();
-			System.out.println("サーブレットで取得したグループ: " + listGroupsDTO);
+			/*System.out.println("サーブレットで取得したグループ: " + listGroupsDTO);*/
 			// デバッグ出力: リストサイズを確認
-			System.out.println("グループリストのサイズ: " + (listGroupsDTO != null ? listGroupsDTO.size() : "null"));
+			/*System.out.println("グループリストのサイズ: " + (listGroupsDTO != null ? listGroupsDTO.size() : "null"));*/
 			// 取得したグループリストをリクエストにセットしJSPに渡す
 			request.setAttribute("groups", listGroupsDTO);
 

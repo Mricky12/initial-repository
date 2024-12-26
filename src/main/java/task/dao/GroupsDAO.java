@@ -72,7 +72,7 @@ public class GroupsDAO {
                 group.setGroupId(rs.getInt("group_id"));
                 
              // デバッグ出力
-				System.out.println("取得したグループ: " + group.getGroupId() + ", " + group.getGroupName());
+				/*System.out.println("取得したグループ: " + group.getGroupId() + ", " + group.getGroupName());*/
                 group.setGroupName(rs.getString("group_name"));
                 groups.add(group);
             }
@@ -120,6 +120,7 @@ public class GroupsDAO {
         }
     }
     
+    
     public UsersDTO findUserByNameOrEmail(String identifier) throws SQLException {
         String query = "SELECT * FROM users WHERE username = ? OR email = ?";
         try (Connection conn = getConnection(); 
@@ -153,6 +154,11 @@ public class GroupsDAO {
     public Connection getConnection() {
         return this.conn;
     }
+
+	public boolean removeAllMembersFromGroup(int int1) {
+		// TODO 自動生成されたメソッド・スタブ
+		return false;
+	}
     
 }
 

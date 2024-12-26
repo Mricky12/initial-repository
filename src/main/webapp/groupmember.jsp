@@ -71,9 +71,15 @@
                     <li><a href="logout" id="logout-link"><span class="bullet">・</span>ログアウト</a></li>
                 </ul>
             </div>
+            <% if (request.getAttribute("success") != null) { %>
+    			<p class="success-message"><%= request.getAttribute("success") %></p>
+			<% } %>
+			<% if (request.getAttribute("error") != null) { %>
+    			<p class="error-message"><%= request.getAttribute("error") %></p>
+			<% } %>
             <div class="main-content">
                 <p>グループメンバー削除</p>
-                <form action="GroupMemberServlet" method="post" class="main-content-child">
+                <form action="groupmember" method="post" class="main-content-child">
                 	<!-- <input type="hidden" name="action" value="update"> -->
                     <div class="form-group">
                         <select name="groupId" required>
@@ -101,18 +107,18 @@
                     </div>
                 	<div class="button-container">
                     	<button class="cancel-button" type="button" onclick="window.location.href=''">キャンセル</button>
-                    	<button class="bule-button search-button" type="submit">削除</button>
+                    	<button class="bule-button search-button" type="submit"name="action" value="delete">削除</button>
                 	</div>
             	</form>
                 
             </div>
             <div class="main-content">
                 <p>グループメンバー追加</p>
-                <form action="GroupMemberServlet" method="post" class="main-content-child">
+                <form action="groupmember" method="post" class="main-content-child">
                     <!-- グループ選択 -->
 					<div class="select-container">
   						<!-- グループリストを動的に表示 -->
-            			<select name="groupId" class="group-select" required>
+            			<select name="groupId" id="groupId" class="group-select" required>
                     		<option value="" selected>▼グループ選択</option>
                     		<%
                 			// グループリストをリクエストから取得
@@ -131,16 +137,16 @@
                 		</select>
 					</div>
                     <div class="form-group">
-                        <label for="name">名前<span class="small-text">または</span>メールアドレス</label>
+                        <label>ユーザーID（カンマ区切りで入力）:</label>
                         <div class="form-group">
                             <button type="button" id="searchButton">検索</button>
                             <label>
-                                <input type="text" id="searchInput" name="query"class="form-control" placeholder="">
+                                <input type="text" name="userIds" placeholder="例: 1,2,3" required>
                             </label>
                         </div>    
                     </div>
                     <!-- 検索結果を表示 -->
-        			<div class="result-content">
+        			<!-- <div class="result-content">
             			<table id="searchResultsTable" class="search-results-table">
                 			<thead>
                     			<tr>
@@ -150,53 +156,62 @@
                         			<th>メールアドレス</th>
                     			</tr>
                 			</thead>
-                			<tbody id="searchResults">
-                    			<!-- 結果が動的に挿入されます -->
+                			<tbody id="resultTable">
+                    			結果が動的に挿入されます
                 			</tbody>
             			</table>
-        			</div>
+        			</div> -->
                     <div class="button-container">
                     	<button class="cancel-button" type="button">キャンセル</button>
-                    	<button class="search-button" type="submit">追加</button>
+                    	<button class="search-button" type="submit"　name="action" value="add">追加</button>
                 	</div>
                 </form>
             </div>
-            <script>
-    document.getElementById('searchButton').addEventListener('click', function () {
-        const query = document.getElementById('searchInput').value;
-        const groupId = document.querySelector('.group-select').value;
+            <!-- <script>
+    			document.getElementById('searchButton').addEventListener('click', function () {
+    				// ここでencodeURIComponentを直接JavaScriptで呼び出す
+        			const query = document.getElementById('query').value;
+        			const groupId = document.getElementById('groupId').value;
 
-        if (!query.trim()) {
-            alert('検索条件を入力してください。');
-            return;
-        }
+        			if (!query.trim()) {
+            			alert('検索条件を入力してください。');
+            			return;
+        			}
 
-        // AJAX リクエストでサーバーに検索リクエストを送信
-        fetch('GroupMemberServlet?action=search&groupId=' + groupId + '&query=' + encodeURIComponent(query))
-            .then(response => response.json())
-            .then(data => {
-                const resultsTable = document.getElementById('searchResults');
-                resultsTable.innerHTML = ''; // テーブルをクリア
-                if (data && data.length > 0) {
-                    data.forEach(user => {
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td><input type="checkbox" name="Id" value="${user.Id}"></td>
-                            <td>${user.Id}</td>
-                            <td>${user.username}</td>
-                            <td>${user.email}</td>
-                        `;
-                        resultsTable.appendChild(row);
-                    });
-                } else {
-                    resultsTable.innerHTML = '<tr><td colspan="4">該当するユーザーが見つかりません。</td></tr>';
-                }
-            })
-            .catch(error => {
-                console.error('検索エラー:', error);
-            });
-    });
-</script>
+        			// AJAX リクエストでサーバーに検索リクエストを送信
+        			fetch('GroupMemberServlet?action=search&query=' + encodeURIComponent(query) + '&groupId=' + encodeURIComponent(groupId))
+            			./* レスポンスが JSON でない場合に警告 */
+            			then(response =>  {
+            		        if (!response.ok) {
+            		            throw new Error('Network response was not ok');
+            		        }
+            		        return response.json();
+            		    })
+            			.then(data => {
+            				 // 成功した場合の処理
+                			const resultsTable = document.getElementById('searchResults');
+                			// 結果を表示する処理
+                			resultsTable.innerHTML = ''; // テーブルをクリア
+                			if (data && data.length > 0) {
+                    			data.forEach(user => {
+                        			const row = document.createElement('tr');
+                        			row.innerHTML = `
+                            			<td><input type="checkbox" name="Id" value="${user.Id}"></td>
+                            			<td>${user.Id}</td>
+                            			<td>${user.username}</td>
+                            			<td>${user.email}</td>
+                        			`;
+                        			resultTable.appendChild(row);
+                    			});
+                			} else {
+                				resultTable.innerHTML = '<tr><td colspan="4">該当するユーザーが見つかりません。</td></tr>';
+                			}
+            			})
+            			.catch(error => {
+                			console.error('検索エラー:', error);
+            			});
+    			});
+			</script> -->
 
         </div>    
         
