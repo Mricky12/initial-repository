@@ -10,6 +10,10 @@ public class UsersDTO {
     private LocalDateTime deletedAt; // ソフトデリート用
 
     public UsersDTO() {}
+    
+    
+    //this: クラス自身を指します。フィールド名と引数名が同じ場合に区別するために使われる
+    //例: this.id = id; は「クラスのフィールドidに、引数idの値を代入する」という意味
 
     public UsersDTO(int id, String name, String email, String password, LocalDateTime deletedAt) {
         this.id = id;
@@ -20,6 +24,10 @@ public class UsersDTO {
     }
 
     // Getter and Setter
+    //Getterとはフィールドの値を取得するためのメソッド
+    //Setterとはフィールドの値を変更するためのメソッド
+    
+    
     public int getId() {
         return id;
     }

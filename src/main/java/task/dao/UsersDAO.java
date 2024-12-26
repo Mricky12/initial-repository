@@ -10,14 +10,29 @@ import task.dto.UsersDTO;
 public class UsersDAO {
 
     // ユーザーをメールとパスワードで検索（ログイン用）
+	
+	//UsersDTO型のfindUserByEmailAndPasswordという名前のメソッド
+	//検索条件としてメールアドレス、パスワードを設定
+	//connection: データベース接続オブジェクト。
+	//throws SQLException は、「このメソッドが SQLException（データベース操作中に発生する問題）をスローする可能性がある」ことを示す
     public UsersDTO findUserByEmailAndPassword(String email, String password, Connection connection) throws SQLException {
         UsersDTO user = null;
+        
+        //「?」はプレースホルダという。値を後でPreparedStatementで設定出来る
+        //AND user_deleted_at IS NULLで削除フラグのNULLのユーザーを指定
         String query = "SELECT * FROM users WHERE user_email = ? AND user_password = ? AND user_deleted_at IS NULL";
 
+        //try：Javaで例外処理を行うための構文の一部。エラーが発生する可能性のあるコードを監視するためのブロック       
+        //今回はtry-with-resources構文を用いてリソース（connection, statement, resultSetなど）が自動的に開閉される仕様
+        // PreparedStatement型のstmtを生成し、SQLクエリを設定       
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
+        	//1つ目の?にemail、2つ目の?にpasswordを設定
             stmt.setString(1, email);
             stmt.setString(2, password);
+            
+            //クエリを実行し、結果をResultSet型のrsに取得
             try (ResultSet rs = stmt.executeQuery()) {
+            	//rs.next(): 結果セットの次の行が存在するかを確認
                 if (rs.next()) {
                     user = new UsersDTO(
                         rs.getInt("user_id"),

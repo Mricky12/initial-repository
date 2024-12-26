@@ -42,11 +42,7 @@ public class LoginServlet extends HttpServlet {
 		//レスポンス（画面に表示する内容）のデータ形式を設定。
 		//text/html: HTML形式で返すことを示す。
 		response.setContentType("text/html; charset=UTF-8");
-//		String action = request.getParameter("action");
-//
-//        if (action == null || action.isEmpty()) {
-//            // デフォルトの処理 (URL直接アクセス時)
-//            response.getWriter().println("ログインページへようこそ！");
+
             request.getRequestDispatcher("top.jsp").forward(request, response);
            
 		
